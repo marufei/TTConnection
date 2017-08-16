@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onNext(JSONObject jsonObject) {
                         //jsonObject就是我们获取到的json数据
                         //在这里可以做一些成功获取数据的操作
+                        
                     }
                 });
     }
