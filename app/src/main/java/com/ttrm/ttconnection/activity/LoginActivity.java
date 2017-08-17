@@ -5,9 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.http.HttpAddress;
-import com.ttrm.ttconnection.http.HttpRequests;
+import com.ttrm.ttconnection.util.MyUtils;
 
 import org.json.JSONObject;
 
@@ -19,6 +25,7 @@ import rx.Subscriber;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btn_login_sure;
+    private String TAG="LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login_sure:
-                login();
+//                login();
+                getSms();
                 break;
         }
     }
@@ -45,31 +53,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 登录
      */
     private void login() {
-        Map<String,String> map=new HashMap<>();
-        map.put("phone","13213580912");
-        map.put("smsCode","");
-        map.put("password","");
-        map.put("sms_token","");
-        map.put("regCode","");
-        map.put("timeStamp","");
-        map.put("sign","");
-        HttpRequests.getInstance().post(HttpAddress.REGISTER,map)
-                .subscribe(new Subscriber<JSONObject>() {
-                    @Override
-                    public void onCompleted() {
+        Map<String, String> map = new HashMap<>();
+        map.put("phone", "13213580912");
+        map.put("smsCode", "");
+        map.put("password", "");
+        map.put("sms_token", "");
+        map.put("regCode", "");
+        map.put("timeStamp", "");
+        map.put("sign", "");
+    }
 
-                    }
-                    @Override
-                    public void onError(Throwable e) {
+    /**
+     * 获取短信验证码
+     */
+    private void getSms() {
+        Map<String, String> map = new HashMap<>();
+        map.put("type", "1");
+        map.put("phone", "13213580912");
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, "http://116.62.195.53/tt/index.php/Api" + HttpAddress.GET_SMS, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-                    }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-                    @Override
-                    public void onNext(JSONObject jsonObject) {
-                        //jsonObject就是我们获取到的json数据
-                        //在这里可以做一些成功获取数据的操作
-                        
-                    }
-                });
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+        Volley.newRequestQueue(LoginActivity.this).add(stringRequest);
+
     }
 }

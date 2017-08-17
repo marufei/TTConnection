@@ -5,7 +5,7 @@ package com.ttrm.ttconnection.entity;
  * time on 2017/8/16
  */
 
-public class RegisterBean {
+public class RegisterBean extends BData{
 
     /**
      * userInfo : {"id":"3","phone":"15251759989","nickname":"天天3332","regtime":"20170815125812","regcode":"144U","UID":"3","login_token":"efdmc7qn463kjsd4neld1pdq10"}
