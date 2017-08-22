@@ -32,6 +32,7 @@ import java.util.Map;
 public class VolleyUtils {
     private  RequestQueue requestQueue;
     private  Context context;
+    private VolleyListener volleyListener;
 
     public  RequestQueue getRequestQueue(){
         if (requestQueue == null) {
@@ -39,11 +40,12 @@ public class VolleyUtils {
         }
         return requestQueue;
     }
-    public void Post(String url, final Map<String,String> map, final Class cls){
+    public  void Post(String url, final Map<String,String> map, final Class cls){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpAddress.BASE_URL + url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                jsonData(response,cls);
+//                jsonData(response,cls);
+                volleyListener.onSuccess();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -91,5 +93,11 @@ public class VolleyUtils {
         }catch (Exception e){
 
         }
+    }
+    interface VolleyListener{
+        /**
+         * 请求成功
+         */
+        void onSuccess();
     }
 }

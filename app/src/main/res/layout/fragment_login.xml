@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
+    android:background="@color/white"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,18 +11,23 @@
         android:layout_marginTop="30dp"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/vector_drawable_login_phone"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:inputType="phone"
+                android:hint="手机号"
+                android:textColorHint="@color/gray_9"
+                android:textSize="13sp"
                 android:lines="1"
                 android:background="@null"/>
             <View
@@ -35,11 +41,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/vector_drawable_login_pwd"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +57,11 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:lines="1"
+                android:hint="密码"
+                android:textColorHint="@color/gray_9"
+                android:textSize="13sp"
                 android:background="@null"/>
             <View
                 android:layout_width="match_parent"
@@ -59,5 +71,33 @@
         </LinearLayout>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/transparent"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="忘记密码"
+            android:textColor="@color/btn_right"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:textSize="15sp"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_purple"/>
 
 </LinearLayout>

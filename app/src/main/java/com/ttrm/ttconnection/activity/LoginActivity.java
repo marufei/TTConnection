@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_login_sure:
 //                login();
-                getSms();
+//                getSms();
                 break;
         }
     }
@@ -85,30 +85,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         map.put("sign", "");
     }
 
-    /**
-     * 获取短信验证码
-     */
-    private void getSms() {
-        Map<String, String> map = new HashMap<>();
-        map.put("type", "1");
-        map.put("phone", "13213580912");
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, "http://116.62.195.53/tt/index.php/Api" + HttpAddress.GET_SMS, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return super.getParams();
-            }
-        };
-        Volley.newRequestQueue(LoginActivity.this).add(stringRequest);
-
-    }
 }
