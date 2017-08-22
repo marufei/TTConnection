@@ -116,8 +116,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 Map<String, String> map = new HashMap<>();
                 map.put("type", "1");
                 map.put("phone", "13213580912");
-                map.put("timeStamp",String.valueOf(new Date().getTime()/1000));
-
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
                 return map;
             }
         };

@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -725,7 +726,17 @@ public class MyUtils {
         BigDecimal value = new BigDecimal(v1 / v2);
         value = value.setScale(scale, BigDecimal.ROUND_HALF_UP);
         return value;
+    }
 
+    public static String getTimestamp() {
+        String timestamp = String.valueOf(new Date().getTime() / 1000);
+        return timestamp;
+    }
+
+    public static String getSign() {
+        String sign = "822374hehrwe7" + getTimestamp();
+        sign = md5(sign);
+        return sign;
     }
 
 }
