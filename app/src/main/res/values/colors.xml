@@ -29,4 +29,5 @@
 
     <color name="btn_left">#898FF9</color>
     <color name="btn_right">#7451E0</color>
+    <color name="gray_d8">#d8d8d8</color>
 </resources>

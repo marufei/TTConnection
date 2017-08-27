@@ -17,29 +17,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello World!" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:orientation="horizontal"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center">
             <ImageView
+                android:id="@+id/main_info"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/vector_drawable_main_user"/>
+                android:src="@drawable/vector_drawable_main_user" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:gravity="center"
+                android:textColor="@color/white"
                 android:text="人脉APP"/>
-        </LinearLayout>
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:src="@mipmap/main_bac"
+                android:src="@mipmap/main_bac2"
                 android:scaleType="fitXY"/>
         </RelativeLayout>
 
@@ -62,11 +66,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="一键加粉"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
@@ -74,6 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
                     android:text="100%活粉，绝无一个死粉"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -101,11 +108,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="地区加粉"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
@@ -115,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="默认全部地区，自动匹配优质人脉"
+                    android:textColor="@color/white"
                     android:textSize="13sp"
                     android:id="@+id/textView" />
             </LinearLayout>
@@ -142,17 +152,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="暴机"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:layout_marginTop="10dp"
                     android:text="暴机全免费"
                     android:textSize="13sp"/>
@@ -182,6 +195,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="被动加粉"
                         android:id="@+id/textView2" />
@@ -189,6 +203,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
@@ -197,6 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="一个月保底被加2000人，再送1280钻"
+                    android:textColor="@color/white"
                     android:textSize="13sp"/>
             </LinearLayout>
             <ImageView
@@ -223,11 +239,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="清除通讯录"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
@@ -235,6 +253,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
                     android:text="智能清理导入通讯录的数据"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -262,11 +281,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="淘宝天猫大额优惠券"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
@@ -274,6 +295,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
                     android:text="每天累计浏览5分钟，送20钻"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -301,11 +323,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="检测单删好友"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
@@ -313,6 +337,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
                     android:text="100%全部检测标记"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -322,6 +347,7 @@
                 android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/main_ll_sign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@mipmap/main_pink2"
@@ -340,11 +366,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
                         android:text="每日签到"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="今天还剩150个名额"
                         android:textSize="10sp"/>
                 </LinearLayout>
@@ -353,6 +381,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="超多钻石，每天送"
+                    android:textColor="@color/white"
                     android:textSize="13sp"/>
             </LinearLayout>
             <ImageView

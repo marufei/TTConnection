@@ -26,4 +26,12 @@ public class HttpAddress {
      * 短信接口 type 验证码类型1注册2找回密码
      */
     public static final String GET_SMS = "/Public/fsSmsCode";
+    /**
+     * 修改昵称
+     */
+    public static final String EDIT_NAME="/UserCenter/modifyNickname";
+    /**
+     * 退出登录
+     */
+    public static final String LOGIN_OUT="/UserCenter/logout";
 }

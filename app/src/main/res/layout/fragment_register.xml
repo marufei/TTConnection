@@ -52,6 +52,7 @@
                         android:src="@drawable/vector_drawable_login_phone" />
 
                     <EditText
+                        android:id="@+id/register_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -92,6 +93,7 @@
                         android:src="@drawable/vector_drawable_login_pwd" />
 
                     <EditText
+                        android:id="@+id/register_pwd1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -141,6 +143,7 @@
                             android:src="@drawable/vector_drawable_login_pwd" />
 
                         <EditText
+                            android:id="@+id/register_smscode"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -191,6 +194,7 @@
                         android:src="@drawable/vector_drawable_login_pwd" />
 
                     <EditText
+                        android:id="@+id/register_pwd2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -230,6 +234,7 @@
                         android:src="@drawable/vector_drawable_refresh" />
 
                     <EditText
+                        android:id="@+id/register_regcode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -250,6 +255,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/register_btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -272,6 +278,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/register_pro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
