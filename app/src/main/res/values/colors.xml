@@ -30,4 +30,9 @@
     <color name="btn_left">#898FF9</color>
     <color name="btn_right">#7451E0</color>
     <color name="gray_d8">#d8d8d8</color>
+    <color name="red_left">#fb3544</color>
+    <color name="yellow_ff">#ffa801</color>
+    <color name="pink_left">#ff84dd</color>
+    <color name="pink_right">#ff16c0</color>
+
 </resources>

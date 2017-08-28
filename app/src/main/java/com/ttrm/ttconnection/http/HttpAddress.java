@@ -34,4 +34,12 @@ public class HttpAddress {
      * 退出登录
      */
     public static final String LOGIN_OUT="/UserCenter/logout";
+    /**
+     * 查询钻石数量
+     */
+    public static final String SELECT_DIAMONDS="/Diamond/getDiamondCount";
+    /**
+     * 获取钻石
+     */
+    public static final String GET_DIAMONDS="/Diamond/addDiamond";
 }
