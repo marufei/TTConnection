@@ -23,7 +23,10 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.ForgetPwdActivity" />
         <activity android:name=".activity.UserInfoActivity" />
-        <activity android:name=".activity.SignActivity"></activity>
+        <activity android:name=".activity.SignActivity" />
+        <activity android:name=".activity.RedeemActivity" />
+        <activity android:name=".activity.EditNameActivity" />
+        <activity android:name=".activity.BDAddActivity"></activity>
     </application>
 
 </manifest>

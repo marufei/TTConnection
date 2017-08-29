@@ -34,5 +34,8 @@
     <color name="yellow_ff">#ffa801</color>
     <color name="pink_left">#ff84dd</color>
     <color name="pink_right">#ff16c0</color>
+    <!--285d85-->
+    <color name="blue_285">#285d85</color>
+    <color name="gray_f3">#f3f3f3</color>
 
 </resources>
