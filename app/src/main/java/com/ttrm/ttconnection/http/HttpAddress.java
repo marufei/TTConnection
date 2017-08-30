@@ -42,4 +42,8 @@ public class HttpAddress {
      * 获取钻石
      */
     public static final String GET_DIAMONDS="/Diamond/addDiamond";
+    /**
+     * banner
+     */
+    public static final String GET_BANNER="/Public/getBannerList";
 }

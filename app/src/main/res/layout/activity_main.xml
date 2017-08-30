@@ -45,7 +45,7 @@
                 android:layout_height="20dp"
                 android:src="@mipmap/main_bac2"
                 android:scaleType="fitXY"/>
-            <android.support.v4.widget.CircleImageView
+            <com.ttrm.ttconnection.view.ImageCycleView
                 android:id="@+id/main_banner"
                 android:layout_width="match_parent"
                 android:layout_height="180dp" />
