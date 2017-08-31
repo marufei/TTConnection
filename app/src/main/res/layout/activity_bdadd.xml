@@ -82,37 +82,15 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-    <LinearLayout
+    <ListView
+        android:id="@+id/bdadd_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
         android:layout_margin="10dp"
-        android:background="@drawable/bac_gray_f3">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1.被动加粉128元，保底被加2000人"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2.保底被加2000人脉，再送1280钻石。马上开启爆机"
-            android:layout_marginTop="3dp"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3.注册天天人脉的手机号与微信绑定的手机号一致，被动加粉才会有大量人加。"
-            android:layout_marginTop="3dp"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4.请到微信设置-我-设置-隐私-添加我的方式-手机号打开；加我为朋友时需验证关闭。"
-            android:layout_marginTop="3dp"
-            android:textColor="#444444"/>
-    </LinearLayout>
+        android:divider="#00000000"
+        android:dividerHeight="0dip"
+        android:background="@color/white"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -165,33 +143,49 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_f3"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="被动加粉："
-            android:textColor="@color/gray_3"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="128元"
-            android:textColor="@color/colorPrimary"/>
-    </LinearLayout>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:padding="10dp"
+        android:gravity="center"
         android:text="立即开通"
         android:background="@drawable/btn_purple"
         android:textColor="@color/white"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bac_gray_f3">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.被动加粉128元，保底被加2000人"
+            android:textColor="#444444"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2.保底被加2000人脉，再送1280钻石。马上开启爆机"
+            android:layout_marginTop="3dp"
+            android:textColor="#444444"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.注册天天人脉的手机号与微信绑定的手机号一致，被动加粉才会有大量人加。"
+            android:layout_marginTop="3dp"
+            android:textColor="#444444"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4.请到微信设置-我-设置-隐私-添加我的方式-手机号打开；加我为朋友时需验证关闭。"
+            android:layout_marginTop="3dp"
+            android:textColor="#444444"/>
+    </LinearLayout>
 
 
 </LinearLayout>

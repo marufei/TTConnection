@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
 import com.ttrm.ttconnection.activity.UserInfoActivity;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String TAG = "MainActivity";
     private LinearLayout main_ll_sign;
     private ImageCycleView main_banner;
+    private LinearLayout main_ll_bdadd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_info.setOnClickListener(this);
         main_ll_sign = (LinearLayout) findViewById(R.id.main_ll_sign);
         main_ll_sign.setOnClickListener(this);
+        main_ll_bdadd=(LinearLayout)findViewById(R.id.main_ll_bdadd);
+        main_ll_bdadd.setOnClickListener(this);
         main_banner = (ImageCycleView) findViewById(R.id.main_banner);
         new ImageCycleView.ImageCycleViewListener() {
 
@@ -88,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.main_ll_sign:
                 startActivity(new Intent(MainActivity.this, SignActivity.class));
+                break;
+            case R.id.main_ll_bdadd:
+                startActivity(new Intent(MainActivity.this, BDAddActivity.class));
                 break;
         }
     }

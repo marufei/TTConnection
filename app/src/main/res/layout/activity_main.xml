@@ -180,6 +180,7 @@
                 android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/main_ll_bdadd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@mipmap/main_pink1"

@@ -46,4 +46,8 @@ public class HttpAddress {
      * banner
      */
     public static final String GET_BANNER="/Public/getBannerList";
+    /**
+     * 获取被加规则
+     */
+    public static final String GET_BA_RULE="/Edjf/getjfRule";
 }
