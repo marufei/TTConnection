@@ -17,9 +17,9 @@ public class MyAdvertisementView extends Dialog implements View.OnClickListener 
 
     public OnEventClickListenner onEventClickListenner;
 
-    public MyAdvertisementView(Context context) {
+    public MyAdvertisementView(Context context,int layoutId) {
         super(context);
-        setContentView(R.layout.dialog_main_bj);
+        setContentView(layoutId);
         //设置点击布局外则Dialog消失
         setCanceledOnTouchOutside(false);
     }

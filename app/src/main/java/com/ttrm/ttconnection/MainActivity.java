@@ -41,6 +41,7 @@ import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.view.ImageCycleView;
+import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
 
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout main_ll_dqjf;
     private LinearLayout main_ll_clear;
     private BannerBean bannerBean;
+    private LinearLayout main_ll_bj;
 
     private String type = "1";//识别一键加粉还是地区加粉
 
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this, BDAddActivity.class));
                 break;
             case R.id.main_ll_bj:
-                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this);
+                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this,R.layout.dialog_main_bj);
                 myAdvertisementView.showDialog();
                 myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                     @Override
@@ -325,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 0x1:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.v("stones", "权限回调--获取权限失败");
-                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许蓝狐微商读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Toast.makeText(MainActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
@@ -342,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 0x2:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许蓝狐微商读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
                 } else {
                     new Thread(new Runnable() {
                         @Override

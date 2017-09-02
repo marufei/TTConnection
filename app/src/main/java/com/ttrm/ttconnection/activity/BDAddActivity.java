@@ -109,7 +109,7 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
     private void openAdd(){
         MyUtils.Loge(TAG,"点击开通");
         MyUtils.Loge(TAG,"ruleId"+bdAddBean.getData().getRuleList().get(0).getId());
-        PayUtil.toPay(BDAddActivity.this,"1",bdAddBean.getData().getRuleList().get(0).getId());
+        PayUtil.toPay(BDAddActivity.this,payType,bdAddBean.getData().getRuleList().get(0).getId());
     }
 
     private void setViews() {
@@ -169,6 +169,9 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
         }
+    }
+    public static void showDialog(){
+
     }
 
     /**
