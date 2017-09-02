@@ -54,6 +54,14 @@ public class HttpAddress {
      * 开通加粉
      */
     public static final String ADD_PAY="/Pay/prepay";
+    /**
+     * 检测单删好友
+     */
+    public static final String URL_H5_DELETE="http://www.tiantianrenmai.com/web/testperson.html";
+    /**
+     * 新手教学
+     */
+    public static final String URL_H5_READ="http://www.tiantianrenmai.com/web/meathod.html";
 
     /**
      * 获取加粉

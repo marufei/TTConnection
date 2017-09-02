@@ -6,9 +6,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
@@ -44,6 +46,10 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
     private BDAddLvAdapter adapter;
     private Button bdadd_open;
     public static BDAddActivity bdAddActivity;
+    private ImageView bdadd_alipay;
+    private ImageView bdadd_wx;
+    private String payType;
+    private int pos=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +109,7 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
     private void openAdd(){
         MyUtils.Loge(TAG,"点击开通");
         MyUtils.Loge(TAG,"ruleId"+bdAddBean.getData().getRuleList().get(0).getId());
-        PayUtil.toPay(BDAddActivity.this,"2",bdAddBean.getData().getRuleList().get(0).getId());
+        PayUtil.toPay(BDAddActivity.this,"1",bdAddBean.getData().getRuleList().get(0).getId());
     }
 
     private void setViews() {
@@ -116,6 +122,7 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
                     bdAddBean.getData().getRuleList().get(position).setSelect(false);
                 }else {
                     bdAddBean.getData().getRuleList().get(position).setSelect(true);
+                    pos=position;
                     for(int i=0;i<bdAddBean.getData().getRuleList().size();i++){
                         if(i!=position){
                             bdAddBean.getData().getRuleList().get(i).setSelect(false);
@@ -131,6 +138,10 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
         bdadd_lv=(ListView)findViewById(R.id.bdadd_lv);
         bdadd_open=(Button)findViewById(R.id.bdadd_open);
         bdadd_open.setOnClickListener(this);
+        bdadd_alipay=(ImageView)findViewById(R.id.bdadd_alipay);
+        bdadd_alipay.setOnClickListener(this);
+        bdadd_wx=(ImageView)findViewById(R.id.bdadd_wx);
+        bdadd_wx.setOnClickListener(this);
 
     }
 
@@ -138,7 +149,41 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.bdadd_open:
+                if(pos<0){
+                    MyUtils.showToast(BDAddActivity.this,"请选择加粉类型");
+                    return;
+                }
+                if(TextUtils.isEmpty(payType)){
+                    MyUtils.showToast(BDAddActivity.this,"请选择支付方式");
+                    return;
+                }
                 openAdd();
+                break;
+            case R.id.bdadd_alipay:
+                payType="2";
+                setlectType(payType);
+                break;
+            case R.id.bdadd_wx:
+                payType="1";
+                setlectType(payType);
+                break;
+
+        }
+    }
+
+    /**
+     * 选择支付类型
+     * @param payType
+     */
+    private void setlectType(String payType) {
+        switch (payType){
+            case "1":
+                bdadd_alipay.setImageResource(R.drawable.vector_drawable_pay_n);
+                bdadd_wx.setImageResource(R.drawable.vector_drawable_pay_y);
+                break;
+            case "2":
+                bdadd_wx.setImageResource(R.drawable.vector_drawable_pay_n);
+                bdadd_alipay.setImageResource(R.drawable.vector_drawable_pay_y);
                 break;
         }
     }

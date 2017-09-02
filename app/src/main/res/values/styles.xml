@@ -14,5 +14,10 @@
         <item name="android:lines">1</item>
         <item name="android:singleLine">true</item>
     </style>
+    <!-- dialog动画 -->
+    <style name="style_dialog">
+        <item name="android:windowEnterAnimation">@anim/anim_popup_zoom_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_popup_zoom_exit</item>
+    </style>
 
 </resources>

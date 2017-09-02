@@ -109,9 +109,10 @@
             android:text="微信支付"
             android:textColor="@color/gray_3"/>
         <ImageView
+            android:id="@+id/bdadd_wx"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/vector_drawable_pay_y"/>
+            android:src="@drawable/vector_drawable_pay_n"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -135,9 +136,10 @@
             android:text="支付宝支付"
             android:textColor="@color/gray_3"/>
         <ImageView
+            android:id="@+id/bdadd_alipay"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/vector_drawable_pay_y"/>
+            android:src="@drawable/vector_drawable_pay_n"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

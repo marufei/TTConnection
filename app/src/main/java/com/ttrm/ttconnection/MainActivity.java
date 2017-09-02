@@ -35,6 +35,7 @@ import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.view.ImageCycleView;
+import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout main_ll_dqjf;
     private LinearLayout main_ll_clear;
     private BannerBean bannerBean;
+    private LinearLayout main_ll_bj;
 
     private String type = "1";//识别一键加粉还是地区加粉
 
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_ll_clear = (LinearLayout) findViewById(R.id.clear_linear);
         main_ll_clear.setOnClickListener(this);
 
+        main_ll_bj=(LinearLayout)findViewById(R.id.main_ll_bj);
+        main_ll_bj.setOnClickListener(this);
         main_banner = (ImageCycleView) findViewById(R.id.main_banner);
         new ImageCycleView.ImageCycleViewListener() {
 
@@ -147,6 +151,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_ll_bdadd:
                 startActivity(new Intent(MainActivity.this, BDAddActivity.class));
                 break;
+            case R.id.main_ll_bj:
+                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this);
+                myAdvertisementView.showDialog();
+                myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                    @Override
+                    public void onEvent() {
+                        MyUtils.showToast(MainActivity.this,"点击了按钮");
+                    }
+                });
+                break;
             case R.id.yjjf_linear://一键加粉
                 type = "1";
                 getCanon();//获取一键加粉数据
@@ -169,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                MyUtils.Loge(TAG, "response:" + response);
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");

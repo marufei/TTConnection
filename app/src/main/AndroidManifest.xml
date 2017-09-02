@@ -28,13 +28,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.ForgetPwdActivity" />
-        <activity android:name=".activity.UserInfoActivity" />
-        <activity android:name=".activity.SignActivity" />
-        <activity android:name=".activity.RedeemActivity" />
-        <activity android:name=".activity.EditNameActivity" />
-        <activity android:name=".activity.BDAddActivity"></activity>
+        <activity android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ForgetPwdActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.UserInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SignActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.RedeemActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EditNameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BDAddActivity"
+            android:screenOrientation="portrait"/>
         <!--微信支付-->
         <activity android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
