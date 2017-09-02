@@ -9,7 +9,7 @@ public class HttpAddress {
     /**
      * 基地址
      */
-    public static final String BASE_URL="http://116.62.195.53/tt/index.php/Api";
+    public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";
     /**
      * 注册
      */
@@ -29,43 +29,43 @@ public class HttpAddress {
     /**
      * 修改昵称
      */
-    public static final String EDIT_NAME="/UserCenter/modifyNickname";
+    public static final String EDIT_NAME = "/UserCenter/modifyNickname";
     /**
      * 退出登录
      */
-    public static final String LOGIN_OUT="/UserCenter/logout";
+    public static final String LOGIN_OUT = "/UserCenter/logout";
     /**
      * 查询钻石数量
      */
-    public static final String SELECT_DIAMONDS="/Diamond/getDiamondCount";
+    public static final String SELECT_DIAMONDS = "/Diamond/getDiamondCount";
     /**
      * 获取钻石
      */
-    public static final String GET_DIAMONDS="/Diamond/addDiamond";
+    public static final String GET_DIAMONDS = "/Diamond/addDiamond";
     /**
      * banner
      */
-    public static final String GET_BANNER="/Public/getBannerList";
+    public static final String GET_BANNER = "/Public/getBannerList";
     /**
      * 获取被加规则
      */
-    public static final String GET_BA_RULE="/Edjf/getjfRule";
+    public static final String GET_BA_RULE = "/Edjf/getjfRule";
     /**
      * 开通加粉
      */
-    public static final String ADD_PAY="/Pay/prepay";
+    public static final String ADD_PAY = "/Pay/prepay";
     /**
      * 检测单删好友
      */
-    public static final String URL_H5_DELETE="http://www.tiantianrenmai.com/web/testperson.html";
+    public static final String URL_H5_DELETE = "http://www.tiantianrenmai.com/web/testperson.html";
     /**
      * 新手教学
      */
-    public static final String URL_H5_READ="http://www.tiantianrenmai.com/web/meathod.html";
+    public static final String URL_H5_READ = "http://www.tiantianrenmai.com/web/meathod.html";
 
     /**
      * 获取加粉
      */
-    public static final String GET_CANON="/Jf/jf";
+    public static final String GET_CANON = "/Jf/jf";
 
 }
