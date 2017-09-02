@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -301,6 +302,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     LXRUtil.deleteContacts(MainActivity.this);
                 }
             }).start();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 0x1:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.v("stones", "权限回调--获取权限失败");
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许蓝狐微商读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(MainActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
+                    Log.v("stones", "权限回调--获取权限成功");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < dataList.size(); i++) {
+                                LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i);
+                            }
+                        }
+                    }).start();
+                }
+                break;
+            case 0x2:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许蓝狐微商读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LXRUtil.deleteContacts(MainActivity.this);
+                        }
+                    }).start();
+                }
+                break;
         }
     }
 }
