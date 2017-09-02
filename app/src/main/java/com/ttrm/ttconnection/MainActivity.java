@@ -1,14 +1,20 @@
 package com.ttrm.ttconnection;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.LoginFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,7 +41,6 @@ import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.view.ImageCycleView;
-import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
 
@@ -56,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout main_ll_dqjf;
     private LinearLayout main_ll_clear;
     private BannerBean bannerBean;
-    private LinearLayout main_ll_bj;
 
     private String type = "1";//识别一键加粉还是地区加粉
 
@@ -67,18 +71,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static int currentCount = 0;//已添加添加通讯录总条数
 
-    public static Handler handler = new Handler(){
+    public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch(msg.what){
+            switch (msg.what) {
                 case KeyUtils.SAVE_CODE:
-                    currentCount = (int)msg.obj;
-                    if(currentCount == dataList.size()){
-                        Toast.makeText(MyApplication.mContext,"添加成功",Toast.LENGTH_SHORT).show();
+                    currentCount = (int) msg.obj;
+                    if (currentCount == dataList.size()) {
+                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case KeyUtils.DELETE_CODE:
-                    Toast.makeText(MyApplication.mContext,"删除成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_info.setOnClickListener(this);
         main_ll_sign = (LinearLayout) findViewById(R.id.main_ll_sign);
         main_ll_sign.setOnClickListener(this);
-        main_ll_bdadd=(LinearLayout)findViewById(R.id.main_ll_bdadd);
+        main_ll_bdadd = (LinearLayout) findViewById(R.id.main_ll_bdadd);
         main_ll_bdadd.setOnClickListener(this);
         main_ll_yjjf = (LinearLayout) findViewById(R.id.yjjf_linear);
         main_ll_yjjf.setOnClickListener(this);
@@ -170,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getCanon();//获取地区加粉数据
                 break;
             case R.id.clear_linear://清除通讯录
-                LXRUtil.deleteContacts(MainActivity.this);
+                deleteCanon();
                 break;
         }
     }
@@ -183,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG, "response:" + response);
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
@@ -191,8 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Gson gson=new Gson();
                         bannerBean = gson.fromJson(response, BannerBean.class);
                     }
-                }
-                catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -213,50 +215,143 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Volley.newRequestQueue(MainActivity.this).add(stringRequest);
     }
 
-    private void getCanon(){
-        String url= HttpAddress.BASE_URL+HttpAddress.GET_CANON;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+    private void getCanon() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_CANON;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"canon:"+response);
+                MyUtils.Loge(TAG, "canon:" + response);
 
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    if(errorCode==1){
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    if (errorCode == 1) {
                         Gson gson = new Gson();
-                        CanonBean bean = gson.fromJson(response,CanonBean.class);
-                        if(bean.getErrorCode() == 1){
+                        CanonBean bean = gson.fromJson(response, CanonBean.class);
+                        if (bean.getErrorCode() == 1) {
                             dataList.clear();
                             dataList.addAll(bean.getData().getPhoneList());
-                            for(int i = 0; i < dataList.size(); i++){
-                                LXRUtil.addContacts(MainActivity.this,dataList.get(i).getNickname(),dataList.get(i).getPhone(),i);
-                            }
+                            saveCanon();
                         }
-                    }else{
-                        Toast.makeText(MainActivity.this,jsonObject.getString("errorMsg"),Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, jsonObject.getString("errorMsg"), Toast.LENGTH_SHORT).show();
                     }
-                }
-                catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(MainActivity.this,"网络有问题");
+                MyUtils.showToast(MainActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
+                Map<String, String> map = new HashMap<>();
                 map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
-                map.put("type",type);
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
+                map.put("type", type);
                 return map;
             }
         };
         Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+    }
+
+    /**
+     * 添加到通讯录
+     */
+    private void saveCanon() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                    Manifest.permission.WRITE_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0x1);
+                return;
+            } else {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < dataList.size(); i++) {
+                            LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i);
+                        }
+                    }
+                }).start();
+            }
+        } else {
+            //添加通讯录
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < dataList.size(); i++) {
+                        LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i);
+                    }
+                }
+            }).start();
+        }
+    }
+
+    /**
+     * 从通讯录删除
+     */
+    private void deleteCanon() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 0x2);
+                return;
+            } else {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LXRUtil.deleteContacts(MainActivity.this);
+                    }
+                }).start();
+            }
+        } else {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    LXRUtil.deleteContacts(MainActivity.this);
+                }
+            }).start();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 0x1:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.v("stones", "权限回调--获取权限失败");
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许蓝狐微商读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(MainActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
+                    Log.v("stones", "权限回调--获取权限成功");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < dataList.size(); i++) {
+                                LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i);
+                            }
+                        }
+                    }).start();
+                }
+                break;
+            case 0x2:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许蓝狐微商读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LXRUtil.deleteContacts(MainActivity.this);
+                        }
+                    }).start();
+                }
+                break;
+        }
     }
 }
