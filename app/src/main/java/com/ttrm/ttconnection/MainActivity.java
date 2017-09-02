@@ -33,6 +33,7 @@ import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
 import com.ttrm.ttconnection.activity.UserInfoActivity;
+import com.ttrm.ttconnection.activity.WebActivity;
 import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.entity.CanonBean;
 import com.ttrm.ttconnection.http.HttpAddress;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout main_ll_yjjf;
     private LinearLayout main_ll_dqjf;
     private LinearLayout main_ll_clear;
+    private LinearLayout main_ll_jcdshy;
     private BannerBean bannerBean;
     private LinearLayout main_ll_bj;
 
@@ -122,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_ll_dqjf.setOnClickListener(this);
         main_ll_clear = (LinearLayout) findViewById(R.id.clear_linear);
         main_ll_clear.setOnClickListener(this);
+        main_ll_jcdshy = (LinearLayout) findViewById(R.id.jcdshy_linear);
+        main_ll_jcdshy.setOnClickListener(this);
 
         main_ll_bj=(LinearLayout)findViewById(R.id.main_ll_bj);
         main_ll_bj.setOnClickListener(this);
@@ -177,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.clear_linear://清除通讯录
                 deleteCanon();
+                break;
+            case R.id.jcdshy_linear://检测单删好友
+                Intent intent = new Intent(this, WebActivity.class);
+                intent.putExtra("URL",HttpAddress.URL_H5_DELETE);
+                startActivity(intent);
                 break;
         }
     }

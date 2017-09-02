@@ -96,15 +96,21 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             case R.id.info_ll_change:
                 break;
             case R.id.info_ll_sm:
+                Intent intent = new Intent(this, WebActivity.class);
+                intent.putExtra("URL",HttpAddress.URL_H5_READ);
+                startActivity(intent);
                 break;
             case R.id.info_ll_name:
                 myName();
                 break;
             case R.id.info_ll_version:
+
                 break;
             case R.id.info_ll_custom:
+
                 break;
             case R.id.info_btn_loginout:
+
                 loginOut();
                 break;
 
