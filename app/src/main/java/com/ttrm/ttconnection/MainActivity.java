@@ -18,13 +18,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
 import com.ttrm.ttconnection.activity.UserInfoActivity;
+import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.view.ImageCycleView;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout main_ll_sign;
     private ImageCycleView main_banner;
     private LinearLayout main_ll_bdadd;
+    private BannerBean bannerBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +113,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 MyUtils.Loge(TAG, "response:" + response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    if(errorCode==1){
+                        Gson gson=new Gson();
+                        bannerBean = gson.fromJson(response, BannerBean.class);
+                    }
+                }
+                catch (Exception e){
+
+                }
             }
         }, new Response.ErrorListener() {
             @Override

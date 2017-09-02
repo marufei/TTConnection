@@ -1,9 +1,14 @@
 package com.ttrm.ttconnection.activity;
 
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
@@ -19,27 +24,32 @@ import com.ttrm.ttconnection.entity.BDAddBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
+import com.ttrm.ttconnection.util.PayUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Manifest;
 
 /**
  * TODO 被动加粉
  */
-public class BDAddActivity extends AppCompatActivity {
+public class BDAddActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ListView bdadd_lv;
     private String TAG="BDAddActivity";
     private BDAddBean bdAddBean;
     private BDAddLvAdapter adapter;
+    private Button bdadd_open;
+    public static BDAddActivity bdAddActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bdadd);
+        bdAddActivity=this;
         initViews();
         initData();
     }
@@ -87,6 +97,15 @@ public class BDAddActivity extends AppCompatActivity {
         Volley.newRequestQueue(BDAddActivity.this).add(stringRequest);
     }
 
+    /**
+     * 开通加粉
+     */
+    private void openAdd(){
+        MyUtils.Loge(TAG,"点击开通");
+        MyUtils.Loge(TAG,"ruleId"+bdAddBean.getData().getRuleList().get(0).getId());
+        PayUtil.toPay(BDAddActivity.this,"1",bdAddBean.getData().getRuleList().get(0).getId());
+    }
+
     private void setViews() {
         adapter=new BDAddLvAdapter(BDAddActivity.this,bdAddBean.getData().getRuleList());
         bdadd_lv.setAdapter(adapter);
@@ -110,5 +129,42 @@ public class BDAddActivity extends AppCompatActivity {
 
     private void initViews() {
         bdadd_lv=(ListView)findViewById(R.id.bdadd_lv);
+        bdadd_open=(Button)findViewById(R.id.bdadd_open);
+        bdadd_open.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.bdadd_open:
+                openAdd();
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 0x1:
+                if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    if(ContextCompat.checkSelfPermission(BDAddActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(BDAddActivity.this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},0X2);
+                    }else {
+                        openAdd();
+                    }
+                }else {
+                    MyUtils.showToast(BDAddActivity.this,"权限获取失败");
+                }
+                break;
+            case 0x2:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    openAdd();
+                }else {
+                    MyUtils.showToast(BDAddActivity.this,"权限获取失败");
+                }
+                break;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

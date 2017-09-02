@@ -50,4 +50,8 @@ public class HttpAddress {
      * 获取被加规则
      */
     public static final String GET_BA_RULE="/Edjf/getjfRule";
+    /**
+     * 开通加粉
+     */
+    public static final String ADD_PAY="/Pay/prepay";
 }

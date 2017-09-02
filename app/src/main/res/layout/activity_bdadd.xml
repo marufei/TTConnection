@@ -145,6 +145,7 @@
         android:background="@color/gray_f3"/>
 
     <Button
+        android:id="@+id/bdadd_open"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
