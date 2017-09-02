@@ -54,4 +54,10 @@ public class HttpAddress {
      * 开通加粉
      */
     public static final String ADD_PAY="/Pay/prepay";
+
+    /**
+     * 获取加粉
+     */
+    public static final String GET_CANON="/Jf/jf";
+
 }

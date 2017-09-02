@@ -1,6 +1,7 @@
 package com.ttrm.ttconnection;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -14,12 +15,13 @@ import com.android.volley.toolbox.Volley;
 
 public class MyApplication extends Application {
     private static MyApplication mInstance;
+    public static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
+        mContext = getApplicationContext();
     }
     public static MyApplication getInstance() {
         return mInstance;

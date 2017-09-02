@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:background="@mipmap/main_pink3"
             android:padding="10dp"
+            android:id="@+id/yjjf_linear"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"
@@ -94,6 +95,7 @@
                 android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/dqjf_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@mipmap/main_purple2"
@@ -230,6 +232,7 @@
             android:layout_height="wrap_content"
             android:background="@mipmap/main_blue"
             android:padding="10dp"
+            android:id="@+id/clear_linear"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"

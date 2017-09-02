@@ -8,7 +8,9 @@ import java.util.List;
  * Created by MaRufei on 2017/9/1.
  */
 
-public class WXPayAllData {
+public class
+
+WXPayAllData {
 
     /**
      * errorCode : 1

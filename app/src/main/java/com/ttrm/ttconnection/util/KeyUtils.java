@@ -5,6 +5,10 @@ package com.ttrm.ttconnection.util;
  */
 
 public class KeyUtils {
+
+    public static final int SAVE_CODE = 100;
+    public static final int DELETE_CODE = 200;
+
     public static String user_id="userid";
     public static String user_phone="user_phone";
     public static String user_name="user_name";
