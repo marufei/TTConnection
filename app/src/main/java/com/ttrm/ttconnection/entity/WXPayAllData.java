@@ -51,7 +51,7 @@ public class WXPayAllData {
          */
 
         private WxdataBean wxdata;
-        private List<?> alidata;
+        private String alidata;
 
         public WxdataBean getWxdata() {
             return wxdata;
@@ -61,11 +61,11 @@ public class WXPayAllData {
             this.wxdata = wxdata;
         }
 
-        public List<?> getAlidata() {
+        public String getAlidata() {
             return alidata;
         }
 
-        public void setAlidata(List<?> alidata) {
+        public void setAlidata(String alidata) {
             this.alidata = alidata;
         }
 
