@@ -56,6 +56,12 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         initViews();
+        initData();
+
+    }
+
+    private void initData() {
+        info_tv_phone.setText(SaveUtils.getString(KeyUtils.user_phone));
     }
 
     public static void startActivity(Context context) {
@@ -119,6 +125,53 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDiamondCount();
+    }
+
+    /**
+     * 获取钻石数量
+     */
+    private void getDiamondCount() {
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_DIAMONDCOUNT;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    if(errorCode==1){
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        String diamondCount = data.getString("diamondCount");
+                        info_tv_diamond.setText(diamondCount);
+                    }
+                }catch (Exception e){
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(UserInfoActivity.this,"网络有问题");
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     /**
@@ -230,5 +283,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         };
         Volley.newRequestQueue(UserInfoActivity.this).add(stringRequest);
     }
+
 
 }

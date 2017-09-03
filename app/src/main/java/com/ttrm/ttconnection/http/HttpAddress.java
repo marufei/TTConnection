@@ -75,5 +75,10 @@ public class HttpAddress {
      * 兑换码兑换
      */
     public static final String TO_DH="/UserCenter/todh";
+    /**
+     * 获取钻石数量
+     */
+    public static final String GET_DIAMONDCOUNT="/Diamond/getDiamondCount";
+
 
 }
