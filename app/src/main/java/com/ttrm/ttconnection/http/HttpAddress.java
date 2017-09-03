@@ -67,5 +67,13 @@ public class HttpAddress {
      * 获取加粉
      */
     public static final String GET_CANON = "/Jf/jf";
+    /**
+     * 提交提现申请
+     */
+    public static final String TO_CASH="/UserCenter/toCash";
+    /**
+     * 兑换码兑换
+     */
+    public static final String TO_DH="/UserCenter/todh";
 
 }

@@ -83,6 +83,10 @@ public class PayUtil {
                                     WxPay wxPay = new WxPay(activity);
                                     wxPay.pay(wxPayAllData.getData().getWxdata());
                                 }
+                                if(payType.equals("2")){
+                                    MyUtils.Loge(TAG,"调用支付宝支付");
+                                    //TODO 支付宝支付
+                                }
                             }
                         }
                     }catch (Exception e){

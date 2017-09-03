@@ -34,6 +34,7 @@ import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
 import com.ttrm.ttconnection.activity.UserInfoActivity;
 import com.ttrm.ttconnection.activity.WebActivity;
+import com.ttrm.ttconnection.activity.WithdrawCashActivity;
 import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.entity.CanonBean;
 import com.ttrm.ttconnection.http.HttpAddress;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
+    private Button main_cash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_ll_clear.setOnClickListener(this);
         main_ll_jcdshy = (LinearLayout) findViewById(R.id.jcdshy_linear);
         main_ll_jcdshy.setOnClickListener(this);
+
+        main_cash=(Button)findViewById(R.id.main_cash);
+        main_cash.setOnClickListener(this);
 
         main_ll_bj=(LinearLayout)findViewById(R.id.main_ll_bj);
         main_ll_bj.setOnClickListener(this);
@@ -186,6 +191,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(this, WebActivity.class);
                 intent.putExtra("URL",HttpAddress.URL_H5_DELETE);
                 startActivity(intent);
+                break;
+            case R.id.main_cash:
+                startActivity(new Intent(MainActivity.this, WithdrawCashActivity.class));
                 break;
         }
     }

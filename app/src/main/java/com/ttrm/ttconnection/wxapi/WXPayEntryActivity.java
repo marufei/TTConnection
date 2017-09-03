@@ -2,6 +2,7 @@ package com.ttrm.ttconnection.wxapi;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.util.Constants;
 import com.ttrm.ttconnection.util.MyUtils;
+import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 /**
  * Created by Administrator on 2016/12/21.
@@ -27,6 +29,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     String TAG="TAG--WXPayEntryActivity";
     private IWXAPI api;
     MyApplication app;
+    private OnSuccessListenner onSuccessListenner;
+
+    public void setOnSuccessListenner(OnSuccessListenner onSuccessListenner) {
+        this.onSuccessListenner = onSuccessListenner;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,8 +57,13 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             MyUtils.Loge(TAG,"errCode:"+baseResp.errCode);
             switch (baseResp.errCode){
                 case 0://成功
-                    MyUtils.showToast(app,"支付成功");
-                    BDAddActivity.bdAddActivity.finish();
+                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this,R.layout.dialog_bd_success);
+                    myAdvertisementView.showDialog();
+                    myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                        @Override
+                        public void onEvent() {
+                        }
+                    });
                 break;
                 case -1://失败
                     MyUtils.Loge(TAG,"支付失败");
@@ -67,5 +79,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     break;
             }
         }
+    }
+    public interface OnSuccessListenner{
+        void OnSuccess();
     }
 }

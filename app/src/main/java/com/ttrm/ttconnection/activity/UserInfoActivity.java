@@ -31,6 +31,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO 用户中心
+ */
 public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String TAG = "UserInfoActivity";
@@ -93,7 +96,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.info_ll_diamond:
                 break;
-            case R.id.info_ll_change:
+            case R.id.info_ll_change://兑换码
+                startActivity(new Intent(this,RedeemActivity.class));
                 break;
             case R.id.info_ll_sm:
                 Intent intent = new Intent(this, WebActivity.class);

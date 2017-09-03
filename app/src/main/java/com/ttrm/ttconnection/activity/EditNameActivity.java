@@ -24,6 +24,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO 修改昵称
+ */
 public class EditNameActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText edit_name_et;

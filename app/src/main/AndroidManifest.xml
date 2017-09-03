@@ -7,14 +7,14 @@
 
     <!-- 支付所需权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!--读写权限-->
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 读写权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -28,27 +28,32 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ForgetPwdActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserInfoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.SignActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.RedeemActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.EditNameActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.BDAddActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ForgetPwdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SignActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RedeemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EditNameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BDAddActivity"
+            android:screenOrientation="portrait" />
         <!-- 微信支付 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -62,14 +67,22 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
-        <activity android:name=".activity.WebActivity"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".activity.WebActivity" />
+        <activity android:name=".activity.WithdrawCashActivity" />
+        <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

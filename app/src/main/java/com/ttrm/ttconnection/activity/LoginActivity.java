@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TODO 登录注册
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btn_login_sure;

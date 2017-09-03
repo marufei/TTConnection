@@ -14,6 +14,7 @@
         android:padding="10dp"
         android:orientation="vertical">
         <EditText
+            android:id="@+id/redeem_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="1"
@@ -24,6 +25,7 @@
             android:layout_marginTop="5dp"
             android:background="@color/colorPrimary"/>
         <Button
+            android:id="@+id/redeem_change"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

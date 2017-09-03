@@ -24,6 +24,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO 忘记密码
+ */
 public class ForgetPwdActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button forget_sure;

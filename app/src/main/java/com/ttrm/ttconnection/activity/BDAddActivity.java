@@ -1,5 +1,6 @@
 package com.ttrm.ttconnection.activity;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BDAddLvAdapter;
 import com.ttrm.ttconnection.entity.BDAddBean;
@@ -28,6 +30,8 @@ import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.PayUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.view.MyAdvertisementView;
+import com.ttrm.ttconnection.wxapi.WXPayEntryActivity;
 
 import org.json.JSONObject;
 
@@ -38,14 +42,13 @@ import java.util.jar.Manifest;
 /**
  * TODO 被动加粉
  */
-public class BDAddActivity extends AppCompatActivity implements View.OnClickListener {
+public class BDAddActivity extends AppCompatActivity implements View.OnClickListener,WXPayEntryActivity.OnSuccessListenner {
 
     private ListView bdadd_lv;
     private String TAG="BDAddActivity";
     private BDAddBean bdAddBean;
     private BDAddLvAdapter adapter;
     private Button bdadd_open;
-    public static BDAddActivity bdAddActivity;
     private ImageView bdadd_alipay;
     private ImageView bdadd_wx;
     private String payType;
@@ -55,7 +58,8 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bdadd);
-        bdAddActivity=this;
+        WXPayEntryActivity wxPayEntryActivity=new WXPayEntryActivity();
+        wxPayEntryActivity.setOnSuccessListenner(this);
         initViews();
         initData();
     }
@@ -170,9 +174,7 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }
-    public static void showDialog(){
 
-    }
 
     /**
      * 选择支付类型
@@ -214,5 +216,21 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    /**
+     * 微信支付成功回调
+     */
+    @Override
+    public void OnSuccess() {
+        MyUtils.Loge(TAG,"进入支付回调");
+        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this,R.layout.dialog_bd_success);
+        myAdvertisementView.showDialog();
+        myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+            @Override
+            public void onEvent() {
+                MyUtils.showToast(BDAddActivity.this,"点击了按钮");
+            }
+        });
     }
 }

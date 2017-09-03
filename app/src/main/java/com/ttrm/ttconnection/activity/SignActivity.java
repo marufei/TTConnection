@@ -22,6 +22,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO 每日签到
+ */
 public class SignActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView sign_tv_zs;

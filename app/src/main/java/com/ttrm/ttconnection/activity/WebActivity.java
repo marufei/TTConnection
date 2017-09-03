@@ -11,6 +11,9 @@ import android.webkit.WebViewClient;
 
 import com.ttrm.ttconnection.R;
 
+/**
+ * TODO web页面
+ */
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
     private String url;
