@@ -1,7 +1,6 @@
 package com.ttrm.ttconnection;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,11 +8,9 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +25,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
@@ -37,6 +33,7 @@ import com.ttrm.ttconnection.activity.WebActivity;
 import com.ttrm.ttconnection.activity.WithdrawCashActivity;
 import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.entity.CanonBean;
+import com.ttrm.ttconnection.entity.VersionInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.LXRUtil;
@@ -93,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
     private Button main_cash;
+    private VersionInfoBean versionBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +102,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initData() {
         getBanner();
+//        getVersion();
+    }
+
+    /**
+     * 获取版本信息
+     */
+    private void getVersion() {
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_VERSION;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    if(errorCode==1){
+                        Gson gson=new Gson();
+                        versionBean=gson.fromJson(response, VersionInfoBean.class);
+                        if(versionBean!=null){
+                            MyApplication.update_url=versionBean.getData().getVersion().getUrl();
+                            MyApplication.update_content=versionBean.getData().getVersion().getMsg();
+                            if(Double.valueOf(versionBean.getData().getVersion().getVersion())>MyUtils.getVersionCode(MainActivity.this)){
+                           // TODO 下载
+                            }
+                        }
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(MainActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("type","1");
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return super.getParams();
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     public static void startActivity(Context context) {
