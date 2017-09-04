@@ -24,6 +24,7 @@ import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.activity.ForgetPwdActivity;
 import com.ttrm.ttconnection.entity.RegisterBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.CodeCountDownTimer;
 import com.ttrm.ttconnection.util.MyUtils;
 
 import org.json.JSONObject;
@@ -42,7 +43,6 @@ import java.util.Map;
 public class RegisterFragment extends Fragment implements View.OnClickListener {
     private View view;
     private Button register_btn_code;
-    private TimeCount time;
     private String TAG="RegisterFragment";
     private String sms_token="";
     private EditText register_phone;
@@ -51,14 +51,22 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private EditText register_pwd2;
     private EditText register_regcode;
     private Button register_btn_register;
+    //短信验证计时
+    private CodeCountDownTimer mCodeCountDownTimer = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_register, null);
-        time = new TimeCount(60 * 1000, 1000);
         initViews();
+        initDatas();
         return view;
+    }
+
+    private void initDatas() {
+        //倒计时
+        mCodeCountDownTimer = new CodeCountDownTimer(60 * 1000L, 1000L, register_btn_code, R.drawable.btn_purple,
+                R.drawable.btn_purple);
     }
 
     private void initViews() {
@@ -78,6 +86,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.register_btn_code:
                 MyUtils.Loge(TAG,"点击了按钮");
+                if(TextUtils.isEmpty(register_phone.getText().toString().trim())){
+                    MyUtils.showToast(getActivity(),"请填写手机号");
+                    return;
+                }
+                if(!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())){
+                    MyUtils.showToast(getActivity(),"请填写正确的手机号");
+                }
                 getSms();
                 break;
             case R.id.register_btn_register:
@@ -114,26 +129,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 短信验证码倒计时
-     */
-    class TimeCount extends CountDownTimer {
-        public TimeCount(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-
-        @Override
-        public void onFinish() {// 计时完毕
-            register_btn_code.setText("获取验证码");
-            register_btn_code.setClickable(true);
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {// 计时过程
-            register_btn_code.setClickable(false);//防止重复点击
-            register_btn_code.setText(millisUntilFinished / 1000 + "s之后重发");
-        }
-    }
 
     /**
      * 获取短信验证码
@@ -153,7 +148,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
                         sms_token=jsonObject1.getString("sms_token");
                         MyUtils.Loge(TAG,"SMS_TOKEN:"+sms_token);
-                        time.start();// 开始计时
+                        mCodeCountDownTimer.start();
                     }else {
                         MyUtils.showToast(getActivity(),errorMsg);
                     }
