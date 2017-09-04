@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.activity.ForgetPwdActivity;
@@ -118,6 +119,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                             SaveUtils.setString(KeyUtils.user_UID,loginBean.getData().getUserInfo().getUID());
                             SaveUtils.setString(KeyUtils.user_time,loginBean.getData().getUserInfo().getRegtime());
                         }
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
                     }else {
 

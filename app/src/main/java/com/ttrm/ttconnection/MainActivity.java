@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
@@ -35,6 +37,7 @@ import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.entity.CanonBean;
 import com.ttrm.ttconnection.entity.VersionInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
@@ -91,11 +94,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
     private Button main_cash;
     private VersionInfoBean versionBean;
+    private List<String> bannerTypeList=new ArrayList<>();
+    private List<String> bannerPicList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityUtil.add(this);
         initView();
         initData();
     }
@@ -179,18 +185,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_ll_bj=(LinearLayout)findViewById(R.id.main_ll_bj);
         main_ll_bj.setOnClickListener(this);
         main_banner = (ImageCycleView) findViewById(R.id.main_banner);
-        new ImageCycleView.ImageCycleViewListener() {
-
-            @Override
-            public void displayImage(String imageURL, ImageView imageView) {
-
-            }
-
-            @Override
-            public void onImageClick(int position, View imageView) {
-
-            }
-        };
     }
 
     @Override
@@ -250,12 +244,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                MyUtils.Loge(TAG,"banner:"+response);
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
                     if(errorCode==1){
                         Gson gson=new Gson();
                         bannerBean = gson.fromJson(response, BannerBean.class);
+                        if(bannerBean!=null){
+                            setBanners();
+                        }
+
                     }
                 } catch (Exception e) {
 
@@ -276,6 +275,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+    }
+
+    /**
+     * 设置banner图
+     */
+    private void setBanners() {
+        for(int i=0;i<bannerBean.getData().getBannerList().size();i++){
+            bannerPicList.add(bannerBean.getData().getBannerList().get(i).getUrl());
+            bannerTypeList.add(bannerBean.getData().getBannerList().get(i).getType());
+        }
+        ImageCycleView.ImageCycleViewListener imageCycleViewListener=new ImageCycleView.ImageCycleViewListener() {
+            @Override
+            public void displayImage(String imageURL, ImageView imageView) {
+                Picasso.with(MainActivity.this).load(imageURL).into(imageView);
+            }
+
+            @Override
+            public void onImageClick(int position, View imageView) {
+                switch (bannerBean.getData().getBannerList().get(position).getType()){
+                    case "1":
+                        //TODO 跳转web
+                        MyUtils.Loge(TAG,"跳转web网页");
+                        if(!TextUtils.isEmpty(bannerBean.getData().getBannerList().get(position).getLink())){
+                            Intent intent=new Intent(MainActivity.this,WebActivity.class);
+                            intent.putExtra("URL",bannerBean.getData().getBannerList().get(position).getLink());
+                            startActivity(intent);
+                        }
+                        break;
+                    case "2":
+                        MyUtils.Loge(TAG,"跳转原生方法");
+                        break;
+                }
+            }
+        };
+        main_banner.setImageResources((ArrayList<String>) bannerPicList,imageCycleViewListener);
+        main_banner.startImageCycle();
     }
 
     private void getCanon() {

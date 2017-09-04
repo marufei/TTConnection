@@ -26,6 +26,7 @@ import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BDAddLvAdapter;
 import com.ttrm.ttconnection.entity.BDAddBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.PayUtil;
@@ -60,6 +61,7 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_bdadd);
         WXPayEntryActivity wxPayEntryActivity=new WXPayEntryActivity();
         wxPayEntryActivity.setOnSuccessListenner(this);
+        ActivityUtil.add(this);
         initViews();
         initData();
     }

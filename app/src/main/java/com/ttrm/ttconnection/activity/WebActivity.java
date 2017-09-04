@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.util.ActivityUtil;
 
 /**
  * TODO web页面
@@ -22,6 +23,7 @@ public class WebActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+        ActivityUtil.add(this);
         url = getIntent().getStringExtra("URL");
         initView();
     }

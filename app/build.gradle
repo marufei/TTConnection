@@ -59,4 +59,5 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-3.0.2.jar')
     compile files('libs/ShareSDK-Wechat-Core-3.0.2.jar')
     compile files('libs/ShareSDK-Wechat-Moments-3.0.2.jar')
+    compile 'com.squareup.picasso:picasso:2.3.2'
 }
