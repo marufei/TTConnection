@@ -2,10 +2,9 @@ package com.ttrm.ttconnection.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.ContentFrameLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ import java.util.Map;
 /**
  * TODO 用户中心
  */
-public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserInfoActivity extends BaseActivity implements View.OnClickListener {
 
     private String TAG = "UserInfoActivity";
     private TextView info_tv_diamond;

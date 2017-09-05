@@ -15,7 +15,7 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 /**
  * TODO web页面
  */
-public class WebActivity extends AppCompatActivity {
+public class WebActivity extends BaseActivity {
     private WebView webView;
     private String url;
 

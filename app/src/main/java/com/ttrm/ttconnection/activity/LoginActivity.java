@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * TODO 登录注册
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btn_login_sure;
     private String TAG="LoginActivity";

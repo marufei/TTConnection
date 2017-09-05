@@ -469,9 +469,10 @@
                     android:padding="10dp"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/main_income"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="13sp"
+                        android:text="--"
                         android:textSize="13sp"
                         android:textColor="#F38B46"/>
                     <TextView
@@ -494,9 +495,10 @@
                     android:padding="10dp"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/main_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="13sp"
+                        android:text="--"
                         android:textSize="13sp"
                         android:textColor="#F38B46"/>
                     <TextView
@@ -519,9 +521,10 @@
                     android:padding="10dp"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/main_account"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="13sp"
+                        android:text="--"
                         android:textSize="13sp"
                         android:textColor="#F38B46"/>
                     <TextView

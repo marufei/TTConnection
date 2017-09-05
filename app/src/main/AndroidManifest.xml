@@ -21,8 +21,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Mob分享 添加必要的权限 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -41,9 +41,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
@@ -85,27 +83,30 @@
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <!--end-->
-        <!--mob分享-->
+        <!-- end -->
+        <!-- mob分享 -->
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <data android:scheme="tencent100371282" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
-
         </activity>
         <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
-        <meta-data android:name="Mob-AppKey" android:value="20acef1a5fc22"/>
-        <meta-data android:name="Mob-AppSecret" android:value="328efed3c5b97a4e1b765cb1e64d7422"/>
-        <!--end-->
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="20acef1a5fc22" />
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="328efed3c5b97a4e1b765cb1e64d7422" />
+        <!-- end -->
         <activity android:name=".activity.WebActivity" />
         <activity android:name=".activity.WithdrawCashActivity" />
         <activity android:name=".activity.SplashActivity">
@@ -115,6 +116,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.BaseActivity"></activity>
     </application>
 
 </manifest>

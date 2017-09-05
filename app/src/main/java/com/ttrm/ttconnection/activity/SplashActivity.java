@@ -14,7 +14,7 @@ import com.ttrm.ttconnection.util.SaveUtils;
 /**
  * TODO 首页
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

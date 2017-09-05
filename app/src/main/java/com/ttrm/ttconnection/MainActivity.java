@@ -5,18 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.activity.BDAddActivity;
+import com.ttrm.ttconnection.activity.BaseActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
 import com.ttrm.ttconnection.activity.UserInfoActivity;
@@ -35,6 +37,7 @@ import com.ttrm.ttconnection.activity.WebActivity;
 import com.ttrm.ttconnection.activity.WithdrawCashActivity;
 import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.entity.CanonBean;
+import com.ttrm.ttconnection.entity.RecomeInfo;
 import com.ttrm.ttconnection.entity.VersionInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
@@ -52,7 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btn_main;
     private ImageView main_info;
@@ -96,6 +99,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private VersionInfoBean versionBean;
     private List<String> bannerTypeList=new ArrayList<>();
     private List<String> bannerPicList=new ArrayList<>();
+    private RecomeInfo recomeInfo;
+    private TextView main_account;
+    private TextView main_num;
+    private TextView main_income;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initData() {
         getBanner();
 //        getVersion();
+        getInfo();
     }
 
     /**
@@ -156,6 +164,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
+    /**
+     * 获取推荐信息
+     */
+    private void getInfo(){
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_MAIN_INFO;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"推荐信息:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    if(errorCode==1){
+                        Gson gson=new Gson();
+                        recomeInfo=gson.fromJson(response, RecomeInfo.class);
+                        if(recomeInfo!=null&&recomeInfo.getData()!=null){
+                            main_income.setText(recomeInfo.getData().getIncome());
+                            main_num.setText(recomeInfo.getData().getRecomCount());
+                            main_account.setText(recomeInfo.getData().getBalance());
+                        }
+                    }
+                }catch (Exception e){
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(MainActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setClass(context, MainActivity.class);
@@ -185,6 +237,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_ll_bj=(LinearLayout)findViewById(R.id.main_ll_bj);
         main_ll_bj.setOnClickListener(this);
         main_banner = (ImageCycleView) findViewById(R.id.main_banner);
+        main_account=(TextView)findViewById(R.id.main_account);
+        main_num=(TextView)findViewById(R.id.main_num);
+        main_income=(TextView)findViewById(R.id.main_income);
+
     }
 
     @Override

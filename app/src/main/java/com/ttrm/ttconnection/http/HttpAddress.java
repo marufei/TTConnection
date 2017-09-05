@@ -83,6 +83,10 @@ public class HttpAddress {
      * 获取版本信息
      */
     public static final String GET_VERSION="/Public/getVersion";
+    /**
+     * 获取推荐信息
+     */
+    public static final String GET_MAIN_INFO="/UserCenter/getRecomeInfo";
 
 
 }

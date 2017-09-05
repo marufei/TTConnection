@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * TODO 忘记密码
  */
-public class ForgetPwdActivity extends AppCompatActivity implements View.OnClickListener {
+public class ForgetPwdActivity extends BaseActivity implements View.OnClickListener {
 
     private Button forget_sure;
     private EditText forget_phone;
@@ -63,6 +63,7 @@ public class ForgetPwdActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initViews() {
+        setToolBar("忘记密码");
         forget_phone = (EditText) findViewById(R.id.forget_phone);
         forget_smscode = (EditText) findViewById(R.id.forget_smscode);
         forget_pwd1 = (EditText) findViewById(R.id.forget_pwd1);

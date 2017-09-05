@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * TODO 修改昵称
  */
-public class EditNameActivity extends AppCompatActivity implements View.OnClickListener{
+public class EditNameActivity extends BaseActivity implements View.OnClickListener{
 
     private EditText edit_name_et;
     private Button edit_name_btn;
@@ -43,6 +43,7 @@ public class EditNameActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initViews() {
+        setToolBar("修改昵称");
         edit_name_et=(EditText)findViewById(R.id.edit_name_et);
         edit_name_btn=(Button)findViewById(R.id.edit_name_btn);
         edit_name_btn.setOnClickListener(this);

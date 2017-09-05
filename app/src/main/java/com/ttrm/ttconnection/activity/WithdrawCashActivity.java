@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * TODO 提现
  */
-public class WithdrawCashActivity extends AppCompatActivity implements View.OnClickListener {
+public class WithdrawCashActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText cash_account;
     private EditText cash_name;
@@ -45,6 +45,7 @@ public class WithdrawCashActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initViews() {
+        setToolBar("提现");
         cash_account=(EditText)findViewById(R.id.cash_account);
         cash_name=(EditText)findViewById(R.id.cash_name);
         cash_fee=(EditText)findViewById(R.id.cash_fee);
@@ -54,8 +55,6 @@ public class WithdrawCashActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-
-
         switch (view.getId()){
             case R.id.cash_commit:
                 if(TextUtils.isEmpty(cash_account.getText().toString().trim())){
