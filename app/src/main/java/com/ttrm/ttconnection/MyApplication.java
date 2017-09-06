@@ -16,6 +16,8 @@ import com.android.volley.toolbox.Volley;
 public class MyApplication extends Application {
     private static MyApplication mInstance;
     public static Context mContext;
+    public static String update_url;    //更新APP地址
+    public static String update_content;    //更新APP内容
 
     @Override
     public void onCreate() {

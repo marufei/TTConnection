@@ -26,6 +26,7 @@ import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BDAddLvAdapter;
 import com.ttrm.ttconnection.entity.BDAddBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.PayUtil;
@@ -42,7 +43,7 @@ import java.util.jar.Manifest;
 /**
  * TODO 被动加粉
  */
-public class BDAddActivity extends AppCompatActivity implements View.OnClickListener,WXPayEntryActivity.OnSuccessListenner {
+public class BDAddActivity extends BaseActivity implements View.OnClickListener,WXPayEntryActivity.OnSuccessListenner {
 
     private ListView bdadd_lv;
     private String TAG="BDAddActivity";
@@ -60,6 +61,7 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_bdadd);
         WXPayEntryActivity wxPayEntryActivity=new WXPayEntryActivity();
         wxPayEntryActivity.setOnSuccessListenner(this);
+        ActivityUtil.add(this);
         initViews();
         initData();
     }
@@ -139,6 +141,7 @@ public class BDAddActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
+        setToolBar("被动加粉");
         bdadd_lv=(ListView)findViewById(R.id.bdadd_lv);
         bdadd_open=(Button)findViewById(R.id.bdadd_open);
         bdadd_open.setOnClickListener(this);

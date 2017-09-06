@@ -13,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
@@ -24,14 +25,12 @@ import java.util.Map;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.wechat.friends.Wechat;
 
 /**
  * TODO 每日签到
  */
-public class SignActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView sign_tv_zs;
     private TextView sign_tv_regcode;
@@ -51,10 +50,12 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
+        ActivityUtil.add(this);
         initViews();
     }
 
     private void initViews() {
+        setToolBar("每日签到");
         sign_tv_zs=(TextView)findViewById(R.id.sign_tv_zs);
         sign_tv_regcode=(TextView)findViewById(R.id.sign_tv_regcode);
         sign_tv_sign=(TextView)findViewById(R.id.sign_tv_sign);

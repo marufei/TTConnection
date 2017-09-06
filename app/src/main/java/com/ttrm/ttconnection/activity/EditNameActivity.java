@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * TODO 修改昵称
  */
-public class EditNameActivity extends AppCompatActivity implements View.OnClickListener{
+public class EditNameActivity extends BaseActivity implements View.OnClickListener{
 
     private EditText edit_name_et;
     private Button edit_name_btn;
@@ -37,10 +38,12 @@ public class EditNameActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_name);
+        ActivityUtil.add(this);
         initViews();
     }
 
     private void initViews() {
+        setToolBar("修改昵称");
         edit_name_et=(EditText)findViewById(R.id.edit_name_et);
         edit_name_btn=(Button)findViewById(R.id.edit_name_btn);
         edit_name_btn.setOnClickListener(this);

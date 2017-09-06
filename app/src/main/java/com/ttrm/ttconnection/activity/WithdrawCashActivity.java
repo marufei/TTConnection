@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * TODO 提现
  */
-public class WithdrawCashActivity extends AppCompatActivity implements View.OnClickListener {
+public class WithdrawCashActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText cash_account;
     private EditText cash_name;
@@ -39,10 +40,12 @@ public class WithdrawCashActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_withdraw_cash);
+        ActivityUtil.add(this);
         initViews();
     }
 
     private void initViews() {
+        setToolBar("提现");
         cash_account=(EditText)findViewById(R.id.cash_account);
         cash_name=(EditText)findViewById(R.id.cash_name);
         cash_fee=(EditText)findViewById(R.id.cash_fee);
@@ -52,8 +55,6 @@ public class WithdrawCashActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-
-
         switch (view.getId()){
             case R.id.cash_commit:
                 if(TextUtils.isEmpty(cash_account.getText().toString().trim())){

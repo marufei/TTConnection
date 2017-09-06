@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
@@ -24,7 +25,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RedeemActivity extends AppCompatActivity implements View.OnClickListener {
+/**
+ * TODO 兑换码
+ */
+public class RedeemActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText redeem_et;
     private Button redeem_change;
@@ -34,10 +38,12 @@ public class RedeemActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_redeem);
+        ActivityUtil.add(this);
         initViews();
     }
 
     private void initViews() {
+        setToolBar("兑换码");
         redeem_et = (EditText) findViewById(R.id.redeem_et);
         redeem_change = (Button) findViewById(R.id.redeem_change);
         redeem_change.setOnClickListener(this);

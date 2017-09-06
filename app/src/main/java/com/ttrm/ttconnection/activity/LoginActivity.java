@@ -19,6 +19,7 @@ import com.ttrm.ttconnection.adapter.LoginPagerAdapter;
 import com.ttrm.ttconnection.fragment.LoginFragment;
 import com.ttrm.ttconnection.fragment.RegisterFragment;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ import java.util.Map;
 /**
  * TODO 登录注册
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btn_login_sure;
     private String TAG="LoginActivity";
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActivityUtil.add(this);
         initViews();
         initData();
     }

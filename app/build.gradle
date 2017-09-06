@@ -43,14 +43,6 @@ dependencies {
     //    微信支付
     //  支付宝支付
     compile files('libs/alipaySdk-20170725.jar')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
-    compile 'com.android.support:design:26.0.0-alpha1'
-    compile 'com.android.support:support-v4:26.0.0-alpha1'
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-    testCompile 'junit:junit:4.12'
     compile files('libs/MobCommons-2017.0823.1556.jar')
     compile files('libs/MobTools-2017.0823.1556.jar')
     compile files('libs/ShareSDK-Core-3.0.2.jar')
@@ -59,4 +51,13 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-3.0.2.jar')
     compile files('libs/ShareSDK-Wechat-Core-3.0.2.jar')
     compile files('libs/ShareSDK-Wechat-Moments-3.0.2.jar')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
+    compile 'com.android.support:design:26.0.0-alpha1'
+    compile 'com.android.support:support-v4:26.0.0-alpha1'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    testCompile 'junit:junit:4.12'
 }

@@ -2,10 +2,9 @@ package com.ttrm.ttconnection.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.ContentFrameLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * TODO 用户中心
  */
-public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserInfoActivity extends BaseActivity implements View.OnClickListener {
 
     private String TAG = "UserInfoActivity";
     private TextView info_tv_diamond;
@@ -55,6 +55,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+        ActivityUtil.add(this);
         initViews();
         initData();
 
@@ -100,7 +101,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.info_ll_bj:
                 break;
-            case R.id.info_ll_diamond:
+            case R.id.info_ll_diamond:      //获取钻石
+                startActivity(new Intent(this,SignActivity.class));
                 break;
             case R.id.info_ll_change://兑换码
                 startActivity(new Intent(this,RedeemActivity.class));
@@ -110,13 +112,16 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra("URL",HttpAddress.URL_H5_READ);
                 startActivity(intent);
                 break;
-            case R.id.info_ll_name:
+            case R.id.info_ll_name:     //修改昵称
                 myName();
                 break;
             case R.id.info_ll_version:
 
                 break;
-            case R.id.info_ll_custom:
+            case R.id.info_ll_custom:       //联系客服
+                Intent intent1 = new Intent(this, WebActivity.class);
+                intent1.putExtra("URL",HttpAddress.URL_H5_DELETE);
+                startActivity(intent1);
 
                 break;
             case R.id.info_btn_loginout:
@@ -188,7 +193,15 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                     int errorCode=jsonObject.getInt("errorCode");
                     String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
-                        System.exit(0);
+                        SaveUtils.setString(KeyUtils.user_phone,"");
+                        SaveUtils.setString(KeyUtils.user_login_token,"");
+                        SaveUtils.setString(KeyUtils.user_id,"");
+                        SaveUtils.setString(KeyUtils.user_name,"");
+                        SaveUtils.setString(KeyUtils.user_regcode,"");
+                        SaveUtils.setString(KeyUtils.user_time,"");
+                        SaveUtils.setString(KeyUtils.user_UID,"");
+                        startActivity(new Intent(UserInfoActivity.this,LoginActivity.class));
+                        ActivityUtil.exitAll();
                     }
                 }catch (Exception e){
                     MyUtils.Loge(TAG,"e:"+e.getMessage());

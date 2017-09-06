@@ -7,18 +7,20 @@ import android.text.TextUtils;
 
 import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
 
 /**
  * TODO 首页
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ActivityUtil.add(this);
         initData();
     }
 
