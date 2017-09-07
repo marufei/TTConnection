@@ -19,12 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.view.Dialogshow;
 
 import org.json.JSONObject;
 
@@ -98,6 +100,14 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_ll_add:
+                MyUtils.Loge(TAG,"点击了加粉");
+                new Dialogshow(UserInfoActivity.this){
+
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }.show();
                 break;
             case R.id.info_ll_bj:
                 break;
