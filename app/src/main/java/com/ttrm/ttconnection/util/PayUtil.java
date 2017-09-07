@@ -15,8 +15,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.ttrm.ttconnection.MyApplication;
+import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.activity.BDAddActivity;
+import com.ttrm.ttconnection.entity.PayResult;
 import com.ttrm.ttconnection.entity.WXPayAllData;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
 
@@ -86,6 +90,34 @@ public class PayUtil {
                                 if(payType.equals("2")){
                                     MyUtils.Loge(TAG,"调用支付宝支付");
                                     //TODO 支付宝支付
+                                    AlipayUtil alipayUtil=new AlipayUtil(activity);
+                                    alipayUtil.pay(wxPayAllData.getData().getAlidata());
+                                    alipayUtil.setListener(new AlipayUtil.OnAlipayListener() {
+                                        @Override
+                                        public void onCancel(String resultStatus) {
+                                            MyUtils.Loge(TAG,"支付宝回调取消");
+                                            MyUtils.showToast(activity,"支付取消");
+                                        }
+
+                                        @Override
+                                        public void onWait(String resultStatus) {
+                                            MyUtils.Loge(TAG,"支付宝回调等待");
+                                            MyUtils.showToast(activity,"支付失败");
+                                        }
+
+                                        @Override
+                                        public void onSuccess(PayResult payResult) {
+                                            MyUtils.Loge(TAG,"支付宝回调成功");
+                                            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(activity, R.layout.dialog_bd_success);
+                                            myAdvertisementView.showDialog();
+                                            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                                @Override
+                                                public void onEvent() {
+                                                    MyUtils.Loge(TAG,"支付宝回调成功，点击了按钮");
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                             }
                         }

@@ -11,7 +11,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.entity.ShareInfoBean;
+import com.ttrm.ttconnection.entity.SignStatusBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
@@ -22,10 +25,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.wechat.friends.Wechat;
 
 /**
  * TODO 每日签到
@@ -45,6 +51,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private String TAG="SignActivity";
     private String type;
     private Platform plat;
+    private SignStatusBean signStatusBean;
+    private ShareInfoBean shareInfoBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +87,9 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        getSignInfo();
         selectDiamonds();
+        getSignStatus();
     }
 
     /**
@@ -150,6 +160,98 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         Volley.newRequestQueue(SignActivity.this).add(stringRequest);
     }
 
+    /**
+     * 获取签到状态
+     */
+    private void getSignStatus(){
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_SIGN_STATUS;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    Gson gson=new Gson();
+                    signStatusBean=gson.fromJson(response, SignStatusBean.class);
+                    if(signStatusBean!=null){
+                        if(signStatusBean.getErrorCode()==1){
+                            switch (signStatusBean.getData().getStatus()){
+                                case 0:     //未签到
+                                    sign_tv_sign.setBackgroundResource(R.drawable.btn_red);
+                                    sign_tv_sign.setClickable(true);
+                                    break;
+                                case 1:     //已签到
+                                    sign_tv_sign.setBackgroundResource(R.drawable.btn_gray);
+                                    sign_tv_sign.setClickable(false);
+                                    break;
+                            }
+                        }else {
+
+                        }
+                    }
+                }catch (Exception e){
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(SignActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    /**
+     * 获取分享配置
+     */
+    public void getSignInfo(){
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_SHARE_INFO;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    Gson gson=new Gson();
+                    shareInfoBean=gson.fromJson(response, ShareInfoBean.class);
+                    if(shareInfoBean!=null){
+                        if(shareInfoBean.getErrorCode()==1){
+
+                        }else {
+
+                        }
+                    }
+                }catch (Exception e){
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(SignActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -162,8 +264,12 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             case R.id.sign_tv_locationadd:
                 break;
             case R.id.sign_tv_wx:
-//                plat = ShareSDK.getPlatform(Wechat.NAME);
-                myShare("");
+                try {
+                    plat = ShareSDK.getPlatform(Wechat.NAME);
+                    myShare(plat.getName());
+                }catch (Exception e){
+                    MyUtils.Loge(TAG,"E:"+e.getMessage());
+                }
                 break;
             case R.id.sign_tv_circle:
                 break;
@@ -178,11 +284,14 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
      */
     private void myShare(String platform) {
 //        MyUtils.Loge(TAG, "Regcode:" + getApplicationContext().getUser().getRegcode());
-//        MyUtils.Loge(TAG, "url:" + getApplicationContext().getUser().getAppurl());
+        MyUtils.Loge(TAG, "title:"+shareInfoBean.getData().getConfig().getTitle()+
+        "--url:"+shareInfoBean.getData().getConfig().getUrl()+"--context:"+
+        shareInfoBean.getData().getConfig().getContent()+"--iamge:"+
+        shareInfoBean.getData().getConfig().getImgurl());
         if (true) {
             OnekeyShare oks = new OnekeyShare();
-//            if (platform != null)
-//                oks.setPlatform(platform);
+            if (platform != null)
+                oks.setPlatform(platform);
             //关闭sso授权
             oks.disableSSOWhenAuthorize();
 
@@ -193,28 +302,28 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
             oks.setCallback(new MyCallBalk());
 
-            oks.setTitle("分享标题");
+            oks.setTitle(shareInfoBean.getData().getConfig().getTitle());
 
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-            oks.setTitleUrl("www.baidu.com");
+            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl());
 
             // text是分享文本，所有平台都需要这个字段
-            oks.setText("分享测试");
+            oks.setText(shareInfoBean.getData().getConfig().getContent());
 
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //            oks.setImagePath(path);//确保SDcard下面存在此张图片
             // url仅在微信（包括好友和朋友圈）中使用
-            oks.setUrl("www.baidu.com");
+            oks.setUrl(shareInfoBean.getData().getConfig().getUrl());
 //            oks.setImageUrl("file:///android_asset/icon_launcher.png");
 //            if (type.equals("1") ||type.equals("2"))
-                oks.setImageUrl("http://os93x76c3.bkt.clouddn.com/header@3x.png");
+                oks.setImageUrl(shareInfoBean.getData().getConfig().getImgurl());
             // comment是我对这条分享的评论，仅在人人网和QQ空间使用
 //            oks.setComment("我是测试评论文本");
             // site是分享此内容的网站名称，仅在QQ空间使用
             oks.setSite(getString(R.string.app_name));
 
             // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-            oks.setSiteUrl("www.baidu.com");
+            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl());
 
             // 启动分享GUI
             oks.show(this);
@@ -225,17 +334,17 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
+            MyUtils.Loge(TAG,"分享成功");
         }
 
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
-
+            MyUtils.Loge(TAG,"分享失败--"+throwable.getMessage());
         }
 
         @Override
         public void onCancel(Platform platform, int i) {
-
+            MyUtils.Loge(TAG,"分享取消");
         }
     }
 }

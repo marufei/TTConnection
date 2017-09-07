@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -71,6 +70,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout main_ll_bj;
 
     private String type = "1";//识别一键加粉还是地区加粉
+    private String addType; //被动加粉 开启和关闭的开关
 
 
 
@@ -258,7 +258,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(MainActivity.this, SignActivity.class));
                 break;
             case R.id.main_ll_bdadd:
-                startActivity(new Intent(MainActivity.this, BDAddActivity.class));
+                getAddStatus();
+
                 break;
             case R.id.main_ll_bj:
                 MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this,R.layout.dialog_main_bj);
@@ -290,6 +291,112 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(MainActivity.this, WithdrawCashActivity.class));
                 break;
         }
+    }
+
+    /**
+     * 获取被加状态
+     */
+    private void getAddStatus() {
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_ADD_STATUS;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    JSONObject jsonObject1=jsonObject.getJSONObject("data");
+                    int status=jsonObject1.getInt("status");        //状态1被动加粉中（开启）2被动加粉中（关闭）0无被加加粉
+                    switch (status){
+                        case 0:
+                            startActivity(new Intent(MainActivity.this, BDAddActivity.class));
+                            break;
+                        case 1:
+                            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bd_close);
+                            myAdvertisementView.showDialog();
+                            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                @Override
+                                public void onEvent() {
+                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
+                                    addType="2";
+                                    selectAddStatus();
+                                }
+                            });
+                            break;
+
+                        case 2:
+                            MyAdvertisementView myAdvertisementView1 = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bd_open);
+                            myAdvertisementView1.showDialog();
+                            myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                @Override
+                                public void onEvent() {
+                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
+                                    addType="1";
+                                    selectAddStatus();
+                                }
+                            });
+                            break;
+                    }
+                }catch (Exception e){
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(MainActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+    /**
+     * 被动加粉开关
+     */
+    private void selectAddStatus(){
+        String url=HttpAddress.BASE_URL+HttpAddress.SELECT_ADD_STATUS;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    String errorMsg=jsonObject.getString("errorMsg");
+                    if(errorCode==0){
+                        MyUtils.showToast(MainActivity.this,errorMsg);
+                    }
+                }catch (Exception e){
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(MainActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("type",addType);
+                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     /**

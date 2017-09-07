@@ -232,7 +232,8 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
         myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
             @Override
             public void onEvent() {
-                MyUtils.showToast(BDAddActivity.this,"点击了按钮");
+//                MyUtils.showToast(BDAddActivity.this,"点击了按钮");
+                MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
             }
         });
     }

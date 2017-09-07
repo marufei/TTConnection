@@ -87,6 +87,22 @@ public class HttpAddress {
      * 获取推荐信息
      */
     public static final String GET_MAIN_INFO="/UserCenter/getRecomeInfo";
+    /**
+     * 获取被加状态
+     */
+    public static final String GET_ADD_STATUS="/Edjf/getjfStatus";
+    /**
+     * 被动加粉开关
+     */
+    public static final String SELECT_ADD_STATUS="/Edjf/switchEdJf";
+    /**
+     * 获取签到状态
+     */
+    public static final String GET_SIGN_STATUS="/Diamond/getSignStatus";
+    /**
+     * 获取分享配置
+     */
+    public static final String GET_SHARE_INFO="/Public/getShareConfig";
 
 
 }

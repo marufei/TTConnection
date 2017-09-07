@@ -31,6 +31,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
 
     <application
         android:name=".MyApplication"
@@ -91,7 +93,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <data android:scheme="tencent100371282" />
+                <data android:scheme="tencent1106317593" />
 
                 <action android:name="android.intent.action.VIEW" />
 
@@ -107,6 +109,13 @@
             android:name="Mob-AppSecret"
             android:value="328efed3c5b97a4e1b765cb1e64d7422" />
         <!-- end -->
+        <!--微信分享配置-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.WebActivity" />
         <activity android:name=".activity.WithdrawCashActivity" />
         <activity android:name=".activity.SplashActivity">

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.mob.MobApplication;
 
 /**
  * Created by MaRufei
@@ -13,7 +14,7 @@ import com.android.volley.toolbox.Volley;
  * Email 867814102@qq.com
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MobApplication {
     private static MyApplication mInstance;
     public static Context mContext;
     public static String update_url;    //更新APP地址
