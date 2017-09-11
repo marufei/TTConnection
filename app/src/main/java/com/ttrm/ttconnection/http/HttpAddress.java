@@ -103,6 +103,22 @@ public class HttpAddress {
      * 获取分享配置
      */
     public static final String GET_SHARE_INFO="/Public/getShareConfig";
+    /**
+     * 获取爆机规则
+     */
+    public static final String GET_BAOJI_RULE="/Hit/ruleList";
+    /**
+     * 爆机
+     */
+    public static final String BAOJI="/Hit/hit";
+    /**
+     * 获取爆机状态
+     */
+    public static final String GET_BAOJI_STATUS="/Hit/getHitStatus";
+    /**
+     * 获取推荐数据
+     */
+    public static final String GET_REWARD_DATA="/UserCenter/getRecomeInfo";
 
 
 }

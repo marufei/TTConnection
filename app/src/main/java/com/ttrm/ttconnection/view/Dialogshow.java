@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.activity.LocationAddActivity;
 import com.ttrm.ttconnection.entity.CityModel;
 import com.ttrm.ttconnection.entity.DistrictModel;
 import com.ttrm.ttconnection.entity.ProvinceModel;
@@ -36,13 +38,16 @@ import javax.xml.parsers.SAXParserFactory;
  * Email 867814102@qq.com
  */
 
-public abstract class Dialogshow extends Dialog implements View.OnClickListener,OnWheelChangedListener {
+public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelChangedListener {
     private Activity activity;
     private WheelView mViewProvince;
     private WheelView mViewCity;
     private WheelView mViewDistrict;
+    private OnBtnlistenner onBtnlistenner;
 
-
+    public void setOnBtnlistenner(OnBtnlistenner onBtnlistenner) {
+        this.onBtnlistenner = onBtnlistenner;
+    }
     //  地区数据
     /**
      * ����ʡ
@@ -80,6 +85,8 @@ public abstract class Dialogshow extends Dialog implements View.OnClickListener,
      */
     protected String mCurrentZipCode ="";
     private String TAG="Dialogshow";
+    private Button dialog_select_cancel;
+    private Button dialog_select_sure;
 
     public Dialogshow(Activity activity) {
         super(activity, R.style.MyDialogTheme);
@@ -95,14 +102,32 @@ public abstract class Dialogshow extends Dialog implements View.OnClickListener,
         setUpListener();
         setUpData();
         setViewLocation();
-        setCanceledOnTouchOutside(true);//外部点击取消
+        setCanceledOnTouchOutside(false);//外部点击取消
     }
 
     private void setUpViews() {
         mViewProvince = (WheelView) findViewById(R.id.id_province);
         mViewCity = (WheelView) findViewById(R.id.id_city);
         mViewDistrict = (WheelView) findViewById(R.id.id_district);
+        dialog_select_cancel=(Button)findViewById(R.id.dialog_select_cancel);
+        dialog_select_sure=(Button)findViewById(R.id.dialog_select_sure);
+        dialog_select_cancel.setOnClickListener(this);
+        dialog_select_sure.setOnClickListener(this);
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.dialog_select_cancel:
+                dismiss();
+                break;
+            case R.id.dialog_select_sure:
+                LocationAddActivity.location=mCurrentProviceName+"-"+mCurrentCityName+"-"+mCurrentDistrictName;
+                onBtnlistenner.onSure();
+                dismiss();
+                break;
+        }
     }
 
     private void setUpListener() {
@@ -233,5 +258,8 @@ public abstract class Dialogshow extends Dialog implements View.OnClickListener,
         } finally {
 
         }
+    }
+    public interface OnBtnlistenner{
+        public void onSure();
     }
 }

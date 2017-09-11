@@ -186,6 +186,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
+                    String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
                         getActivity().finish();
                         MainActivity.startActivity(getActivity());
@@ -194,6 +195,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         if(registerBean!=null){
 
                         }
+                    }else {
+                        MyUtils.showToast(getActivity(),errorMsg);
                     }
                 }catch (Exception e){
 

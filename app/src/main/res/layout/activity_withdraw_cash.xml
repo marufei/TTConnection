@@ -19,7 +19,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:background="@color/white"
-                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -41,8 +44,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -66,7 +74,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,12 +106,15 @@
                 android:gravity="center_vertical"
                 android:background="@color/white"
                 android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/vector_drawable_cash"/>
+                    android:src="@mipmap/cash_type"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -115,7 +131,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:background="@color/white">
                 <EditText
                     android:id="@+id/cash_fee"
@@ -135,16 +156,18 @@
                     android:layout_height="wrap_content"
                     android:text="金额达到10元可提现"
                     android:layout_marginTop="10dp"
+                    android:textSize="12sp"
                     android:gravity="right"
                     android:textColor="@color/red_left"/>
                 <Button
                     android:id="@+id/cash_commit"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:text="提现"
                     android:textColor="@color/white"
                     android:layout_marginTop="30dp"
                     android:elevation="5dp"
+                    android:textSize="17sp"
                     android:background="@drawable/btn_purple"/>
             </LinearLayout>
             <LinearLayout
@@ -152,7 +175,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@color/white"
-                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
                 android:layout_marginTop="15dp">
                 <TextView
                     android:layout_width="wrap_content"

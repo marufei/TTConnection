@@ -76,7 +76,7 @@
         SortId="3"
         AppId="1106317593"
         AppKey="JjiBMAL3TNkcvh9z"
-		BypassApproval="true"
+		BypassApproval="false"
         Enable="true" />
     
     <!-- 
@@ -99,7 +99,7 @@
         AppSecret="6dca73b4b5ce708e23857aa399b84136"
 		userName="gh_afb25ac019c9"
 		path="pages/index/index.html?id=1"
-        BypassApproval="true"
+        BypassApproval="false"
         Enable="true" />
     
     <WechatMoments
@@ -107,7 +107,7 @@
         SortId="5"
         AppId="wxfbeeb896fdcebcb8"
         AppSecret="6dca73b4b5ce708e23857aa399b84136"
-        BypassApproval="true"
+        BypassApproval="false"
         Enable="true" />
         
 	<WechatFavorite

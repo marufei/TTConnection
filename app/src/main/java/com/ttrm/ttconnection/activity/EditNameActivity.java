@@ -57,6 +57,10 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
                     MyUtils.showToast(EditNameActivity.this,"请输入昵称");
                     return;
                 }
+                if(edit_name_et.getText().length()<4||edit_name_et.getText().length()>16){
+                    MyUtils.showToast(EditNameActivity.this,"昵称限制为4到16个字符");
+                    return;
+                }
                 editName();
                 break;
         }

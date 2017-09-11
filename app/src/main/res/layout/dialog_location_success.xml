@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="298dp"
+        android:layout_height="500dp"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/location_success">
+
+        <Button
+            android:id="@+id/dialog_btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:text="tuichu"
+            android:textColor="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/dialog_bt_event"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/dialog_btn_close"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:background="@android:color/transparent"
+
+            android:text="开始暴击"
+            android:textColor="@android:color/transparent" />
+    </RelativeLayout>
+</RelativeLayout>

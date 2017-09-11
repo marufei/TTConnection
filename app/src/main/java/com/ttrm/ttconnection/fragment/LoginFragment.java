@@ -61,7 +61,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initData() {
-
+        if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_phone))){
+            login_phone.setText(SaveUtils.getString(KeyUtils.user_phone));
+        }
     }
 
     private void initViews() {
@@ -107,6 +109,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
+                    String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
                         Gson gson=new Gson();
                         LoginBean loginBean=gson.fromJson(response,LoginBean.class);
@@ -122,7 +125,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
                     }else {
-
+                        MyUtils.showToast(getActivity(),errorMsg);
                     }
                 }catch (Exception e){
                     MyUtils.Loge(TAG,"e:"+e.getMessage());

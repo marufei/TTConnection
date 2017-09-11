@@ -23,8 +23,14 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="@color/white"
-            android:text="人脉APP"/>
+            android:textSize="18sp"
+            android:text="添添人脉"/>
     </RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:src="@mipmap/main_bac2"
+        android:scaleType="fitXY"/>
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -38,21 +44,13 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:text="Hello World!" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:src="@mipmap/main_bac2"
-                android:scaleType="fitXY"/>
             <com.ttrm.ttconnection.view.ImageCycleView
                 android:id="@+id/main_banner"
                 android:layout_width="match_parent"
-                android:layout_height="180dp" />
-        </RelativeLayout>
-
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/btn_gray"
+                android:layout_height="150dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,8 +60,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_pink3"
-                android:padding="10dp"
-                android:layout_margin="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:elevation="5dp"
                 android:id="@+id/yjjf_linear"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -80,36 +83,40 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
+                            android:textSize="18sp"
                             android:text="一键加粉"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
+                            android:visibility="gone"
                             android:text="今天还剩150个名额"
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:textColor="@color/white"
                         android:text="100%活粉，绝无一个死粉"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/main_one"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/dqjf_linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_purple2"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:elevation="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -126,12 +133,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
+                            android:textSize="18sp"
                             android:text="地区加粉"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
+                            android:visibility="gone"
                             android:text="今天还剩150个名额"
                             android:textSize="10sp"/>
                     </LinearLayout>
@@ -139,25 +147,28 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="默认全部地区，自动匹配优质人脉"
                         android:textColor="@color/white"
                         android:textSize="13sp"
                         android:id="@+id/textView" />
                 </LinearLayout>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/main_location"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/main_ll_bj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_yellow"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:elevation="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -174,12 +185,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
-                            android:text="暴机"/>
+                            android:textSize="18sp"
+                            android:text="爆机"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
+                            android:visibility="gone"
                             android:text="今天还剩150个名额"
                             android:textSize="10sp"/>
                     </LinearLayout>
@@ -187,23 +199,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="暴机全免费"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/main_baoji"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/main_ll_bdadd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_pink1"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:elevation="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -221,7 +236,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
+                            android:textSize="18sp"
                             android:text="被动加粉"
                             android:id="@+id/textView2" />
 
@@ -230,28 +245,32 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:text="今天还剩150个名额"
+                            android:visibility="gone"
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="一个月保底被加2000人，再送1280钻"
                         android:textColor="@color/white"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/main_bdadd"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_blue"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:elevation="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/clear_linear"
                 android:orientation="horizontal">
@@ -269,35 +288,40 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
+                            android:textSize="18sp"
                             android:text="清除通讯录"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:text="今天还剩150个名额"
+                            android:visibility="gone"
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:textColor="@color/white"
                         android:text="智能清理导入通讯录的数据"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/main_clear"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_purple2"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:elevation="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -314,7 +338,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
+                            android:textSize="18sp"
                             android:text="淘宝天猫大额优惠券"/>
                         <TextView
                             android:layout_width="wrap_content"
@@ -341,9 +365,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_green"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:elevation="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -360,36 +386,40 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
+                            android:textSize="18sp"
                             android:text="检测单删好友"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:text="今天还剩150个名额"
+                            android:visibility="gone"
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:textColor="@color/white"
                         android:text="100%全部检测标记"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/main_jcclear"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/main_ll_sign"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/main_pink2"
-                android:padding="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:elevation="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
                 <LinearLayout
@@ -406,27 +436,29 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="17sp"
+                            android:textSize="18sp"
                             android:text="每日签到"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:text="今天还剩150个名额"
+                            android:visibility="gone"
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="超多钻石，每天送"
                         android:textColor="@color/white"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/main_sign"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -440,12 +472,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:gravity="center_vertical">
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/vector_drawable_cash"/>
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/main_type"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -468,13 +500,24 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/main_income"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="--"
-                        android:textSize="13sp"
-                        android:textColor="#F38B46"/>
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/main_income"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textSize="15sp"
+                            android:textColor="#F38B46"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="元"
+                            android:textSize="12sp"
+                            android:textColor="#F38B46"/>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -494,13 +537,24 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/main_num"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="--"
-                        android:textSize="13sp"
-                        android:textColor="#F38B46"/>
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/main_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textSize="15sp"
+                            android:textColor="@color/txt_green1a"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="个"
+                            android:textSize="12sp"
+                            android:textColor="@color/txt_green1a"/>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -520,13 +574,24 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/main_account"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="--"
-                        android:textSize="13sp"
-                        android:textColor="#F38B46"/>
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/main_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textSize="15sp"
+                            android:textColor="@color/red30"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="元"
+                            android:textSize="12sp"
+                            android:textColor="@color/red30"/>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -542,13 +607,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="15dp">
             <Button
+                android:id="@+id/main_invite"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:background="#F38B46"
+                android:background="@drawable/btn_org"
+                android:elevation="5dp"
                 android:text="邀请好友赚钱"/>
             <Button
                 android:id="@+id/main_cash"
@@ -557,7 +624,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/white"
-                android:background="#F38B46"
+                android:background="@drawable/btn_blue"
+                android:elevation="5dp"
                 android:text="我要提现"/>
         </LinearLayout>
     </LinearLayout>

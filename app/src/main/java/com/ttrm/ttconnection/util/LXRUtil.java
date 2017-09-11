@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.ttrm.ttconnection.MainActivity;
+import com.ttrm.ttconnection.activity.LocationAddActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,13 @@ public class LXRUtil {
 
     /**
      * 添加联系人到通讯录
+     *
      * @param mContext
      * @param name
      * @param phone
      */
 
-    public static void addContacts(Activity mContext,String name, String phone,int index) {
+    public static void addContacts(Activity mContext, String name, String phone, int index, int type) {
         try {
             ContentValues values = new ContentValues();
             // 首先向RawContacts.CONTENT_URI执行一个空值插入，目的是获取系统返回的rawContactId
@@ -62,21 +64,31 @@ public class LXRUtil {
             mContext.getContentResolver().insert(ContactsContract.Data.CONTENT_URI,
                     values);
 
-            MyUtils.Loge(TAG, "添加成功"+index);
-        }catch (Exception e){
+            MyUtils.Loge(TAG, "添加成功" + index);
+        } catch (Exception e) {
 
         }
+
         //添加通讯录，是否成功都发送所添加的条目下表
         Message message = Message.obtain();
         message.what = KeyUtils.SAVE_CODE;
-        message.obj = index+1;
-        MainActivity.handler.sendMessage(message);
+        message.obj = index + 1;
+        switch (type) {
+            case 1:
+                MainActivity.handler.sendMessage(message);
+                break;
+            case 2:
+                LocationAddActivity.handler.sendMessage(message);
+                break;
+        }
     }
 
     /**
      * 清除手机通讯录里包含“天天人脉”的联系人
+     *
      * @param mContext
      */
+
     public static void deleteContacts(Activity mContext) {
         try {
             List<String> nameList = new ArrayList<>();
@@ -109,8 +121,8 @@ public class LXRUtil {
                 }
                 cursor1.close();
             }
-        }catch (Exception e){
-            MyUtils.Loge("AAA","");
+        } catch (Exception e) {
+            MyUtils.Loge("AAA", "");
         }
         Message message = Message.obtain();
         message.what = KeyUtils.DELETE_CODE;

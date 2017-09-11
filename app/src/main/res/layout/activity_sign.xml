@@ -85,7 +85,8 @@
                             android:id="@+id/sign_tv_regcode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2546"
+                            android:text="--"
+                            android:textSize="18sp"
                             android:textColor="@color/red_left"/>
                     </LinearLayout>
 
@@ -115,7 +116,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/sign_ticket"
+                    android:layout_marginRight="5dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -172,7 +175,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/sign_one"
+                    android:layout_marginRight="5dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -229,7 +234,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/sign_location"
+                    android:layout_marginRight="5dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -287,7 +294,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/sign_wx"
+                    android:layout_marginRight="5dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -344,7 +353,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/sign_cricle"
+                    android:layout_marginRight="5dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -401,7 +412,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/sign_qq"
+                    android:layout_marginRight="5dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -458,7 +471,9 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/sign_qzone"
+                    android:layout_marginRight="5dp"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -526,6 +541,41 @@
                     android:layout_marginLeft="5dp"
                     android:text="钻石规则"
                     android:textColor="@color/gray_3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1.钻石是干嘛的？"
+                    android:textSize="12sp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/gray_3"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="钻石是天天人脉的虚拟积分，用于兑换爆机的。"
+                    android:textSize="12sp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/gray_3"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2.如何获取钻石？"
+                    android:textSize="12sp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/gray_3"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="钻石不支持购买，可以通过每日任务获得，也可以通过开通被动加粉赠送。"
+                    android:textSize="12sp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/gray_3"/>
+
             </LinearLayout>
 
         </LinearLayout>

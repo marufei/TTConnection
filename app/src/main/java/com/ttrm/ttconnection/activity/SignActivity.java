@@ -1,7 +1,14 @@
 package com.ttrm.ttconnection.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,7 +38,10 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 
 /**
  * TODO 每日签到
@@ -66,6 +76,9 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         setToolBar("每日签到");
         sign_tv_zs=(TextView)findViewById(R.id.sign_tv_zs);
         sign_tv_regcode=(TextView)findViewById(R.id.sign_tv_regcode);
+        if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_regcode))){
+            sign_tv_regcode.setText(SaveUtils.getString(KeyUtils.user_regcode));
+        }
         sign_tv_sign=(TextView)findViewById(R.id.sign_tv_sign);
         sign_tv_sign.setOnClickListener(this);
         sign_tv_tb=(TextView)findViewById(R.id.sign_tv_tb);
@@ -139,7 +152,22 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    String errorMsg=jsonObject.getString("errorMsg");
+                    if(errorCode==1){
+                        MyUtils.showToast(SignActivity.this,errorMsg);
+                        sign_tv_sign.setBackgroundResource(R.drawable.btn_gray);
+                        sign_tv_sign.setClickable(false);
+                        selectDiamonds();
 
+                    }else {
+                        MyUtils.showToast(SignActivity.this,errorMsg);
+                    }
+                }catch (Exception e){
+
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -256,26 +284,36 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.sign_tv_sign:
-                break;
-            case R.id.sign_tv_tb:
+                type="1";
+                getDiamonds();
                 break;
             case R.id.sign_tv_oneadd:
+                type="2";
+                getDiamonds();
                 break;
             case R.id.sign_tv_locationadd:
+                getDiamonds();
+                type="3";
                 break;
             case R.id.sign_tv_wx:
-                try {
-                    plat = ShareSDK.getPlatform(Wechat.NAME);
-                    myShare(plat.getName());
-                }catch (Exception e){
-                    MyUtils.Loge(TAG,"E:"+e.getMessage());
-                }
+                type="4";
+                selectPermission(Wechat.NAME);
                 break;
             case R.id.sign_tv_circle:
+                type="5";
+                selectPermission(WechatMoments.NAME);
                 break;
             case R.id.sign_tv_qq:
+                type="6";
+                selectPermission(QQ.NAME);
                 break;
             case R.id.sign_tv_space:
+                type="7";
+                selectPermission(QZone.NAME);
+                break;
+            case R.id.sign_tv_tb:
+                type="9";
+                getDiamonds();
                 break;
         }
     }
@@ -330,11 +368,16 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         }
 
     }
+
+    /**
+     * 分享回调
+     */
     class MyCallBalk implements PlatformActionListener {
 
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
             MyUtils.Loge(TAG,"分享成功");
+            getDiamonds();
         }
 
         @Override
@@ -345,6 +388,61 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void onCancel(Platform platform, int i) {
             MyUtils.Loge(TAG,"分享取消");
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.M)
+    private void selectPermission(String name){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {       //6.0以上运行时权限
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                MyUtils.Loge(TAG, "READ permission IS NOT granted...");
+
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                    MyUtils.Loge(TAG, "11111111111111");
+                } else {
+                    // 0 是自己定义的请求coude
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                    MyUtils.Loge(TAG, "222222222222");
+                }
+            } else {
+                MyUtils.Loge(TAG, "READ permission is granted...");
+                plat = ShareSDK.getPlatform(name);
+                myShare(plat.getName());
+            }
+        }else {
+            plat = ShareSDK.getPlatform(name);
+            myShare(plat.getName());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MyUtils.Loge(TAG, "requestCode=" + requestCode + "; --->" + permissions.toString()
+                + "; grantResult=" + grantResults.toString());
+        switch (requestCode) {
+            case 0: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted
+                    // request successfully, handle you transactions
+                    plat = ShareSDK.getPlatform(Wechat.NAME);
+                    myShare(plat.getName());
+
+                } else {
+
+                    // permission denied
+                    // request failed
+                    MyUtils.Loge(TAG,"权限失败");
+                }
+
+                return;
+            }
+            default:
+                break;
+
         }
     }
 }
