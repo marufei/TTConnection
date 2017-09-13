@@ -3,6 +3,7 @@ package com.ttrm.ttconnection;
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.BaoJiActivity;
 import com.ttrm.ttconnection.activity.BaseActivity;
+import com.ttrm.ttconnection.activity.EditNameActivity;
 import com.ttrm.ttconnection.activity.LocationAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.MyRewardActivity;
@@ -44,6 +47,7 @@ import com.ttrm.ttconnection.activity.WithdrawCashActivity;
 import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.entity.BaoJiStatusBean;
 import com.ttrm.ttconnection.entity.CanonBean;
+import com.ttrm.ttconnection.entity.ListNumBean;
 import com.ttrm.ttconnection.entity.RecomeInfo;
 import com.ttrm.ttconnection.entity.VersionInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
@@ -62,13 +66,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.id.candidatesArea;
+import static android.R.id.message;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static TextView dialog_loading_num;
     private static AlertDialog dlg;
     private Button btn_main;
     private ImageView main_info;
-    private String TAG = "MainActivity";
+    private static String TAG = "MainActivity";
     private LinearLayout main_ll_sign;
     private ImageCycleView main_banner;
     private LinearLayout main_ll_bdadd;
@@ -98,92 +105,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case KeyUtils.SAVE_CODE:
                     currentCount = (int) msg.obj;
-                    if (currentCount == dataList.size()) {
+                    MyUtils.Loge(TAG,"currentCount:"+currentCount+"--msg.obj:"+msg.obj);
+//                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
-                        //假的加载动画
-                        showLoading();
-                    }
+                        dlg.dismiss();
+                        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(ma,R.layout.dialog_location_success);
+                        myAdvertisementView.showDialog();
+                        myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                            @Override
+                            public void onEvent() {
+                                MyUtils.Loge("AAA","打开微信");
+                                try {
+                                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                                    ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setComponent(cmp);
+                                    ma.startActivity(intent);
+                                } catch (Exception e) {
+                                    // TODO: handle exception
+                                    MyUtils.showToast(ma, "检查到您手机没有安装微信，请安装后使用该功能");
+                                }
+                            }
+                        });
                     break;
                 case KeyUtils.DELETE_CODE:
                     Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
                     break;
-            }
-        }
-    };
-    public static Handler loadingHabdler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 0x10:
-                    MyUtils.Loge("AAA","进入0x10");
-                    dialog_loading_num.setText(String.valueOf(num));
-                    break;
-                case 0x11:
-                    MyUtils.Loge("AAA","进入0x11");
-                    dlg.dismiss();
-                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(ma,R.layout.dialog_location_success);
-                    myAdvertisementView.showDialog();
-                    myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-                        @Override
-                        public void onEvent() {
-                            MyUtils.Loge("AAA","打开微信");
-                            try {
-                                Intent intent = new Intent(Intent.ACTION_MAIN);
-                                ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
-                                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.setComponent(cmp);
-                                ma.startActivity(intent);
-                            } catch (Exception e) {
-                                // TODO: handle exception
-                                MyUtils.showToast(ma, "检查到您手机没有安装微信，请安装后使用该功能");
-                            }
-                        }
-                    });
+                case KeyUtils.LOADING_CODE:
+                    dlg.show();
+                    int count=(int) msg.obj;
+                    dialog_loading_num.setText(String.valueOf(count));
                     break;
             }
         }
     };
+    private long exitTime=0l;
 
-    /**
-     * 假的加载动画
-     */
-    private static void showLoading() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(ma);
-        LayoutInflater inflater=ma.getLayoutInflater();
-        final View layout=inflater.inflate(R.layout.dialog_loading,null);
-        dialog_loading_num= (TextView) layout.findViewById(R.id.dialog_loading_num);
-        builder.setView(layout);
-        dlg=builder.create();
-        dlg.setCanceledOnTouchOutside(false);
-        dlg.show();
-        new Thread(){
-            @Override
-            public void run() {
 
-                for(int i=0;i<6;i++){
-                    try {
-                        if(num!=50){
-                            Message message=Message.obtain();
-                            sleep(1000);
-                            num=num+10;
-                            message.what=0x10;
-                            MyUtils.Loge("AAA","11num:"+num);
-                            loadingHabdler.sendMessage(message);
-                        }else {
-                            MyUtils.Loge("AAA","22num:"+num);
-                            Message message=Message.obtain();
-                            message.what=0x11;
-                            loadingHabdler.sendMessage(message);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        }.start();
-    }
 
     private Button main_cash;
     private VersionInfoBean versionBean;
@@ -195,6 +154,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView main_income;
     private BaoJiStatusBean bjStatus;
     private Button main_invite;
+    private ListNumBean listNumBean;
+    private TextView main_location_num;
+    private TextView main_one_num;
+    private TextView main_tv_bd;
+    private TextView main_tv_bj;
+    private int status;   // 被动加粉状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,12 +169,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ma=this;
         initView();
         initData();
+        //假的加载动画
+        showLoading();
     }
 
     private void initData() {
         getBanner();
 //        getVersion();
         getInfo();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getNums();
+        getAddStatus();
     }
 
     /**
@@ -232,6 +206,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             MyApplication.update_content=versionBean.getData().getVersion().getMsg();
                             if(Double.valueOf(versionBean.getData().getVersion().getVersion())>MyUtils.getVersionCode(MainActivity.this)){
                            // TODO 下载
+
                             }
                         }
                     }
@@ -255,6 +230,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    /**
+     * 假的加载动画
+     */
+    private static void showLoading() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(ma);
+        LayoutInflater inflater=ma.getLayoutInflater();
+        final View layout=inflater.inflate(R.layout.dialog_loading,null);
+        dialog_loading_num= (TextView) layout.findViewById(R.id.dialog_loading_num);
+        builder.setView(layout);
+        dlg=builder.create();
+        dlg.setCanceledOnTouchOutside(false);
     }
 
     /**
@@ -301,7 +289,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
-    public static void startActivity(Context context) {
+    public static void startActivity1(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setClass(context, MainActivity.class);
     }
@@ -336,6 +324,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         main_invite=(Button)findViewById(R.id.main_invite);
         main_invite.setOnClickListener(this);
 
+        main_location_num=(TextView)findViewById(R.id.main_location_num);
+        main_one_num=(TextView)findViewById(R.id.main_one_num);
+        main_tv_bd=(TextView)findViewById(R.id.main_tv_bd);
+        main_tv_bj=(TextView)findViewById(R.id.main_tv_bj);
+
     }
 
     @Override
@@ -353,10 +346,70 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(MainActivity.this, SignActivity.class));
                 break;
             case R.id.main_ll_bdadd:
-                getAddStatus();
+                if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                    switch (status){
+                        case 0:
+                            startActivity(new Intent(MainActivity.this, BDAddActivity.class));
+                            break;
+                        case 1:
+                            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bd_close);
+                            myAdvertisementView.showDialog();
+                            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                @Override
+                                public void onEvent() {
+                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
+                                    addType="2";
+                                    selectAddStatus();
+                                }
+                            });
+                            break;
+
+                        case 2:
+                            MyAdvertisementView myAdvertisementView1 = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bd_open);
+                            myAdvertisementView1.showDialog();
+                            myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                @Override
+                                public void onEvent() {
+                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
+                                    addType="1";
+                                    selectAddStatus();
+                                }
+                            });
+                            break;
+                    }
+
+                }else {
+                    showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(MainActivity.this, EditNameActivity.class));
+                            dialogInterface.dismiss();
+                        }
+                    }, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                }
                 break;
             case R.id.main_ll_bj: //爆机
-                getBjStatus();
+                if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                    getBjStatus();
+                }else {
+                    showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(MainActivity.this, EditNameActivity.class));
+                            dialogInterface.dismiss();
+                        }
+                    }, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                }
                 break;
             case R.id.yjjf_linear://一键加粉
                 type = "1";
@@ -459,37 +512,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
-                    JSONObject jsonObject1=jsonObject.getJSONObject("data");
-                    int status=jsonObject1.getInt("status");        //状态1被动加粉中（开启）2被动加粉中（关闭）0无被加加粉
-                    switch (status){
-                        case 0:
-                            startActivity(new Intent(MainActivity.this, BDAddActivity.class));
-                            break;
-                        case 1:
-                            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bd_close);
-                            myAdvertisementView.showDialog();
-                            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-                                @Override
-                                public void onEvent() {
-                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
-                                    addType="2";
-                                    selectAddStatus();
-                                }
-                            });
-                            break;
-
-                        case 2:
-                            MyAdvertisementView myAdvertisementView1 = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bd_open);
-                            myAdvertisementView1.showDialog();
-                            myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-                                @Override
-                                public void onEvent() {
-                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
-                                    addType="1";
-                                    selectAddStatus();
-                                }
-                            });
-                            break;
+                    if(errorCode==1) {
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        status = jsonObject1.getInt("status");//状态1被动加粉中（开启）2被动加粉中（关闭）0无被加加粉
+                        switch(status){
+                            case 1:
+                                main_tv_bd.setText("被动加粉已开启");
+                                break;
+                            case 2:
+                                main_tv_bd.setText("被动加粉已关闭");
+                                break;
+                        }
+                    }else {
+                        // TODO
                     }
                 }catch (Exception e){
 
@@ -527,7 +562,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     int errorCode=jsonObject.getInt("errorCode");
                     String errorMsg=jsonObject.getString("errorMsg");
                     MyUtils.showToast(MainActivity.this,errorMsg);
-//                   ®
                 }catch (Exception e){
 
                 }
@@ -691,7 +725,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void run() {
                         for (int i = 0; i < dataList.size(); i++) {
-                            LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,1);
+                            boolean isLast=false;
+                            if(i==dataList.size()-1){
+                                isLast=true;
+                            }else {
+                                isLast=false;
+                            }
+                            MyUtils.Loge(TAG,"isLast:"+isLast);
+                            LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,1,isLast);
                         }
                     }
                 }).start();
@@ -702,7 +743,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 @Override
                 public void run() {
                     for (int i = 0; i < dataList.size(); i++) {
-                        LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,1);
+                        boolean isLast=false;
+                        if(i==dataList.size()-1){
+                            isLast=true;
+                        }else {
+                            isLast=false;
+                        }
+                        LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,1,isLast);
                     }
                 }
             }).start();
@@ -735,6 +782,55 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     *剩余加粉数量
+     */
+    private void getNums(){
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_LAST_NUM;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    Gson gson=new Gson();
+                    listNumBean = gson.fromJson(response, ListNumBean.class);
+                    if(listNumBean!=null){
+                        if(listNumBean.getErrorCode()==1){
+                            if(Double.valueOf(listNumBean.getData().getRemainYjCount())>0) {
+                                main_one_num.setText("今天还剩" + listNumBean.getData().getRemainYjCount() + "个名额");
+                            }else {
+                                main_one_num.setText("今日名额已用完");
+                            }
+                            if(Double.valueOf(listNumBean.getData().getRemainDqCount())>0) {
+                                main_location_num.setText("今天还剩" + listNumBean.getData().getRemainDqCount() + "个名额");
+                            }else {
+                                main_location_num.setText("今日名额已用完");
+                            }
+                        }else {
+                            //  TODO
+                        }
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(MainActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -751,7 +847,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         @Override
                         public void run() {
                             for (int i = 0; i < dataList.size(); i++) {
-                                LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,1);
+                                boolean isLast=false;
+                                if(i==dataList.size()-1){
+                                    isLast=true;
+                                }else {
+                                    isLast=false;
+                                }
+                                LXRUtil.addContacts(MainActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,1,isLast);
                             }
                         }
                     }).start();
@@ -770,5 +872,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    /**
+     * 返回键的监听
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+//                ActivityUtil.exitAll();
+                finish();
+                System.exit(0);
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        return false;
     }
 }

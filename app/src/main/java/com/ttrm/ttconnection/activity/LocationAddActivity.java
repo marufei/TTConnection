@@ -55,7 +55,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
     private Button location_btn_sure;
     public static String location;
     private Dialogshow dialog;
-    private String TAG="LocationAddActivity";
+    private static String TAG="LocationAddActivity";
     private String type="2";
     private static LocationAddActivity locatiionAddActivity;
     private static List<CanonBean.DataBean.PhoneListBean> dataList=new ArrayList<>();
@@ -68,28 +68,9 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
             switch (msg.what) {
                 case KeyUtils.SAVE_CODE:
                     currentCount = (int) msg.obj;
-                    if (currentCount == dataList.size()) {
+                    MyUtils.Loge(TAG,"currentCount:"+currentCount+"--msg.obj:"+msg.obj);
+//                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
-                        //假的加载动画
-                        showLoading();
-                    }
-                    break;
-                case KeyUtils.DELETE_CODE:
-                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-    public static Handler loadingHabdler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 0x10:
-                    MyUtils.Loge("AAA","进入0x10");
-                    dialog_loading_num.setText(String.valueOf(num));
-                    break;
-                case 0x11:
-                    MyUtils.Loge("AAA","进入0x11");
                     dlg.dismiss();
                     MyAdvertisementView myAdvertisementView = new MyAdvertisementView(locatiionAddActivity,R.layout.dialog_location_success);
                     myAdvertisementView.showDialog();
@@ -111,10 +92,17 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                         }
                     });
                     break;
+                case KeyUtils.DELETE_CODE:
+                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case KeyUtils.LOADING_CODE:
+                    dlg.show();
+                    int count=(int) msg.obj;
+                    dialog_loading_num.setText(String.valueOf(count));
+                    break;
             }
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +110,8 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         ActivityUtil.add(this);
         locatiionAddActivity=this;
         initViews();
+        //假的加载动画
+        showLoading();
     }
 
     /**
@@ -135,33 +125,6 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         builder.setView(layout);
         dlg=builder.create();
         dlg.setCanceledOnTouchOutside(false);
-        dlg.show();
-        new Thread(){
-            @Override
-            public void run() {
-
-                for(int i=0;i<6;i++){
-                    try {
-                        if(num!=50){
-                            Message message=Message.obtain();
-                            sleep(1000);
-                            num=num+10;
-                            message.what=0x10;
-                            MyUtils.Loge("AAA","11num:"+num);
-                            loadingHabdler.sendMessage(message);
-                        }else {
-                            MyUtils.Loge("AAA","22num:"+num);
-                            Message message=Message.obtain();
-                            message.what=0x11;
-                            loadingHabdler.sendMessage(message);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        }.start();
     }
 
     private void initViews() {
@@ -256,7 +219,13 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void run() {
                         for (int i = 0; i < dataList.size(); i++) {
-                            LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2);
+                            boolean isLast=false;
+                            if(i==dataList.size()-1){
+                                isLast=true;
+                            }else {
+                                isLast=false;
+                            }
+                            LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2,isLast);
                         }
                     }
                 }).start();
@@ -267,7 +236,13 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 @Override
                 public void run() {
                     for (int i = 0; i < dataList.size(); i++) {
-                        LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2);
+                        boolean isLast=false;
+                        if(i==dataList.size()-1){
+                            isLast=true;
+                        }else {
+                            isLast=false;
+                        }
+                        LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2,isLast);
                     }
                 }
             }).start();
@@ -289,7 +264,13 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                         @Override
                         public void run() {
                             for (int i = 0; i < dataList.size(); i++) {
-                                LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2);
+                                boolean isLast=false;
+                                if(i==dataList.size()-1){
+                                    isLast=true;
+                                }else {
+                                    isLast=false;
+                                }
+                                LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2,isLast);
                             }
                         }
                     }).start();

@@ -119,6 +119,10 @@ public class HttpAddress {
      * 获取推荐数据
      */
     public static final String GET_REWARD_DATA="/UserCenter/getRecomeInfo";
+    /**
+     * 获取剩余加粉数
+     */
+    public static final String GET_LAST_NUM="/Jf/jfCount";
 
 
 }

@@ -189,7 +189,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
                         getActivity().finish();
-                        MainActivity.startActivity(getActivity());
+                        MainActivity.startActivity1(getActivity());
                         Gson gson=new Gson();
                         RegisterBean registerBean=gson.fromJson(response,RegisterBean.class);
                         if(registerBean!=null){

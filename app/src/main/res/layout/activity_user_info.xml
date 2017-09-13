@@ -281,13 +281,13 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="6dp"
                     android:textColor="@color/gray_3"
-                    android:text="我的昵称"/>
+                    android:text="我的姓名"/>
                 <TextView
                     android:id="@+id/info_tv_bmdl"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="宝妈代理"
+                    android:text=""
                     android:textSize="12sp"
                     android:layout_gravity="center_vertical"
                     android:paddingRight="5dp"

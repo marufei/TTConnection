@@ -63,6 +63,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private Platform plat;
     private SignStatusBean signStatusBean;
     private ShareInfoBean shareInfoBean;
+    private TextView sign_tv_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         sign_tv_qq.setOnClickListener(this);
         sign_tv_space=(TextView)findViewById(R.id.sign_tv_space);
         sign_tv_space.setOnClickListener(this);
+        sign_tv_add=(TextView)findViewById(R.id.sign_tv_add);
     }
 
     @Override
@@ -113,13 +115,15 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
+                MyUtils.Loge(TAG,"钻石数量---response:"+response);
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
                     if(errorCode==1){
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
                         String diamondCount=jsonObject1.getString("diamondCount");
+                        String todayCount=jsonObject1.getString("todayCount");
+                        sign_tv_add.setText("+"+todayCount);
                         sign_tv_zs.setText(diamondCount);
                     }
                 }catch (Exception e){

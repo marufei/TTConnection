@@ -18,6 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="1"
+            android:hint="请长按粘贴兑换码"
+            android:textColor="@color/gray_6"
+            android:textSize="13sp"
             android:background="@null"/>
         <View
             android:layout_width="match_parent"

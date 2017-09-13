@@ -54,6 +54,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private EditText et_name;
     private String addType;
     private BaoJiStatusBean bjStatus;
+    private TextView info_tv_bmdl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         info_ll_version.setOnClickListener(this);
         info_ll_custom.setOnClickListener(this);
         info_btn_loginout.setOnClickListener(this);
+
+        info_tv_bmdl=(TextView)findViewById(R.id.info_tv_bmdl);
     }
 
     @Override

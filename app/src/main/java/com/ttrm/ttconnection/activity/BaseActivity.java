@@ -1,5 +1,7 @@
 package com.ttrm.ttconnection.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,5 +38,30 @@ public class BaseActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /**
+     * 含有标题、内容、两个按钮的对话框
+     **/
+    public void showAlertDialog(String title, String message,
+                                String positiveText,
+                                DialogInterface.OnClickListener onClickListener,
+                                String negativeText,
+                                DialogInterface.OnClickListener onClickListener2) {
+        new AlertDialog.Builder(this).setTitle(title).setMessage(message)
+                .setPositiveButton(positiveText, onClickListener)
+                .setNegativeButton(negativeText, onClickListener2).setCancelable(false)
+                .show();
+    }
+
+    /**
+     * 含有一个标题、内容、一个按钮的对话框
+     **/
+    public void showAlertDialog2(String title, String message,
+                                 String positiveText,
+                                 DialogInterface.OnClickListener onClickListener) {
+        new AlertDialog.Builder(this).setTitle(title).setMessage(message)
+                .setPositiveButton(positiveText, onClickListener).setCancelable(false)
+                .show();
     }
 }

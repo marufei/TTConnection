@@ -10,6 +10,7 @@ import android.os.Message;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.tencent.mm.opensdk.channel.MMessageActV2;
 import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.activity.LocationAddActivity;
 
@@ -34,7 +35,7 @@ public class LXRUtil {
      * @param phone
      */
 
-    public static void addContacts(Activity mContext, String name, String phone, int index, int type) {
+    public static void addContacts(Activity mContext, String name, String phone, int index, int type,boolean isLast) {
         try {
             ContentValues values = new ContentValues();
             // 首先向RawContacts.CONTENT_URI执行一个空值插入，目的是获取系统返回的rawContactId
@@ -69,17 +70,47 @@ public class LXRUtil {
 
         }
 
-        //添加通讯录，是否成功都发送所添加的条目下表
-        Message message = Message.obtain();
-        message.what = KeyUtils.SAVE_CODE;
-        message.obj = index + 1;
-        switch (type) {
-            case 1:
+        MyUtils.Loge(TAG,"isLast:"+isLast);
+/*        if(isLast) {
+            //添加通讯录，是否成功都发送所添加的条目下表
+
+            Message message = Message.obtain();
+            message.what = KeyUtils.SAVE_CODE;
+            message.obj = index + 1;
+            switch (type) {
+                case 1:
+                    MainActivity.handler.sendMessage(message);
+                    break;
+                case 2:
+                    LocationAddActivity.handler.sendMessage(message);
+                    break;
+            }
+        }*/
+        if(type==1){
+            if(isLast){
+                Message message = Message.obtain();
+                message.what = KeyUtils.SAVE_CODE;
+                message.obj = index + 1;
                 MainActivity.handler.sendMessage(message);
-                break;
-            case 2:
+            }else {
+                Message message= Message.obtain();
+                message.what=KeyUtils.LOADING_CODE;
+                message.obj=index+1;
+                MainActivity.handler.sendMessage(message);
+            }
+        }
+        if(type==2){
+            if(isLast){
+                Message message = Message.obtain();
+                message.what = KeyUtils.SAVE_CODE;
+                message.obj = index + 1;
                 LocationAddActivity.handler.sendMessage(message);
-                break;
+            }else {
+                Message message= Message.obtain();
+                message.what=KeyUtils.LOADING_CODE;
+                message.obj=index+1;
+                LocationAddActivity.handler.sendMessage(message);
+            }
         }
     }
 

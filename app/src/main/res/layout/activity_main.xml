@@ -86,11 +86,12 @@
                             android:textSize="18sp"
                             android:text="一键加粉"/>
                         <TextView
+                            android:id="@+id/main_one_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:visibility="gone"
-                            android:text="今天还剩150个名额"
+                            android:text=""
+                            android:layout_marginLeft="5dp"
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
@@ -136,11 +137,12 @@
                             android:textSize="18sp"
                             android:text="地区加粉"/>
                         <TextView
+                            android:id="@+id/main_location_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:visibility="gone"
-                            android:text="今天还剩150个名额"
+                            android:text=""
+                            android:layout_marginLeft="5dp"
                             android:textSize="10sp"/>
                     </LinearLayout>
 
@@ -188,10 +190,10 @@
                             android:textSize="18sp"
                             android:text="爆机"/>
                         <TextView
+                            android:id="@+id/main_tv_bj"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:visibility="gone"
                             android:text="今天还剩150个名额"
                             android:textSize="10sp"/>
                     </LinearLayout>
@@ -200,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:layout_marginTop="8dp"
-                        android:text="暴机全免费"
+                        android:text="爆机全免费"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
@@ -241,11 +243,11 @@
                             android:id="@+id/textView2" />
 
                         <TextView
+                            android:id="@+id/main_tv_bd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:text="今天还剩150个名额"
-                            android:visibility="gone"
+                            android:text=""
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
