@@ -13,6 +13,7 @@ import android.util.Log;
 import com.tencent.mm.opensdk.channel.MMessageActV2;
 import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.activity.LocationAddActivity;
+import com.ttrm.ttconnection.activity.SignActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,32 @@ public class LXRUtil {
                 message.what=KeyUtils.LOADING_CODE;
                 message.obj=index+1;
                 LocationAddActivity.handler.sendMessage(message);
+            }
+        }
+        if(type==3){
+            if(isLast){
+                Message message = Message.obtain();
+                message.what = KeyUtils.SAVE_CODE;
+                message.obj = index + 1;
+                SignActivity.handler.sendMessage(message);
+            }else {
+                Message message= Message.obtain();
+                message.what=KeyUtils.LOADING_CODE;
+                message.obj=index+1;
+                SignActivity.handler.sendMessage(message);
+            }
+        }
+        if(type==4){
+            if(isLast){
+                Message message = Message.obtain();
+                message.what = KeyUtils.SAVE_CODE;
+                message.obj = index + 1;
+                SignActivity.handler1.sendMessage(message);
+            }else {
+                Message message= Message.obtain();
+                message.what=KeyUtils.LOADING_CODE;
+                message.obj=index+1;
+                SignActivity.handler1.sendMessage(message);
             }
         }
     }

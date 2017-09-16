@@ -68,6 +68,7 @@ import java.util.Map;
 
 import static android.R.id.candidatesArea;
 import static android.R.id.message;
+import static android.R.id.switch_widget;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -184,6 +185,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
         getNums();
         getAddStatus();
+        getBjStatus();
     }
 
     /**
@@ -357,7 +359,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                                 @Override
                                 public void onEvent() {
-                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
+                                    MyUtils.Loge(TAG,"关闭被动加粉界面");
                                     addType="2";
                                     selectAddStatus();
                                 }
@@ -370,7 +372,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                                 @Override
                                 public void onEvent() {
-                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
+                                    MyUtils.Loge(TAG,"关闭 打开被动加粉界面");
                                     addType="1";
                                     selectAddStatus();
                                 }
@@ -395,7 +397,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.main_ll_bj: //爆机
                 if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
-                    getBjStatus();
+                    switch(bjStatus.getData().getStatus()){
+                        case 0:
+                            //无爆机
+                            startActivity(new Intent(MainActivity.this, BaoJiActivity.class));
+                            break;
+                        case 1:
+                            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bj_ing);
+                            myAdvertisementView.showDialog();
+                            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                @Override
+                                public void onEvent() {
+                                    MyUtils.Loge(TAG,"朕知道了");
+                                }
+                            });
+                            break;
+                    }
                 }else {
                     showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
                         @Override
@@ -433,7 +450,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.jcdshy_linear://检测单删好友
-                Intent intent = new Intent(this, SelectFriendActivity.class);
+                Intent intent = new Intent(this, WebActivity.class);
                 intent.putExtra("URL",HttpAddress.URL_H5_DELETE);
                 startActivity(intent);
                 break;
@@ -462,19 +479,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if (bjStatus.getErrorCode()==1){
                             if (bjStatus.getData().getStatus()==1){
                                 //爆机中
-                                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bj_ing);
-                                myAdvertisementView.showDialog();
-                                myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-                                    @Override
-                                    public void onEvent() {
-                                        MyUtils.Loge(TAG,"朕知道了");
-                                    }
-                                });
+
+                                main_tv_bj.setVisibility(View.VISIBLE);
+                                main_tv_bj.setText("正在爆机中...");
+//                                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bj_ing);
+//                                myAdvertisementView.showDialog();
+//                                myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+//                                    @Override
+//                                    public void onEvent() {
+//                                        MyUtils.Loge(TAG,"朕知道了");
+//                                    }
+//                                });
+                            }else {
+                                main_tv_bj.setVisibility(View.GONE);
                             }
-                            if(bjStatus.getData().getStatus()==0){
-                                //无爆机
-                                startActivity(new Intent(MainActivity.this, BaoJiActivity.class));
-                            }
+//                            if(bjStatus.getData().getStatus()==0){
+//                                //无爆机
+//                                startActivity(new Intent(MainActivity.this, BaoJiActivity.class));
+//                            }
                         }
                     }
                 }catch (Exception e){
@@ -517,10 +539,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         status = jsonObject1.getInt("status");//状态1被动加粉中（开启）2被动加粉中（关闭）0无被加加粉
                         switch(status){
                             case 1:
+                                main_tv_bd.setVisibility(View.VISIBLE);
                                 main_tv_bd.setText("被动加粉已开启");
                                 break;
                             case 2:
+                                main_tv_bd.setVisibility(View.VISIBLE);
                                 main_tv_bd.setText("被动加粉已关闭");
+                                break;
+                            default:
+                                main_tv_bd.setVisibility(View.GONE);
                                 break;
                         }
                     }else {
@@ -562,6 +589,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     int errorCode=jsonObject.getInt("errorCode");
                     String errorMsg=jsonObject.getString("errorMsg");
                     MyUtils.showToast(MainActivity.this,errorMsg);
+                    if(errorCode==1){
+                        getAddStatus();
+                    }
                 }catch (Exception e){
 
                 }

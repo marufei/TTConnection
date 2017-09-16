@@ -49,6 +49,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_bao_ji);
         ActivityUtil.add(this);
         initViews();
+        setToolBar("爆机");
         getBaojiRule();
     }
 

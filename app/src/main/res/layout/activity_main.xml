@@ -89,7 +89,10 @@
                             android:id="@+id/main_one_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
+                            android:textColor="#FB676F"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:background="@drawable/bac_white"
                             android:text=""
                             android:layout_marginLeft="5dp"
                             android:textSize="10sp"/>
@@ -140,8 +143,11 @@
                             android:id="@+id/main_location_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
+                            android:textColor="#870DDD"
                             android:text=""
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:background="@drawable/bac_white"
                             android:layout_marginLeft="5dp"
                             android:textSize="10sp"/>
                     </LinearLayout>
@@ -193,8 +199,12 @@
                             android:id="@+id/main_tv_bj"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:text="今天还剩150个名额"
+                            android:textColor="#FDAC3B"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/bac_white"
+                            android:text=""
                             android:textSize="10sp"/>
                     </LinearLayout>
                     <TextView
@@ -246,7 +256,11 @@
                             android:id="@+id/main_tv_bd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
+                            android:textColor="#E431AC"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/bac_white"
                             android:text=""
                             android:textSize="10sp"/>
                     </LinearLayout>

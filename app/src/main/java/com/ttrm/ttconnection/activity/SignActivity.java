@@ -2,15 +2,22 @@ package com.ttrm.ttconnection.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -19,20 +26,25 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.entity.CanonBean;
 import com.ttrm.ttconnection.entity.ShareInfoBean;
 import com.ttrm.ttconnection.entity.SignStatusBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
+import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -42,6 +54,8 @@ import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
+
+
 
 /**
  * TODO 每日签到
@@ -58,19 +72,124 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private TextView sign_tv_circle;
     private TextView sign_tv_qq;
     private TextView sign_tv_space;
-    private String TAG="SignActivity";
+    private static String TAG="SignActivity";
     private String type;
     private Platform plat;
     private SignStatusBean signStatusBean;
     private ShareInfoBean shareInfoBean;
     private TextView sign_tv_add;
+    private static List<CanonBean.DataBean.PhoneListBean> dataList = new ArrayList<CanonBean.DataBean.PhoneListBean>();//一键加粉数据集合
+    private String addType;
+    private static SignActivity signActivity;
+    private static AlertDialog dlg;
+    private static TextView dialog_loading_num;
+    private static int inputType=0;
+
+    private static int currentCount;
+    public static Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case KeyUtils.SAVE_CODE:
+                    currentCount = (int) msg.obj;
+                    MyUtils.Loge(TAG,"currentCount:"+currentCount+"--msg.obj:"+msg.obj);
+//                    if (currentCount == dataList.size()) {
+//                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
+                    dlg.dismiss();
+                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity,R.layout.dialog_location_success);
+                    myAdvertisementView.showDialog();
+                    myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                        @Override
+                        public void onEvent() {
+                            MyUtils.Loge("AAA","打开微信");
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_MAIN);
+                                ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setComponent(cmp);
+                                signActivity.startActivity(intent);
+                            } catch (Exception e) {
+                                // TODO: handle exception
+                                MyUtils.showToast(signActivity, "检查到您手机没有安装微信，请安装后使用该功能");
+                            }
+                        }
+                    });
+                    break;
+                case KeyUtils.DELETE_CODE:
+                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case KeyUtils.LOADING_CODE:
+                    dlg.show();
+                    int count=(int) msg.obj;
+                    dialog_loading_num.setText(String.valueOf(count));
+                    break;
+            }
+        }
+    };
+    public static Handler handler1 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case KeyUtils.SAVE_CODE:
+                    currentCount = (int) msg.obj;
+                    MyUtils.Loge(TAG,"currentCount:"+currentCount+"--msg.obj:"+msg.obj);
+//                    if (currentCount == dataList.size()) {
+//                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
+                    dlg.dismiss();
+                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity,R.layout.dialog_location_success);
+                    myAdvertisementView.showDialog();
+                    myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                        @Override
+                        public void onEvent() {
+                            MyUtils.Loge("AAA","打开微信");
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_MAIN);
+                                ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setComponent(cmp);
+                                signActivity.startActivity(intent);
+                            } catch (Exception e) {
+                                // TODO: handle exception
+                                MyUtils.showToast(signActivity, "检查到您手机没有安装微信，请安装后使用该功能");
+                            }
+                        }
+                    });
+                    break;
+                case KeyUtils.DELETE_CODE:
+                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case KeyUtils.LOADING_CODE:
+                    dlg.show();
+                    int count=(int) msg.obj;
+                    dialog_loading_num.setText(String.valueOf(count));
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
         ActivityUtil.add(this);
+        signActivity=this;
         initViews();
+        //假的加载动画
+        showLoading();
+    }
+    /**
+     * 假的加载动画
+     */
+    private static void showLoading() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(signActivity);
+        LayoutInflater inflater=signActivity.getLayoutInflater();
+        final View layout=inflater.inflate(R.layout.dialog_loading,null);
+        dialog_loading_num= (TextView) layout.findViewById(R.id.dialog_loading_num);
+        builder.setView(layout);
+        dlg=builder.create();
+        dlg.setCanceledOnTouchOutside(false);
     }
 
     private void initViews() {
@@ -292,12 +411,14 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 getDiamonds();
                 break;
             case R.id.sign_tv_oneadd:
-                type="2";
-                getDiamonds();
+                addType="1";
+                inputType=3;
+                getCanon();//获取一键加粉数据
                 break;
             case R.id.sign_tv_locationadd:
-                getDiamonds();
-                type="3";
+                addType="2";
+                inputType=4;
+                getCanon();//获取地区加粉数据
                 break;
             case R.id.sign_tv_wx:
                 type="4";
@@ -374,6 +495,99 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
+     * 一键加粉
+     */
+    private void getCanon() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_CANON;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG, "canon:" + response);
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    if (errorCode == 1) {
+                        Gson gson = new Gson();
+                        CanonBean bean = gson.fromJson(response, CanonBean.class);
+                        if (bean.getErrorCode() == 1) {
+                            dataList.clear();
+                            dataList.addAll(bean.getData().getPhoneList());
+                            saveCanon();
+                        }
+                    } else {
+                        Toast.makeText(SignActivity.this, jsonObject.getString("errorMsg"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(SignActivity.this, "网络有问题");
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
+                map.put("type", addType);
+                return map;
+            }
+        };
+        Volley.newRequestQueue(SignActivity.this).add(stringRequest);
+    }
+
+    /**
+     * 添加到通讯录
+     */
+    private void saveCanon() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(SignActivity.this,
+                    Manifest.permission.WRITE_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0x1);
+                return;
+            } else {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < dataList.size(); i++) {
+                            boolean isLast=false;
+                            if(i==dataList.size()-1){
+                                isLast=true;
+                            }else {
+                                isLast=false;
+                            }
+                            MyUtils.Loge(TAG,"isLast:"+isLast);
+                            LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
+                        }
+                    }
+                }).start();
+            }
+        } else {
+            //添加通讯录
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < dataList.size(); i++) {
+                        boolean isLast=false;
+                        if(i==dataList.size()-1){
+                            isLast=true;
+                        }else {
+                            isLast=false;
+                        }
+                        LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
+                    }
+                }
+            }).start();
+        }
+    }
+
+    /**
      * 分享回调
      */
     class MyCallBalk implements PlatformActionListener {
@@ -444,6 +658,43 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 
                 return;
             }
+            case 0x1:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.v("stones", "权限回调--获取权限失败");
+                    Toast.makeText(SignActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(SignActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
+                    Log.v("stones", "权限回调--获取权限成功");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < dataList.size(); i++) {
+                                boolean isLast=false;
+                                if(i==dataList.size()-1){
+                                    isLast=true;
+                                }else {
+                                    isLast=false;
+                                }
+                                LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
+                            }
+                        }
+                    }).start();
+                }
+                break;
+            case 0x2:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(SignActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LXRUtil.deleteContacts(SignActivity.this);
+                        }
+                    }).start();
+                }
+                break;
+            
             default:
                 break;
 
