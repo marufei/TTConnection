@@ -138,8 +138,15 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                     int errorCode = jsonObject.getInt("errorCode");
                     String errorMsg = jsonObject.getString("errorMsg");
                     if (errorCode == 1) {
-                        MyUtils.showToast(BaoJiActivity.this, errorMsg);
-                        finish();
+                        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(BaoJiActivity.this,R.layout.dialog_bj_ing);
+                        myAdvertisementView.showDialog();
+                        myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                            @Override
+                            public void onEvent() {
+                                MyUtils.Loge(TAG,"朕知道了");
+                                finish();
+                            }
+                        });
                     } else if (errorCode == 2) {  //钻石不足
                         MyAdvertisementView myAdvertisementView = new MyAdvertisementView(BaoJiActivity.this, R.layout.dialog_bj_no);
                         myAdvertisementView.showDialog();

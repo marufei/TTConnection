@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ttrm.ttconnection">
 
     <!-- 用于访问网络，网络定位需要上网 -->
@@ -124,12 +125,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.BaseActivity" />
-        <activity android:name=".activity.BaoJiActivity" />
-        <activity android:name=".activity.LocationAddActivity" />
-        <activity android:name=".activity.MyRewardActivity" />
-        <activity android:name=".activity.SelectFriendActivity" />
-        <activity android:name=".activity.WithdrawCashInfoActivity"></activity>
+        <activity
+            android:name=".activity.BaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BaoJiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LocationAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyRewardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SelectFriendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WithdrawCashInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.InviteActivity"></activity>
     </application>
 
 </manifest>

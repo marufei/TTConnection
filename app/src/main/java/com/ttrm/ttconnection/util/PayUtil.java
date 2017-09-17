@@ -114,6 +114,7 @@ public class PayUtil {
                                                 @Override
                                                 public void onEvent() {
                                                     MyUtils.Loge(TAG,"支付宝回调成功，点击了按钮");
+                                                    activity.finish();
                                                 }
                                             });
                                         }

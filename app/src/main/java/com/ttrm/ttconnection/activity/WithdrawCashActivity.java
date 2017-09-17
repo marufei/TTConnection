@@ -42,6 +42,7 @@ public class WithdrawCashActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_withdraw_cash);
         ActivityUtil.add(this);
         initViews();
+        setMenuBtn("明细",this,WithdrawCashInfoActivity.class);
     }
 
     private void initViews() {

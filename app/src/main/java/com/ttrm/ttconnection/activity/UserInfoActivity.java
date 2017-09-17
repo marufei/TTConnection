@@ -156,8 +156,18 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
                 break;
             case R.id.info_btn_loginout:
-
-                loginOut();
+                showAlertDialog("提示", "确认退出吗？", "确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        loginOut();
+                        dialogInterface.dismiss();
+                    }
+                }, "取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
                 break;
 
         }

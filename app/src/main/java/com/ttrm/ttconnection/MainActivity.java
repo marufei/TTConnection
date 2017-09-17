@@ -385,7 +385,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
 
                 }else {
-                    showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
+                    showAlertDialog("提示", "请完善一下您的姓名再继续吧~", "确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             startActivity(new Intent(MainActivity.this, EditNameActivity.class));
@@ -418,7 +418,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             break;
                     }
                 }else {
-                    showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
+                    showAlertDialog("提示", "请完善一下您的姓名再继续吧~", "确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             startActivity(new Intent(MainActivity.this, EditNameActivity.class));

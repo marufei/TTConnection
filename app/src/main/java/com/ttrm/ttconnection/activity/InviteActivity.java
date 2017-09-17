@@ -16,9 +16,12 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.adapter.InviteInfoAdapter;
 import com.ttrm.ttconnection.adapter.WithdrawInfoAdapter;
+import com.ttrm.ttconnection.entity.InviteBean;
 import com.ttrm.ttconnection.entity.WithdrawInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
@@ -28,71 +31,60 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * TODO 提现明细
- */
-public class WithdrawCashInfoActivity extends BaseActivity {
+public class InviteActivity extends BaseActivity {
 
-    private PullToRefreshListView withdraw_info_show;
-    private String TAG="WithdrawCashInfoActivity";
+    private PullToRefreshListView invite_show;
+    private TextView invite_kong;
+
     private static final int REFRESH_UP=1;
     private static final int REFRESH_DOWN=2;
     private int refreshType;
     private int currentPage=1;
-    private WithdrawInfoBean listBean;
-    private WithdrawInfoAdapter adapter;
-    private TextView withdraw_info_kong;
-    private List<WithdrawInfoBean.DataBean.CashLogBean> list=new ArrayList<>();
+    private List<InviteBean.DataBean.RecomLogBean> list=new ArrayList<>();
+    private String TAG="InviteActivity";
+    private InviteBean inviteBean;
+    private InviteInfoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_withdraw_cash_info);
-        getCashList();
-        initViews();
-        setListeners();
-
+        setContentView(R.layout.activity_invite);
+        ActivityUtil.add(this);
+        initViws();
+        setListener();
+        getInviteList();
     }
 
-    private void setListeners() {
-        withdraw_info_show.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+    private void setListener() {
+        invite_show.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 currentPage=1;
                 refreshType=REFRESH_DOWN;
-                getCashList();
-
+                getInviteList();
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                currentPage++;
-                refreshType=REFRESH_UP;
-                getCashList();
+
             }
         });
     }
 
-    private void initViews() {
-        setToolBar("提现明细");
-        withdraw_info_show=(PullToRefreshListView)findViewById(R.id.withdraw_info_show);
-        withdraw_info_show.setMode(PullToRefreshBase.Mode.BOTH);
-        withdraw_info_kong=(TextView)findViewById(R.id.withdraw_info_kong);
-    }
     /**
-     * 获取提现列表
+     * 获取邀请列表
      */
-    private void getCashList(){
-        String url= HttpAddress.BASE_URL+HttpAddress.GET_CASH_LIST;
+    private void getInviteList() {
+        String url= HttpAddress.BASE_URL+HttpAddress.GET_INVITE_LIST;
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 MyUtils.Loge(TAG,"response:"+response);
                 try{
                     Gson gson=new Gson();
-                    listBean=gson.fromJson(response, WithdrawInfoBean.class);
-                    if(listBean!=null){
-                        if(listBean.getErrorCode()==1){
+                    inviteBean=gson.fromJson(response, InviteBean.class);
+                    if(inviteBean!=null){
+                        if(inviteBean.getErrorCode()==1){
                             setViews();
                         }
                     }
@@ -121,33 +113,38 @@ public class WithdrawCashInfoActivity extends BaseActivity {
     }
 
     private void setViews() {
-        if(currentPage==1&&listBean.getData().getCashLog().size()==0){
-            withdraw_info_show.setVisibility(View.GONE);
-            withdraw_info_kong.setVisibility(View.VISIBLE);
+        if(currentPage==1&&inviteBean.getData().getRecomLog().size()==0){
+            invite_show.setVisibility(View.GONE);
+            invite_kong.setVisibility(View.VISIBLE);
         }else {
             MyUtils.Loge(TAG,"展示listview");
-            withdraw_info_kong.setVisibility(View.GONE);
-            withdraw_info_show.setVisibility(View.VISIBLE);
+            invite_kong.setVisibility(View.GONE);
+            invite_show.setVisibility(View.VISIBLE);
         }
-        if(listBean.getData().getCashLog().size()>0) {
+        if(inviteBean.getData().getRecomLog().size()>0) {
             if (refreshType == REFRESH_UP) {
-                list.addAll(listBean.getData().getCashLog());
+                list.addAll(inviteBean.getData().getRecomLog());
             } else {
                 list.clear();
-                list.addAll(listBean.getData().getCashLog());
+                list.addAll(inviteBean.getData().getRecomLog());
             }
             MyUtils.Loge(TAG,"list:"+list.size());
             if (adapter == null) {
-                adapter = new WithdrawInfoAdapter(WithdrawCashInfoActivity.this, list);
-                withdraw_info_show.setAdapter(adapter);
+                adapter = new InviteInfoAdapter(InviteActivity.this, list);
+                invite_show.setAdapter(adapter);
             } else {
                 adapter.notifyDataSetChanged();
             }
         }else {
-            MyUtils.showToast(WithdrawCashInfoActivity.this,"没有更多了");
+            MyUtils.showToast(InviteActivity.this,"没有更多了");
         }
-        withdraw_info_show.onRefreshComplete();
+        invite_show.onRefreshComplete();
     }
 
-
+    private void initViws() {
+        setToolBar("邀请明细");
+        invite_show=(PullToRefreshListView)findViewById(R.id.invite_show);
+        invite_show.setMode(PullToRefreshBase.Mode.BOTH);
+        invite_kong=(TextView)findViewById(R.id.invite_kong);
+    }
 }

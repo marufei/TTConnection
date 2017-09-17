@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/item_invite_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="标题标题"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textColor="@color/gray_3"/>
+        <TextView
+            android:id="@+id/item_invite_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_6"
+            android:layout_margin="10dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textSize="11sp"
+            android:text="2017-09-12"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/item_invite_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/txt_yellow4b"
+        android:textSize="15sp"
+        android:layout_marginRight="10dp"
+        android:text="+0.5"/>
+
+</LinearLayout>

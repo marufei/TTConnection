@@ -1,7 +1,10 @@
 package com.ttrm.ttconnection.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +13,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.util.MyUtils;
 
 public class BaseActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private TextView toolbar_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,20 @@ public class BaseActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    /**
+     * 设置toolbar 菜单按钮
+     */
+    public void setMenuBtn(String title, final Context context, final Class activity2){
+        toolbar_btn=(TextView)findViewById(R.id.toolbar_btn);
+        toolbar_btn.setVisibility(View.VISIBLE);
+        toolbar_btn.setText(title);
+        toolbar_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context,activity2));
+            }
+        });
     }
 
     /**

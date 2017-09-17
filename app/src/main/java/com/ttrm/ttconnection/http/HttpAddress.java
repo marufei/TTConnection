@@ -57,7 +57,7 @@ public class HttpAddress {
     /**
      * 检测单删好友
      */
-    public static final String URL_H5_DELETE = "http://www.tiantianrenmai.com/web/testperson.html";
+    public static final String URL_H5_DELETE = "http://www.tiantianrenmai.com/tt/index.php/Home/Index/qqlist";
     /**
      * 新手教学
      */
@@ -123,6 +123,14 @@ public class HttpAddress {
      * 获取剩余加粉数
      */
     public static final String GET_LAST_NUM="/Jf/jfCount";
+    /**
+     * 提现列表
+     */
+    public static final String GET_CASH_LIST="/UserCenter/cashLog";
+    /**
+     * 邀请列表
+     */
+    public static final String GET_INVITE_LIST="/UserCenter/recomLog";
 
 
 }

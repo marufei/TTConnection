@@ -1,5 +1,6 @@
 package com.ttrm.ttconnection.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -22,10 +23,13 @@ import com.google.gson.Gson;
 import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.activity.ForgetPwdActivity;
+import com.ttrm.ttconnection.entity.LoginBean;
 import com.ttrm.ttconnection.entity.RegisterBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.CodeCountDownTimer;
+import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
+import com.ttrm.ttconnection.util.SaveUtils;
 
 import org.json.JSONObject;
 
@@ -117,6 +121,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 }
                 if(!register_pwd1.getText().toString().trim().equals(register_pwd2.getText().toString().trim())){
                     MyUtils.showToast(getActivity(),"密码不一致，请重新设置");
+                    return;
                 }
                 if(!TextUtils.isEmpty(sms_token)){
                     register();
@@ -166,7 +171,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("type", "1");
-                map.put("phone", "13213580912");
+                map.put("phone",register_phone.getText().toString().trim());
                 map.put("timeStamp",MyUtils.getTimestamp());
                 map.put("sign",MyUtils.getSign());
                 return map;
@@ -188,13 +193,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     int errorCode=jsonObject.getInt("errorCode");
                     String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
-                        getActivity().finish();
-                        MainActivity.startActivity1(getActivity());
-                        Gson gson=new Gson();
-                        RegisterBean registerBean=gson.fromJson(response,RegisterBean.class);
-                        if(registerBean!=null){
-
-                        }
+//                        MainActivity.startActivity1(getActivity());
+//                        startActivity(new Intent(getActivity(),MainActivity.class));
+//                        getActivity().finish();
+//                        Gson gson=new Gson();
+//                        RegisterBean registerBean=gson.fromJson(response,RegisterBean.class);
+//                        if(registerBean!=null){
+//
+//                        }
+                        login();
                     }else {
                         MyUtils.showToast(getActivity(),errorMsg);
                     }
@@ -219,6 +226,60 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 map.put("timeStamp",MyUtils.getTimestamp());
                 map.put("sign",MyUtils.getSign());
                 return  map;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+    }
+
+    /**
+     * 登录
+     */
+    public void login(){
+        String url= HttpAddress.BASE_URL+HttpAddress.LOGIN;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"response:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    String errorMsg=jsonObject.getString("errorMsg");
+                    if(errorCode==1){
+                        Gson gson=new Gson();
+                        LoginBean loginBean=gson.fromJson(response,LoginBean.class);
+                        if(loginBean!=null){
+                            SaveUtils.setString(KeyUtils.user_id,loginBean.getData().getUserInfo().getId());
+                            SaveUtils.setString(KeyUtils.user_name,loginBean.getData().getUserInfo().getNickname());
+                            SaveUtils.setString(KeyUtils.user_login_token,loginBean.getData().getUserInfo().getLogin_token());
+                            SaveUtils.setString(KeyUtils.user_phone,loginBean.getData().getUserInfo().getPhone());
+                            SaveUtils.setString(KeyUtils.user_regcode,loginBean.getData().getUserInfo().getRegcode());
+                            SaveUtils.setString(KeyUtils.user_UID,loginBean.getData().getUserInfo().getUID());
+                            SaveUtils.setString(KeyUtils.user_time,loginBean.getData().getUserInfo().getRegtime());
+                        }
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        getActivity().finish();
+                    }else {
+                        MyUtils.showToast(getActivity(),errorMsg);
+                    }
+                }catch (Exception e){
+                    MyUtils.Loge(TAG,"e:"+e.getMessage());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(getActivity(),"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String ,String > map=new HashMap<>();
+                map.put("phone",register_phone.getText().toString().trim());
+                map.put("password",register_pwd1.getText().toString().trim());
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
             }
         };
         Volley.newRequestQueue(getActivity()).add(stringRequest);

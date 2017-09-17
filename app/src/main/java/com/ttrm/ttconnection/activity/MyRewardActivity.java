@@ -89,6 +89,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         reward_btn_circle.setOnClickListener(this);
         reward_btn_qzone=(Button)findViewById(R.id.reward_btn_qzone);
         reward_btn_qzone.setOnClickListener(this);
+        setMenuBtn("邀请明细",this,InviteActivity.class);
     }
 
     @Override
