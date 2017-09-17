@@ -43,7 +43,7 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initViews() {
-        setToolBar("修改昵称");
+        setToolBar("我的昵称");
         edit_name_et=(EditText)findViewById(R.id.edit_name_et);
         edit_name_btn=(Button)findViewById(R.id.edit_name_btn);
         edit_name_btn.setOnClickListener(this);
@@ -54,11 +54,11 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()){
             case R.id.edit_name_btn:
                 if(TextUtils.isEmpty(edit_name_et.getText().toString().trim())){
-                    MyUtils.showToast(EditNameActivity.this,"请输入昵称");
+                    MyUtils.showToast(EditNameActivity.this,"请输入您的昵称");
                     return;
                 }
-                if(edit_name_et.getText().length()<4||edit_name_et.getText().length()>16){
-                    MyUtils.showToast(EditNameActivity.this,"昵称限制为4到16个字符");
+                if(edit_name_et.getText().length()<2||edit_name_et.getText().length()>8){
+                    MyUtils.showToast(EditNameActivity.this,"姓名限制为2到8个字");
                     return;
                 }
                 editName();
@@ -78,6 +78,7 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
                     if(errorCode==1){
+                        SaveUtils.setString(KeyUtils.user_name,edit_name_et.getText().toString().trim());
                         finish();
                     }
                     String errorMsg=jsonObject.getString("errorMsg");

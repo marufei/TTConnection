@@ -1,6 +1,7 @@
 package com.ttrm.ttconnection.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.entity.BaoJiStatusBean;
 import com.ttrm.ttconnection.http.HttpAddress;
@@ -110,7 +112,22 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 getAddStatus();
                 break;
             case R.id.info_ll_bj:
-                getBjStatus();
+                if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                    getBjStatus();
+                }else {
+                    showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(UserInfoActivity.this, EditNameActivity.class));
+                            dialogInterface.dismiss();
+                        }
+                    }, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                }
                 break;
             case R.id.info_ll_diamond:      //获取钻石
                 startActivity(new Intent(this,SignActivity.class));
@@ -121,6 +138,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             case R.id.info_ll_sm:
                 Intent intent = new Intent(this, WebActivity.class);
                 intent.putExtra("URL",HttpAddress.URL_H5_READ);
+                intent.putExtra("title","新手教学");
                 startActivity(intent);
                 break;
             case R.id.info_ll_name:     //修改昵称
@@ -131,8 +149,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
                 break;
             case R.id.info_ll_custom:       //联系客服
-                Intent intent1 = new Intent(this, SelectFriendActivity.class);
+                Intent intent1 = new Intent(this, WebActivity.class);
                 intent1.putExtra("URL",HttpAddress.URL_H5_DELETE);
+                intent1.putExtra("title","咨询客服");
                 startActivity(intent1);
 
                 break;
@@ -148,6 +167,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         getDiamondCount();
+        if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+            info_tv_bmdl.setText(SaveUtils.getString(KeyUtils.user_name));
+        }
     }
 
     /**
@@ -175,7 +197,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                                     }
                                 });
                             }
-                            if(bjStatus.getData().getStatus()==2){
+                            if(bjStatus.getData().getStatus()==0){
                                 //无爆机
                                 startActivity(new Intent(UserInfoActivity.this, BaoJiActivity.class));
                             }

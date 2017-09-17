@@ -49,7 +49,22 @@ public class BDAddLvAdapter extends BaseAdapter {
         }else {
             viewHolder=(ViewHolder)convertView.getTag();
         }
-        viewHolder.tv_num.setText("被加"+listBean.get(position).getAddcount()+"人左右（体验）");
+        switch (position){
+            case 0:
+                viewHolder.tv_num.setText("被加"+listBean.get(position).getAddcount()+"人左右（体验）");
+                break;
+            case 1:
+                viewHolder.tv_num.setText("保底被加"+listBean.get(position).getAddcount()+"人");
+                break;
+            case 2:
+                viewHolder.tv_num.setText("保底被加"+listBean.get(position).getAddcount()+"人（赠送1680钻）");
+                break;
+            default:
+                viewHolder.tv_num.setText("保底被加"+listBean.get(position).getAddcount()+"人（赠送1680钻）");
+                break;
+
+        }
+//        viewHolder.tv_num.setText("被加"+listBean.get(position).getAddcount()+"人左右（体验）");
         viewHolder.tv_price.setText("￥"+listBean.get(position).getDiamondcount());
         if(listBean.get(position).isSelect()){
             viewHolder.tv_num.setBackgroundResource(R.drawable.boder_org);

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
@@ -31,6 +32,7 @@ import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.PayUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.view.ListViewForScrollview;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 import com.ttrm.ttconnection.wxapi.WXPayEntryActivity;
 
@@ -45,7 +47,7 @@ import java.util.jar.Manifest;
  */
 public class BDAddActivity extends BaseActivity implements View.OnClickListener,WXPayEntryActivity.OnSuccessListenner {
 
-    private ListView bdadd_lv;
+    private ListViewForScrollview bdadd_lv;
     private String TAG="BDAddActivity";
     private BDAddBean bdAddBean;
     private BDAddLvAdapter adapter;
@@ -54,6 +56,8 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     private ImageView bdadd_wx;
     private String payType;
     private int pos=-1;
+    private LinearLayout bdadd_ll_alipay;
+    private LinearLayout bdadd_ll_wx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,13 +146,17 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
 
     private void initViews() {
         setToolBar("被动加粉");
-        bdadd_lv=(ListView)findViewById(R.id.bdadd_lv);
+        bdadd_lv=(ListViewForScrollview) findViewById(R.id.bdadd_lv);
         bdadd_open=(Button)findViewById(R.id.bdadd_open);
         bdadd_open.setOnClickListener(this);
         bdadd_alipay=(ImageView)findViewById(R.id.bdadd_alipay);
         bdadd_alipay.setOnClickListener(this);
         bdadd_wx=(ImageView)findViewById(R.id.bdadd_wx);
         bdadd_wx.setOnClickListener(this);
+        bdadd_ll_alipay=(LinearLayout)findViewById(R.id.bdadd_ll_alipay);
+        bdadd_ll_alipay.setOnClickListener(this);
+        bdadd_ll_wx=(LinearLayout)findViewById(R.id.bdadd_ll_wx);
+        bdadd_ll_wx.setOnClickListener(this);
 
     }
 
@@ -166,11 +174,19 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
                 }
                 openAdd();
                 break;
-            case R.id.bdadd_alipay:
+//            case R.id.bdadd_alipay:
+//                payType="2";
+//                setlectType(payType);
+//                break;
+//            case R.id.bdadd_wx:
+//                payType="1";
+//                setlectType(payType);
+//                break;
+            case R.id.bdadd_ll_alipay:
                 payType="2";
                 setlectType(payType);
                 break;
-            case R.id.bdadd_wx:
+            case R.id.bdadd_ll_wx:
                 payType="1";
                 setlectType(payType);
                 break;

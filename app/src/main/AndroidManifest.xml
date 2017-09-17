@@ -128,7 +128,8 @@
         <activity android:name=".activity.BaoJiActivity" />
         <activity android:name=".activity.LocationAddActivity" />
         <activity android:name=".activity.MyRewardActivity" />
-        <activity android:name=".activity.SelectFriendActivity"></activity>
+        <activity android:name=".activity.SelectFriendActivity" />
+        <activity android:name=".activity.WithdrawCashInfoActivity"></activity>
     </application>
 
 </manifest>

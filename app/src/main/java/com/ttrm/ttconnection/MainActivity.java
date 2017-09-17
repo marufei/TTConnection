@@ -161,6 +161,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView main_tv_bd;
     private TextView main_tv_bj;
     private int status;   // 被动加粉状态
+    private TextView mian_tv_sign;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -330,6 +332,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         main_one_num=(TextView)findViewById(R.id.main_one_num);
         main_tv_bd=(TextView)findViewById(R.id.main_tv_bd);
         main_tv_bj=(TextView)findViewById(R.id.main_tv_bj);
+        mian_tv_sign=(TextView)findViewById(R.id.mian_tv_sign);
+        mian_tv_sign.setOnClickListener(this);
 
     }
 
@@ -452,6 +456,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.jcdshy_linear://检测单删好友
                 Intent intent = new Intent(this, WebActivity.class);
                 intent.putExtra("URL",HttpAddress.URL_H5_DELETE);
+                intent.putExtra("title","检测单删好友");
                 startActivity(intent);
                 break;
             case R.id.main_cash:
@@ -459,6 +464,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.main_invite:
                 startActivity(new Intent(MainActivity.this, MyRewardActivity.class));
+                break;
+            case R.id.mian_tv_sign:
+                startActivity(new Intent(MainActivity.this,SignActivity.class));
                 break;
         }
     }
@@ -680,6 +688,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if(!TextUtils.isEmpty(bannerBean.getData().getBannerList().get(position).getLink())){
                             Intent intent=new Intent(MainActivity.this,WebActivity.class);
                             intent.putExtra("URL",bannerBean.getData().getBannerList().get(position).getLink());
+                            intent.putExtra("title","详情");
                             startActivity(intent);
                         }
                         break;
@@ -867,12 +876,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (requestCode) {
             case 0x1:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Log.v("stones", "权限回调--获取权限失败");
-                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                    MyUtils.Loge("stones", "权限回调--获取权限失败");
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许添添人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Toast.makeText(MainActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
-                    Log.v("stones", "权限回调--获取权限成功");
+                    MyUtils.Loge("stones", "权限回调--获取权限成功");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -891,7 +900,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case 0x2:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许添添人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
                 } else {
                     new Thread(new Runnable() {
                         @Override

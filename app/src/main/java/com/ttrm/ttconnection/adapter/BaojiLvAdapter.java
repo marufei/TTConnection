@@ -51,8 +51,10 @@ public class BaojiLvAdapter extends BaseAdapter {
         viewHolder.tv_item.setText(listBeen.get(i).getDiamondcount()+"颗钻石，爆机"+listBeen.get(i).getAddcount()+"人左右");
         if(listBeen.get(i).isType()){
             viewHolder.tv_item.setBackgroundResource(R.color.white_F0F0F0);
+            viewHolder.tv_item.setTextColor(context.getResources().getColor(R.color.red30));
         }else {
             viewHolder.tv_item.setBackgroundResource(R.color.white);
+            viewHolder.tv_item.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         }
         return view;
     }

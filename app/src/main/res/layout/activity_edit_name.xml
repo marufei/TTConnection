@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:maxLength="16"
-            android:hint="编辑昵称"
+            android:hint="请输入您的姓名"
             android:textSize="13sp"
             android:background="@null"/>
         <View
@@ -33,7 +33,7 @@
             android:textColor="@color/gray_6"
             android:layout_marginTop="10dp"
             android:textSize="10sp"
-            android:text="限4到16个字符"/>
+            android:text="建议输入您的姓名，方便别人加您的时候，可以极大增加通过概率"/>
         <Button
             android:id="@+id/edit_name_btn"
             android:layout_width="match_parent"

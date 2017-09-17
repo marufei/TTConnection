@@ -151,10 +151,10 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 dialog.show();
                 break;
             case R.id.location_btn_sure:
-                if(TextUtils.isEmpty(location)){
-                    MyUtils.showToast(LocationAddActivity.this,"请先选择地区");
-                    return;
-                }
+//                if(TextUtils.isEmpty(location)){
+//                    MyUtils.showToast(LocationAddActivity.this,"请先选择地区");
+//                    return;
+//                }
                 getCanon();
                 break;
         }

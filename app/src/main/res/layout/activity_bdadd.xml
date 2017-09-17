@@ -7,188 +7,201 @@
     android:orientation="vertical"
     tools:context="com.ttrm.ttconnection.activity.BDAddActivity">
     <include layout="@layout/toolbar_layout"/>
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@mipmap/sign_bac">
+        android:layout_height="match_parent">
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:background="@mipmap/sign_bac">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="被动加粉"
+                            android:textStyle="bold"
+                            android:textColor="@color/gray_3"
+                            android:textSize="25sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:text="赠1680钻"
+                            android:textColor="@color/blue_285"
+                            android:textSize="13sp"
+                            android:id="@+id/textView4" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/vector_drawable_zuanshi"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray_b2"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="保底加"
+                            android:layout_marginTop="2dp"
+                            android:textSize="14sp"
+                            android:textColor="@color/gray_6" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2000"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/red30"
+                            android:textStyle="bold"
+                            android:textSize="25sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="人"
+                            android:layout_marginTop="2dp"
+                            android:textSize="14sp"
+                            android:textColor="@color/gray_6" />
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/vector_drawable_add_bk"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <com.ttrm.ttconnection.view.ListViewForScrollview
+                android:id="@+id/bdadd_lv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:divider="#00000000"
+                android:dividerHeight="5dp"
+                android:background="@color/white"/>
+
+            <LinearLayout
+                android:id="@+id/bdadd_ll_wx"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="被动加粉"
-                    android:textColor="@color/gray_3"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="赠1280钻"
-                    android:textColor="@color/blue_285"
-                    android:textSize="13sp"
-                    android:id="@+id/textView4" />
-
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/vector_drawable_zuanshi"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/pay_wx"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="微信支付"
+                    android:textColor="@color/gray_3"/>
+                <ImageView
+                    android:id="@+id/bdadd_wx"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/vector_drawable_pay_n"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray_b2"/>
+                android:background="@color/gray_f3"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/bdadd_ll_alipay"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:gravity="center"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="保底加"
-                    android:layout_marginTop="2dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/gray_6" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2000"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/red30"
-                    android:textSize="18sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="人"
-                    android:layout_marginTop="2dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/gray_6" />
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/vector_drawable_add_bk"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/pay_alipay"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="支付宝支付"
+                    android:textColor="@color/gray_3"/>
+                <ImageView
+                    android:id="@+id/bdadd_alipay"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/vector_drawable_pay_n"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_f3"/>
+            <Button
+                android:id="@+id/bdadd_open"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="立即开通"
+                android:background="@drawable/btn_purple"
+                android:textColor="@color/white"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bac_gray_f3">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.被动加粉128元，保底被加2000人"
+                    android:textColor="#444444"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.保底被加2000人脉，再送1280钻石。马上开启爆机"
+                    android:layout_marginTop="3dp"
+                    android:textColor="#444444"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3.注册天天人脉的手机号与微信绑定的手机号一致，被动加粉才会有大量人加。"
+                    android:layout_marginTop="3dp"
+                    android:textColor="#444444"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.请到微信设置-我-设置-隐私-添加我的方式-手机号打开；加我为朋友时需验证关闭。"
+                    android:layout_marginTop="3dp"
+                    android:textColor="#444444"/>
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-    <ListView
-        android:id="@+id/bdadd_lv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:divider="#00000000"
-        android:dividerHeight="0dip"
-        android:background="@color/white"/>
+    </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/pay_wx"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="微信支付"
-            android:textColor="@color/gray_3"/>
-        <ImageView
-            android:id="@+id/bdadd_wx"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/vector_drawable_pay_n"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_f3"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/pay_alipay"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="支付宝支付"
-            android:textColor="@color/gray_3"/>
-        <ImageView
-            android:id="@+id/bdadd_alipay"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/vector_drawable_pay_n"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_f3"/>
-
-    <Button
-        android:id="@+id/bdadd_open"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="10dp"
-        android:gravity="center"
-        android:text="立即开通"
-        android:background="@drawable/btn_purple"
-        android:textColor="@color/white"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/bac_gray_f3">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1.被动加粉128元，保底被加2000人"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2.保底被加2000人脉，再送1280钻石。马上开启爆机"
-            android:layout_marginTop="3dp"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3.注册天天人脉的手机号与微信绑定的手机号一致，被动加粉才会有大量人加。"
-            android:layout_marginTop="3dp"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4.请到微信设置-我-设置-隐私-添加我的方式-手机号打开；加我为朋友时需验证关闭。"
-            android:layout_marginTop="3dp"
-            android:textColor="#444444"/>
-    </LinearLayout>
 
 
 </LinearLayout>

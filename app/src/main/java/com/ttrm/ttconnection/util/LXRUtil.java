@@ -48,13 +48,13 @@ public class LXRUtil {
             values.clear();
             values.put(ContactsContract.Contacts.Data.RAW_CONTACT_ID, rawContactId);
             values.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);// 内容类型
-            values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, "天天人脉-" + name);
+            values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, name);
             mContext.getContentResolver().insert(ContactsContract.Data.CONTENT_URI,
                     values);
             values.clear();
             values.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Note.CONTENT_ITEM_TYPE);
             values.put(ContactsContract.Contacts.Data.RAW_CONTACT_ID, rawContactId);
-            values.put(ContactsContract.CommonDataKinds.Note.NOTE, "天天人脉");
+            values.put(ContactsContract.CommonDataKinds.Note.NOTE, "");
             mContext.getContentResolver().insert(ContactsContract.Data.CONTENT_URI,
                     values);
             // 往data表插入电话数据
@@ -157,7 +157,7 @@ public class LXRUtil {
                     null);
             while (cursor.moveToNext()) {
                 if (cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)) != null) {
-                    if (cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)).contains("天天人脉")) {
+                    if (cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)).contains("A-")) {
                         nameList.add(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
                     }
                 }

@@ -31,8 +31,11 @@ public class WebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ActivityUtil.add(this);
-        setToolBar("");
         url = getIntent().getStringExtra("URL");
+        String title=getIntent().getStringExtra("title");
+        if(!TextUtils.isEmpty(title)) {
+            setToolBar(title);
+        }
         webView = (WebView) findViewById(R.id.webview);
         Intent intent = getIntent();
         urlShow = intent.getStringExtra("URL");

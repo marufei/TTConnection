@@ -14,23 +14,33 @@
         android:gravity="center">
         <ImageView
             android:id="@+id/main_info"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/vector_drawable_main_user" />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:text="添添人脉"/>
+        <TextView
+            android:id="@+id/mian_tv_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="签到"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
     </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:src="@mipmap/main_bac2"
-        android:scaleType="fitXY"/>
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:src="@mipmap/main_bac2"-->
+        <!--android:scaleType="fitXY"/>-->
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -84,6 +94,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             android:text="一键加粉"/>
                         <TextView
                             android:id="@+id/main_one_num"
@@ -138,6 +149,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             android:text="地区加粉"/>
                         <TextView
                             android:id="@+id/main_location_num"
@@ -194,6 +206,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             android:text="爆机"/>
                         <TextView
                             android:id="@+id/main_tv_bj"
@@ -212,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:layout_marginTop="8dp"
-                        android:text="爆机全免费"
+                        android:text="每次爆机20人左右，爆机免费使用"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
@@ -250,6 +263,7 @@
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:text="被动加粉"
+                            android:textStyle="bold"
                             android:id="@+id/textView2" />
 
                         <TextView
@@ -268,7 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="一个月保底被加2000人，再送1280钻"
+                        android:text="保底被加2000人，再送1680钻"
                         android:textColor="@color/white"
                         android:textSize="13sp"/>
                 </LinearLayout>
@@ -305,6 +319,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             android:text="清除通讯录"/>
                         <TextView
                             android:layout_width="wrap_content"
@@ -403,6 +418,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             android:text="检测单删好友"/>
                         <TextView
                             android:layout_width="wrap_content"
@@ -453,6 +469,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             android:text="每日签到"/>
                         <TextView
                             android:layout_width="wrap_content"

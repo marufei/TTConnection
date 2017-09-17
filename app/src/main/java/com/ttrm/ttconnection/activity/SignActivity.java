@@ -62,7 +62,7 @@ import cn.sharesdk.wechat.moments.WechatMoments;
  */
 public class SignActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView sign_tv_zs;
+    private static TextView sign_tv_zs;
     private TextView sign_tv_regcode;
     private TextView sign_tv_sign;
     private TextView sign_tv_tb;
@@ -77,7 +77,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private Platform plat;
     private SignStatusBean signStatusBean;
     private ShareInfoBean shareInfoBean;
-    private TextView sign_tv_add;
+    private static TextView sign_tv_add;
     private static List<CanonBean.DataBean.PhoneListBean> dataList = new ArrayList<CanonBean.DataBean.PhoneListBean>();//一键加粉数据集合
     private String addType;
     private static SignActivity signActivity;
@@ -96,6 +96,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 //                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                     dlg.dismiss();
+                    selectDiamonds();
                     MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity,R.layout.dialog_location_success);
                     myAdvertisementView.showDialog();
                     myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
@@ -137,6 +138,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 //                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                     dlg.dismiss();
+                    selectDiamonds();
                     MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity,R.layout.dialog_location_success);
                     myAdvertisementView.showDialog();
                     myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
@@ -229,7 +231,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 查询钻石数量
      */
-    public void selectDiamonds(){
+    public static void selectDiamonds(){
         String url= HttpAddress.BASE_URL+HttpAddress.SELECT_DIAMONDS;
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -242,7 +244,11 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
                         String diamondCount=jsonObject1.getString("diamondCount");
                         String todayCount=jsonObject1.getString("todayCount");
-                        sign_tv_add.setText("+"+todayCount);
+                        if(todayCount.equals("null")) {
+                            sign_tv_add.setText("+0");
+                        }else {
+                            sign_tv_add.setText("+" + todayCount);
+                        }
                         sign_tv_zs.setText(diamondCount);
                     }
                 }catch (Exception e){
@@ -252,7 +258,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(SignActivity.this,"网络有问题");
+                MyUtils.showToast(signActivity,"网络有问题");
             }
         }){
             @Override
@@ -264,7 +270,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
-        Volley.newRequestQueue(SignActivity.this).add(stringRequest);
+        Volley.newRequestQueue(signActivity).add(stringRequest);
     }
 
     /**
