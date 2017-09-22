@@ -61,7 +61,9 @@ import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static TextView dialog_loading_num;
     private static AlertDialog dlg;
+    private static AlertDialog dlg1;
     private Button btn_main;
     private ImageView main_info;
     private static String TAG = "MainActivity";
@@ -110,6 +113,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                         dlg.dismiss();
+                    getNums();
                         MyAdvertisementView myAdvertisementView = new MyAdvertisementView(ma,R.layout.dialog_location_success);
                         myAdvertisementView.showDialog();
                         myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
@@ -131,6 +135,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         });
                     break;
                 case KeyUtils.DELETE_CODE:
+                    dlg1.dismiss();
                     Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
                     break;
                 case KeyUtils.LOADING_CODE:
@@ -155,9 +160,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView main_income;
     private BaoJiStatusBean bjStatus;
     private Button main_invite;
-    private ListNumBean listNumBean;
-    private TextView main_location_num;
-    private TextView main_one_num;
+    private static ListNumBean listNumBean;
+    private static TextView main_location_num;
+    private static TextView main_one_num;
     private TextView main_tv_bd;
     private TextView main_tv_bj;
     private int status;   // 被动加粉状态
@@ -174,6 +179,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initData();
         //假的加载动画
         showLoading();
+        //删除动画
+        deleteDialog();
     }
 
     private void initData() {
@@ -240,6 +247,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 假的加载动画
      */
     private static void showLoading() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(ma);
+        LayoutInflater inflater=ma.getLayoutInflater();
+        final View layout=inflater.inflate(R.layout.dialog_delete,null);
+        builder.setView(layout);
+        dlg1=builder.create();
+        dlg1.setCanceledOnTouchOutside(false);
+    }
+    /**
+     * 假的加载动画
+     */
+    private static void deleteDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(ma);
         LayoutInflater inflater=ma.getLayoutInflater();
         final View layout=inflater.inflate(R.layout.dialog_loading,null);
@@ -443,6 +461,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(MainActivity.this, LocationAddActivity.class));
                 break;
             case R.id.clear_linear://清除通讯录
+                dlg1.show();
                 MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_clear);
                 myAdvertisementView.showDialog();
                 myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
@@ -641,6 +660,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         bannerBean = gson.fromJson(response, BannerBean.class);
                         if(bannerBean!=null){
                             setBanners();
+                            setAdds();
                         }
 
                     }
@@ -663,6 +683,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+    }
+
+    /**
+     * 广告弹窗
+     */
+    private void setAdds() {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        String date=sdf.format(new Date());
+        MyUtils.Loge(TAG,"当前日期："+date);
+        if(SaveUtils.getString(KeyUtils.TIME)!=null&&SaveUtils.getString(KeyUtils.TIME).equals(date)){
+        }else {
+            final MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_adds);
+            myAdvertisementView.showDialog();
+            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                @Override
+                public void onEvent() {
+                    Intent intent=new Intent(MainActivity.this,WebActivity.class);
+                    intent.putExtra("URL",bannerBean.getData().getPopBannerList().get(0).getLink());
+                    intent.putExtra("title","详情");
+                    startActivity(intent);
+                    myAdvertisementView.dismiss();
+                }
+            });
+        }
+        SaveUtils.setString(KeyUtils.TIME,date);
     }
 
     /**
@@ -824,7 +869,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      *剩余加粉数量
      */
-    private void getNums(){
+    private static void getNums(){
         String url=HttpAddress.BASE_URL+HttpAddress.GET_LAST_NUM;
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -856,7 +901,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(MainActivity.this,"网络有问题");
+                MyUtils.showToast(ma,"网络有问题");
             }
         }){
             @Override
@@ -868,7 +913,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
-        Volley.newRequestQueue(this).add(stringRequest);
+        Volley.newRequestQueue(ma).add(stringRequest);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

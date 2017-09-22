@@ -17,4 +17,5 @@ public class KeyUtils {
     public static String user_regcode="user_regcode";
     public static String user_UID="user_UID";
     public static String user_login_token="user_login_token";
+    public static String TIME="time";
 }

@@ -378,7 +378,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+5"
+                            android:text="+10"
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -388,7 +388,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天有两次奖励机会，每次奖励10颗钻石"
+                        android:text="每天有一次奖励机会，每次奖励10颗钻石"
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>
@@ -447,7 +447,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天累计浏览5分钟奖励5颗钻石"
+                        android:text="每天有两次奖励机会，每次奖励5颗钻石"
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>
@@ -496,7 +496,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+5"
+                            android:text="+10"
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -506,7 +506,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天累计浏览5分钟奖励5颗钻石"
+                        android:text="每天有一次奖励机会，每次奖励10颗钻石"
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>

@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
     android:gravity="center"
+    android:padding="15dp"
     android:orientation="vertical">
 
     <com.wang.avi.AVLoadingIndicatorView
@@ -24,22 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正在导入..."
-            android:textColor="@color/gray_3"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/dialog_loading_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/gray_3"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/50"
+            android:text="正在删除..."
             android:textColor="@color/gray_3"
             android:textSize="13sp" />
     </LinearLayout>

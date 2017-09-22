@@ -39,7 +39,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="兑换码是由天天人脉官方制作发售，用于售后服务"
+        android:text="兑换码是由添添人脉官方制作发售，用于售后服务"
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:padding="10dp"

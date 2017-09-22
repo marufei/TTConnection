@@ -281,7 +281,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="6dp"
                     android:textColor="@color/gray_3"
-                    android:text="我的姓名"/>
+                    android:text="我的昵称"/>
                 <TextView
                     android:id="@+id/info_tv_bmdl"
                     android:layout_width="0dp"

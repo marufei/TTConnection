@@ -9,7 +9,7 @@ public class ShareInfoBean {
     /**
      * errorCode : 1
      * errorMsg : 获取分享配置成功!
-     * data : {"config":{"id":"2","title":"分享内容","content":"分享内存","url":"www.baidu.com","imgurl":"www.baidu.com"}}
+     * data : {"config":{"id":"2","title":"添添人脉为你添添人脉","content":"不好用算我的！能对你温柔如水，也能让你三观尽毁，上添添人脉","url":"http://www.tiantianrenmai.com/tt/index.php/Home/Index/index","imgurl":"http://www.tiantianrenmai.com/web/logo.jpg","imgurl1":"http://www.tiantianrenmai.com/web/ulogo.jpg"}}
      */
 
     private int errorCode;
@@ -42,7 +42,7 @@ public class ShareInfoBean {
 
     public static class DataBean {
         /**
-         * config : {"id":"2","title":"分享内容","content":"分享内存","url":"www.baidu.com","imgurl":"www.baidu.com"}
+         * config : {"id":"2","title":"添添人脉为你添添人脉","content":"不好用算我的！能对你温柔如水，也能让你三观尽毁，上添添人脉","url":"http://www.tiantianrenmai.com/tt/index.php/Home/Index/index","imgurl":"http://www.tiantianrenmai.com/web/logo.jpg","imgurl1":"http://www.tiantianrenmai.com/web/ulogo.jpg"}
          */
 
         private ConfigBean config;
@@ -58,10 +58,11 @@ public class ShareInfoBean {
         public static class ConfigBean {
             /**
              * id : 2
-             * title : 分享内容
-             * content : 分享内存
-             * url : www.baidu.com
-             * imgurl : www.baidu.com
+             * title : 添添人脉为你添添人脉
+             * content : 不好用算我的！能对你温柔如水，也能让你三观尽毁，上添添人脉
+             * url : http://www.tiantianrenmai.com/tt/index.php/Home/Index/index
+             * imgurl : http://www.tiantianrenmai.com/web/logo.jpg
+             * imgurl1 : http://www.tiantianrenmai.com/web/ulogo.jpg
              */
 
             private String id;
@@ -69,6 +70,7 @@ public class ShareInfoBean {
             private String content;
             private String url;
             private String imgurl;
+            private String imgurl1;
 
             public String getId() {
                 return id;
@@ -108,6 +110,14 @@ public class ShareInfoBean {
 
             public void setImgurl(String imgurl) {
                 this.imgurl = imgurl;
+            }
+
+            public String getImgurl1() {
+                return imgurl1;
+            }
+
+            public void setImgurl1(String imgurl1) {
+                this.imgurl1 = imgurl1;
             }
         }
     }

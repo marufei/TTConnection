@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:maxLength="16"
-            android:hint="请输入您的姓名"
+            android:hint="编辑昵称"
             android:textSize="13sp"
             android:background="@null"/>
         <View
@@ -33,13 +33,13 @@
             android:textColor="@color/gray_6"
             android:layout_marginTop="10dp"
             android:textSize="10sp"
-            android:text="建议输入您的姓名，方便别人加您的时候，可以极大增加通过概率"/>
+            android:text="建议输入您的姓名，不要出现广告类词汇，别人加您的时候，才会有大量的被加"/>
         <Button
             android:id="@+id/edit_name_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="确定"
+            android:text="完成"
             android:background="@drawable/btn_purple"
             android:textColor="@color/white"/>
     </LinearLayout>

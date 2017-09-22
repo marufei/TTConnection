@@ -9,10 +9,11 @@ import java.util.List;
 
 public class BannerBean implements Serializable {
 
+
     /**
      * errorCode : 1
      * errorMsg : 获取banner成功!
-     * data : {"bannerList":[{"id":"1","url":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg","orders":"100","type":"1","link":"http://www.baidu.com","location":"1"},{"id":"2","url":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg","orders":"99","type":"1","link":"http://www.baidu.com","location":"1"},{"id":"3","url":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg","orders":"98","type":"1","link":"http://www.baidu.com","location":"1"},{"id":"4","url":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg","orders":"97","type":"1","link":"http://www.baidu.com","location":"1"},{"id":"5","url":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg","orders":"96","type":"2","link":"LoginActivity","location":"1"}],"popBannerList":[{"id":"6","url":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg","orders":"96","type":"1","link":"LoginActivity","location":"2"}]}
+     * data : {"bannerList":[{"id":"15","url":"http://www.tiantianrenmai.com/tt/Public/Upload/goodsimg/20170912/59b780e976b52.jpg","orders":"0","type":"1","link":"http://mp.weixin.qq.com/s/L-GPyxtYaZ4-gY2qH79VMg","location":"1","localurl":"/tt/Public/Upload/goodsimg/20170912/59b780e976b52.jpg"},{"id":"17","url":"http://www.tiantianrenmai.com/tt/Public/Upload/goodsimg/20170921/59c37e3c1b27a.jpg","orders":"0","type":"1","link":"https://mp.weixin.qq.com/s/1jHx7pwoB-enMEJHplFFXQ","location":"1","localurl":"/tt/Public/Upload/goodsimg/20170921/59c37e3c1b27a.jpg"}],"popBannerList":[{"id":"22","url":"http://www.tiantianrenmai.com/tt/Public/Upload/goodsimg/20170921/59c37bdb5830a.png","orders":"2","type":"1","link":"http://www.baidu.com","location":"2","localurl":"/tt/Public/Upload/goodsimg/20170921/59c37bdb5830a.png"}]}
      */
 
     private int errorCode;
@@ -65,12 +66,13 @@ public class BannerBean implements Serializable {
 
         public static class BannerListBean {
             /**
-             * id : 1
-             * url : https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg
-             * orders : 100
+             * id : 15
+             * url : http://www.tiantianrenmai.com/tt/Public/Upload/goodsimg/20170912/59b780e976b52.jpg
+             * orders : 0
              * type : 1
-             * link : http://www.baidu.com
+             * link : http://mp.weixin.qq.com/s/L-GPyxtYaZ4-gY2qH79VMg
              * location : 1
+             * localurl : /tt/Public/Upload/goodsimg/20170912/59b780e976b52.jpg
              */
 
             private String id;
@@ -79,6 +81,7 @@ public class BannerBean implements Serializable {
             private String type;
             private String link;
             private String location;
+            private String localurl;
 
             public String getId() {
                 return id;
@@ -126,17 +129,26 @@ public class BannerBean implements Serializable {
 
             public void setLocation(String location) {
                 this.location = location;
+            }
+
+            public String getLocalurl() {
+                return localurl;
+            }
+
+            public void setLocalurl(String localurl) {
+                this.localurl = localurl;
             }
         }
 
         public static class PopBannerListBean {
             /**
-             * id : 6
-             * url : https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2998952575,515779096&fm=26&gp=0.jpg
-             * orders : 96
+             * id : 22
+             * url : http://www.tiantianrenmai.com/tt/Public/Upload/goodsimg/20170921/59c37bdb5830a.png
+             * orders : 2
              * type : 1
-             * link : LoginActivity
+             * link : http://www.baidu.com
              * location : 2
+             * localurl : /tt/Public/Upload/goodsimg/20170921/59c37bdb5830a.png
              */
 
             private String id;
@@ -145,6 +157,7 @@ public class BannerBean implements Serializable {
             private String type;
             private String link;
             private String location;
+            private String localurl;
 
             public String getId() {
                 return id;
@@ -192,6 +205,14 @@ public class BannerBean implements Serializable {
 
             public void setLocation(String location) {
                 this.location = location;
+            }
+
+            public String getLocalurl() {
+                return localurl;
+            }
+
+            public void setLocalurl(String localurl) {
+                this.localurl = localurl;
             }
         }
     }

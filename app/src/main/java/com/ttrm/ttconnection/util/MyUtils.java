@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,7 +26,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -776,6 +781,33 @@ public class MyUtils {
         }
 
         return pi;
+    }
+
+    /**
+     * 将网络图片转换成bitmap
+     * @param path
+     * @return
+     * @throws Exception
+     */
+    public static Bitmap getImage(String path) throws Exception{
+        URL url = new URL(path);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        InputStream is = conn.getInputStream();
+        return BitmapFactory.decodeStream(is);
+    }
+
+    /**
+     * 将两张图片合成一张图片
+     * @param firstBitmap
+     * @param secondBitmap
+     * @return
+     */
+    public static Bitmap mergeBitmap(Bitmap firstBitmap, Bitmap secondBitmap) {
+        Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth(), firstBitmap.getHeight(),firstBitmap.getConfig());
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(firstBitmap, new Matrix(), null);
+        canvas.drawBitmap(secondBitmap, 25, 900, null);
+        return bitmap;
     }
 
 }
