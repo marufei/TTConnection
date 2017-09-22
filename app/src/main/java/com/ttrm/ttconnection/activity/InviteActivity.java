@@ -87,6 +87,7 @@ public class InviteActivity extends BaseActivity {
                         if(inviteBean.getErrorCode()==1){
                             setViews();
                         }
+                        ActivityUtil.toLogin(InviteActivity.this, inviteBean.getErrorCode());
                     }
                 }catch (Exception e){
 

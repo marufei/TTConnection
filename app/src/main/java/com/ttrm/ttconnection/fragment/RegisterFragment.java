@@ -23,9 +23,11 @@ import com.google.gson.Gson;
 import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.activity.ForgetPwdActivity;
+import com.ttrm.ttconnection.activity.UserInfoActivity;
 import com.ttrm.ttconnection.entity.LoginBean;
 import com.ttrm.ttconnection.entity.RegisterBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.CodeCountDownTimer;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
@@ -154,6 +156,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         sms_token=jsonObject1.getString("sms_token");
                         MyUtils.Loge(TAG,"SMS_TOKEN:"+sms_token);
                         mCodeCountDownTimer.start();
+                    }else if(errorCode==40001){
+                        ActivityUtil.toLogin(getActivity(), errorCode);
                     }else {
                         MyUtils.showToast(getActivity(),errorMsg);
                     }
@@ -202,6 +206,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 //
 //                        }
                         login();
+                    }else if(errorCode==40001){
+                        ActivityUtil.toLogin(getActivity(), errorCode);
                     }else {
                         MyUtils.showToast(getActivity(),errorMsg);
                     }
@@ -258,6 +264,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         }
                         startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
+                    }else if(errorCode==40001){
+                        ActivityUtil.toLogin(getActivity(), errorCode);
                     }else {
                         MyUtils.showToast(getActivity(),errorMsg);
                     }

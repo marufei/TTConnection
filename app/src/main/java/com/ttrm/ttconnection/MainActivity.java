@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +38,6 @@ import com.ttrm.ttconnection.activity.EditNameActivity;
 import com.ttrm.ttconnection.activity.LocationAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.MyRewardActivity;
-import com.ttrm.ttconnection.activity.SelectFriendActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
 import com.ttrm.ttconnection.activity.UserInfoActivity;
 import com.ttrm.ttconnection.activity.WebActivity;
@@ -67,10 +65,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.R.id.candidatesArea;
-import static android.R.id.message;
-import static android.R.id.switch_widget;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -221,6 +215,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             }
                         }
                     }
+                    ActivityUtil.toLogin(MainActivity.this, errorCode);
                 }catch (Exception e){
 
                 }
@@ -288,6 +283,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             main_account.setText(recomeInfo.getData().getBalance());
                         }
                     }
+                    ActivityUtil.toLogin(MainActivity.this, errorCode);
                 }catch (Exception e){
 
                 }
@@ -506,25 +502,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if (bjStatus.getErrorCode()==1){
                             if (bjStatus.getData().getStatus()==1){
                                 //爆机中
-
                                 main_tv_bj.setVisibility(View.VISIBLE);
                                 main_tv_bj.setText("正在爆机中...");
-//                                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this,R.layout.dialog_bj_ing);
-//                                myAdvertisementView.showDialog();
-//                                myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-//                                    @Override
-//                                    public void onEvent() {
-//                                        MyUtils.Loge(TAG,"朕知道了");
-//                                    }
-//                                });
                             }else {
                                 main_tv_bj.setVisibility(View.GONE);
                             }
-//                            if(bjStatus.getData().getStatus()==0){
-//                                //无爆机
-//                                startActivity(new Intent(MainActivity.this, BaoJiActivity.class));
-//                            }
                         }
+                        ActivityUtil.toLogin(MainActivity.this, bjStatus.getErrorCode());
                     }
                 }catch (Exception e){
 
@@ -577,9 +561,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 main_tv_bd.setVisibility(View.GONE);
                                 break;
                         }
-                    }else {
-                        // TODO
                     }
+                    ActivityUtil.toLogin(MainActivity.this, errorCode);
                 }catch (Exception e){
 
                 }
@@ -619,6 +602,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     if(errorCode==1){
                         getAddStatus();
                     }
+                    ActivityUtil.toLogin(MainActivity.this, errorCode);
                 }catch (Exception e){
 
                 }
@@ -664,6 +648,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         }
 
                     }
+                    ActivityUtil.toLogin(MainActivity.this, errorCode);
                 } catch (Exception e) {
 
                 }
@@ -768,6 +753,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             dataList.addAll(bean.getData().getPhoneList());
                             saveCanon();
                         }
+                    }else if(errorCode==40001){
+                        ActivityUtil.toLogin(MainActivity.this, errorCode);
                     } else {
                         Toast.makeText(MainActivity.this, jsonObject.getString("errorMsg"), Toast.LENGTH_SHORT).show();
                     }
@@ -890,9 +877,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             }else {
                                 main_location_num.setText("今日名额已用完");
                             }
-                        }else {
-                            //  TODO
                         }
+                        ActivityUtil.toLogin(ma, listNumBean.getErrorCode());
                     }
                 }catch (Exception e){
 

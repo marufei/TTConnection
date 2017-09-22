@@ -80,9 +80,12 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
                     if(errorCode==1){
                         SaveUtils.setString(KeyUtils.user_name,edit_name_et.getText().toString().trim());
                         finish();
+                    }else if(errorCode==40001) {
+                        ActivityUtil.toLogin(EditNameActivity.this, errorCode);
+                    }else {
+                        String errorMsg=jsonObject.getString("errorMsg");
+                        MyUtils.showToast(EditNameActivity.this,errorMsg);
                     }
-                    String errorMsg=jsonObject.getString("errorMsg");
-                    MyUtils.showToast(EditNameActivity.this,errorMsg);
                 }catch (Exception e){
 
                 }

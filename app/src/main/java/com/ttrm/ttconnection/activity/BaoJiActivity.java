@@ -1,5 +1,6 @@
 package com.ttrm.ttconnection.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -76,9 +77,8 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                     if (baojiBean != null) {
                         if (baojiBean.getErrorCode() == 1) {
                             setViews();
-                        } else {
-
                         }
+                        ActivityUtil.toLogin(BaoJiActivity.this, baojiBean.getErrorCode());
                     }
                 } catch (Exception e) {
 
@@ -127,6 +127,9 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
+    /**
+     * 爆机
+     */
     private void baoJi() {
         String url = HttpAddress.BASE_URL + HttpAddress.BAOJI;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -138,12 +141,12 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                     int errorCode = jsonObject.getInt("errorCode");
                     String errorMsg = jsonObject.getString("errorMsg");
                     if (errorCode == 1) {
-                        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(BaoJiActivity.this,R.layout.dialog_bj_ing);
+                        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(BaoJiActivity.this, R.layout.dialog_bj_ing);
                         myAdvertisementView.showDialog();
                         myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                             @Override
                             public void onEvent() {
-                                MyUtils.Loge(TAG,"朕知道了");
+                                MyUtils.Loge(TAG, "朕知道了");
                                 finish();
                             }
                         });
@@ -158,6 +161,8 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                                 finish();
                             }
                         });
+                    } else if (errorCode == 40001) {
+                        ActivityUtil.toLogin(BaoJiActivity.this, 40001);
                     } else {
                         MyUtils.showToast(BaoJiActivity.this, errorMsg);
                     }

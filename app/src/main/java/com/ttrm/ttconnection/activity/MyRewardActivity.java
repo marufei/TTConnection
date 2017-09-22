@@ -233,9 +233,8 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                             reward_tv_reward.setText(rewardBean.getData().getIncome() + "元");
                             reward_tv_balance.setText(rewardBean.getData().getBalance() + "元");
                             reward_tv_yq.setText(rewardBean.getData().getRecomCount() + "人");
-                        } else {
-
                         }
+                        ActivityUtil.toLogin(MyRewardActivity.this, rewardBean.getErrorCode());
                     }
                 } catch (Exception e) {
 
@@ -283,9 +282,8 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                                     + SaveUtils.getString(KeyUtils.user_regcode), 200, 200);
                             Bitmap realBitmap = getRealBitmap();
                             reward_iv_pic1.setImageBitmap(realBitmap);
-                        } else {
-
                         }
+                        ActivityUtil.toLogin(MyRewardActivity.this, shareInfoBean.getErrorCode());
                     }
                 } catch (Exception e) {
 

@@ -134,6 +134,8 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                         JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                         sms_token = jsonObject1.getString("sms_token");
                         mCodeCountDownTimer.start();
+                    } else if (errorCode == 40001) {
+                        ActivityUtil.toLogin(ForgetPwdActivity.this, errorCode);
                     } else {
                         MyUtils.showToast(ForgetPwdActivity.this, errorMsg);
                     }
@@ -176,7 +178,9 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                     if (errorCode == 1) {
                         MyUtils.showToast(ForgetPwdActivity.this, errorMsg);
                         finish();
-                    } else {
+                    } else if(errorCode==40001){
+                        ActivityUtil.toLogin(ForgetPwdActivity.this, errorCode);
+                    }else {
                         MyUtils.showToast(ForgetPwdActivity.this, errorMsg);
                     }
                 } catch (Exception e) {

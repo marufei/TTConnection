@@ -76,19 +76,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    /**
-     * 登录
-     */
-    private void login() {
-        Map<String, String> map = new HashMap<>();
-        map.put("phone", "13213580912");
-        map.put("smsCode", "");
-        map.put("password", "");
-        map.put("sms_token", "");
-        map.put("regCode", "");
-        map.put("timeStamp", "");
-        map.put("sign", "");
-    }
 
 
 }

@@ -78,7 +78,9 @@ public class RedeemActivity extends BaseActivity implements View.OnClickListener
                     if (errorCode == 1) {
                         MyUtils.showToast(RedeemActivity.this, errorMsg);
                         finish();
-                    } else {
+                    } else if(errorCode==40001){
+                        ActivityUtil.toLogin(RedeemActivity.this, errorCode);
+                    }else {
                         MyUtils.showToast(RedeemActivity.this, errorMsg);
                     }
                 } catch (Exception e) {

@@ -55,10 +55,10 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
     private Button location_btn_sure;
     public static String location;
     private Dialogshow dialog;
-    private static String TAG="LocationAddActivity";
-    private String type="2";
+    private static String TAG = "LocationAddActivity";
+    private String type = "2";
     private static LocationAddActivity locatiionAddActivity;
-    private static List<CanonBean.DataBean.PhoneListBean> dataList=new ArrayList<>();
+    private static List<CanonBean.DataBean.PhoneListBean> dataList = new ArrayList<>();
 
     private static int currentCount = 0;//已添加添加通讯录总条数
 
@@ -68,16 +68,16 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
             switch (msg.what) {
                 case KeyUtils.SAVE_CODE:
                     currentCount = (int) msg.obj;
-                    MyUtils.Loge(TAG,"currentCount:"+currentCount+"--msg.obj:"+msg.obj);
+                    MyUtils.Loge(TAG, "currentCount:" + currentCount + "--msg.obj:" + msg.obj);
 //                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                     dlg.dismiss();
-                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(locatiionAddActivity,R.layout.dialog_location_success);
+                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(locatiionAddActivity, R.layout.dialog_location_success);
                     myAdvertisementView.showDialog();
                     myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                         @Override
                         public void onEvent() {
-                            MyUtils.Loge("AAA","打开微信");
+                            MyUtils.Loge("AAA", "打开微信");
                             try {
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
@@ -97,18 +97,19 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                     break;
                 case KeyUtils.LOADING_CODE:
                     dlg.show();
-                    int count=(int) msg.obj;
+                    int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
                     break;
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_add);
         ActivityUtil.add(this);
-        locatiionAddActivity=this;
+        locatiionAddActivity = this;
         initViews();
         //假的加载动画
         showLoading();
@@ -118,26 +119,26 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
      * 假的加载动画
      */
     private static void showLoading() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(locatiionAddActivity);
-        LayoutInflater inflater=locatiionAddActivity.getLayoutInflater();
-        final View layout=inflater.inflate(R.layout.dialog_loading,null);
-        dialog_loading_num= (TextView) layout.findViewById(R.id.dialog_loading_num);
+        AlertDialog.Builder builder = new AlertDialog.Builder(locatiionAddActivity);
+        LayoutInflater inflater = locatiionAddActivity.getLayoutInflater();
+        final View layout = inflater.inflate(R.layout.dialog_loading, null);
+        dialog_loading_num = (TextView) layout.findViewById(R.id.dialog_loading_num);
         builder.setView(layout);
-        dlg=builder.create();
+        dlg = builder.create();
         dlg.setCanceledOnTouchOutside(false);
     }
 
     private void initViews() {
         setToolBar("地区加粉");
-        location_tv_select=(TextView)findViewById(R.id.location_tv_select);
-        location_btn_sure=(Button)findViewById(R.id.location_btn_sure);
+        location_tv_select = (TextView) findViewById(R.id.location_tv_select);
+        location_btn_sure = (Button) findViewById(R.id.location_btn_sure);
         location_tv_select.setOnClickListener(this);
         location_btn_sure.setOnClickListener(this);
         dialog = new Dialogshow(LocationAddActivity.this);
         dialog.setOnBtnlistenner(new Dialogshow.OnBtnlistenner() {
             @Override
             public void onSure() {
-                if(!TextUtils.isEmpty(location)) {
+                if (!TextUtils.isEmpty(location)) {
                     location_tv_select.setText(location);
                 }
             }
@@ -146,7 +147,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.location_tv_select:
                 dialog.show();
                 break;
@@ -159,6 +160,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+
     /**
      * 地区加粉
      */
@@ -175,11 +177,12 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                     if (errorCode == 1) {
                         Gson gson = new Gson();
                         CanonBean bean = gson.fromJson(response, CanonBean.class);
-                        if (bean.getErrorCode() == 1) {
-                            dataList.addAll(bean.getData().getPhoneList());
-                            saveCanon();
-                        }
-                    } else {
+                        dataList.addAll(bean.getData().getPhoneList());
+                        saveCanon();
+
+                    } else if(errorCode==40001){
+                        ActivityUtil.toLogin(LocationAddActivity.this, errorCode);
+                    }else {
                         Toast.makeText(LocationAddActivity.this, jsonObject.getString("errorMsg"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
@@ -204,6 +207,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         };
         Volley.newRequestQueue(LocationAddActivity.this).add(stringRequest);
     }
+
     /**
      * 添加到通讯录
      */
@@ -219,13 +223,13 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void run() {
                         for (int i = 0; i < dataList.size(); i++) {
-                            boolean isLast=false;
-                            if(i==dataList.size()-1){
-                                isLast=true;
-                            }else {
-                                isLast=false;
+                            boolean isLast = false;
+                            if (i == dataList.size() - 1) {
+                                isLast = true;
+                            } else {
+                                isLast = false;
                             }
-                            LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2,isLast);
+                            LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, 2, isLast);
                         }
                     }
                 }).start();
@@ -236,18 +240,19 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 @Override
                 public void run() {
                     for (int i = 0; i < dataList.size(); i++) {
-                        boolean isLast=false;
-                        if(i==dataList.size()-1){
-                            isLast=true;
-                        }else {
-                            isLast=false;
+                        boolean isLast = false;
+                        if (i == dataList.size() - 1) {
+                            isLast = true;
+                        } else {
+                            isLast = false;
                         }
-                        LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2,isLast);
+                        LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, 2, isLast);
                     }
                 }
             }).start();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -264,13 +269,13 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                         @Override
                         public void run() {
                             for (int i = 0; i < dataList.size(); i++) {
-                                boolean isLast=false;
-                                if(i==dataList.size()-1){
-                                    isLast=true;
-                                }else {
-                                    isLast=false;
+                                boolean isLast = false;
+                                if (i == dataList.size() - 1) {
+                                    isLast = true;
+                                } else {
+                                    isLast = false;
                                 }
-                                LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,2,isLast);
+                                LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, 2, isLast);
                             }
                         }
                     }).start();

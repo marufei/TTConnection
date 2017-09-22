@@ -251,6 +251,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                         }
                         sign_tv_zs.setText(diamondCount);
                     }
+                    ActivityUtil.toLogin(signActivity, errorCode);
                 }catch (Exception e){
 
                 }
@@ -291,6 +292,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                         sign_tv_sign.setClickable(false);
                         selectDiamonds();
 
+                    }else if(errorCode==40001){
+                        ActivityUtil.toLogin(signActivity, errorCode);
                     }else {
                         MyUtils.showToast(SignActivity.this,errorMsg);
                     }
@@ -341,9 +344,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                                     sign_tv_sign.setClickable(false);
                                     break;
                             }
-                        }else {
-
                         }
+                        ActivityUtil.toLogin(signActivity, signStatusBean.getErrorCode());
                     }
                 }catch (Exception e){
 
@@ -383,9 +385,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                     if(shareInfoBean!=null){
                         if(shareInfoBean.getErrorCode()==1){
 
-                        }else {
-
                         }
+                        ActivityUtil.toLogin(signActivity, shareInfoBean.getErrorCode());
                     }
                 }catch (Exception e){
 
@@ -521,7 +522,9 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                             dataList.addAll(bean.getData().getPhoneList());
                             saveCanon();
                         }
-                    } else {
+                    } else if(errorCode==40001){
+                        ActivityUtil.toLogin(SignActivity.this, errorCode);
+                    }else {
                         Toast.makeText(SignActivity.this, jsonObject.getString("errorMsg"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {

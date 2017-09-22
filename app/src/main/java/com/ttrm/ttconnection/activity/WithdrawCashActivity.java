@@ -99,7 +99,9 @@ public class WithdrawCashActivity extends BaseActivity implements View.OnClickLi
                     if (errorCode == 1) {
                         MyUtils.showToast(WithdrawCashActivity.this, errorMsg);
                         finish();
-                    } else {
+                    } else if(errorCode==40001){
+                        ActivityUtil.toLogin(WithdrawCashActivity.this, errorCode);
+                    }else {
                         MyUtils.showToast(WithdrawCashActivity.this, errorMsg);
                     }
                 } catch (Exception e) {

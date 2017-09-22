@@ -19,6 +19,7 @@ import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.WithdrawInfoAdapter;
 import com.ttrm.ttconnection.entity.WithdrawInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
@@ -95,6 +96,8 @@ public class WithdrawCashInfoActivity extends BaseActivity {
                         if(listBean.getErrorCode()==1){
                             setViews();
                         }
+                        ActivityUtil.toLogin(WithdrawCashInfoActivity.this, listBean.getErrorCode());
+
                     }
                 }catch (Exception e){
 
@@ -104,7 +107,7 @@ public class WithdrawCashInfoActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                MyUtils.showToast(WithdrawCashInfoActivity.this,"网络有问题");
             }
         }){
             @Override

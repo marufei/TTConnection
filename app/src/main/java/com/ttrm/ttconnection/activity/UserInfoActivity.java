@@ -101,20 +101,20 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         info_ll_custom.setOnClickListener(this);
         info_btn_loginout.setOnClickListener(this);
 
-        info_tv_bmdl=(TextView)findViewById(R.id.info_tv_bmdl);
+        info_tv_bmdl = (TextView) findViewById(R.id.info_tv_bmdl);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_ll_add:
-                MyUtils.Loge(TAG,"点击了加粉");
+                MyUtils.Loge(TAG, "点击了加粉");
                 getAddStatus();
                 break;
             case R.id.info_ll_bj:
-                if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
                     getBjStatus();
-                }else {
+                } else {
                     showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -130,28 +130,28 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.info_ll_diamond:      //获取钻石
-                startActivity(new Intent(this,SignActivity.class));
+                startActivity(new Intent(this, SignActivity.class));
                 break;
             case R.id.info_ll_change://兑换码
-                startActivity(new Intent(this,RedeemActivity.class));
+                startActivity(new Intent(this, RedeemActivity.class));
                 break;
             case R.id.info_ll_sm:
                 Intent intent = new Intent(this, WebActivity.class);
-                intent.putExtra("URL",HttpAddress.URL_H5_READ);
-                intent.putExtra("title","新手教学");
+                intent.putExtra("URL", HttpAddress.URL_H5_READ);
+                intent.putExtra("title", "新手教学");
                 startActivity(intent);
                 break;
             case R.id.info_ll_name:     //修改昵称
 //                myName();
-                startActivity(new Intent(UserInfoActivity.this,EditNameActivity.class));
+                startActivity(new Intent(UserInfoActivity.this, EditNameActivity.class));
                 break;
             case R.id.info_ll_version:
 
                 break;
             case R.id.info_ll_custom:       //联系客服
                 Intent intent1 = new Intent(this, WebActivity.class);
-                intent1.putExtra("URL",HttpAddress.URL_H5_DELETE);
-                intent1.putExtra("title","咨询客服");
+                intent1.putExtra("URL", HttpAddress.URL_H5_DELETE);
+                intent1.putExtra("title", "咨询客服");
                 startActivity(intent1);
 
                 break;
@@ -177,7 +177,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         getDiamondCount();
-        if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+        if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
             info_tv_bmdl.setText(SaveUtils.getString(KeyUtils.user_name));
         }
     }
@@ -186,50 +186,51 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
      * 获取爆机状态
      */
     private void getBjStatus() {
-        String url=HttpAddress.BASE_URL+HttpAddress.GET_BAOJI_STATUS;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_BAOJI_STATUS;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"爆机状态："+response);
-                try{
-                    Gson gson=new Gson();
-                    bjStatus=gson.fromJson(response, BaoJiStatusBean.class);
-                    if(bjStatus!=null){
-                        if (bjStatus.getErrorCode()==1){
-                            if (bjStatus.getData().getStatus()==1){
+                MyUtils.Loge(TAG, "爆机状态：" + response);
+                try {
+                    Gson gson = new Gson();
+                    bjStatus = gson.fromJson(response, BaoJiStatusBean.class);
+                    if (bjStatus != null) {
+                        if (bjStatus.getErrorCode() == 1) {
+                            if (bjStatus.getData().getStatus() == 1) {
                                 //爆机中
-                                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(UserInfoActivity.this,R.layout.dialog_bj_ing);
+                                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(UserInfoActivity.this, R.layout.dialog_bj_ing);
                                 myAdvertisementView.showDialog();
                                 myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                                     @Override
                                     public void onEvent() {
-                                        MyUtils.Loge(TAG,"朕知道了");
+                                        MyUtils.Loge(TAG, "朕知道了");
                                     }
                                 });
                             }
-                            if(bjStatus.getData().getStatus()==0){
+                            if (bjStatus.getData().getStatus() == 0) {
                                 //无爆机
                                 startActivity(new Intent(UserInfoActivity.this, BaoJiActivity.class));
                             }
+                            ActivityUtil.toLogin(UserInfoActivity.this, bjStatus.getErrorCode());
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(UserInfoActivity.this,"网络有问题");
+                MyUtils.showToast(UserInfoActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
-                MyUtils.Loge(TAG,"时间戳："+MyUtils.getTimestamp());
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                MyUtils.Loge(TAG, "时间戳：" + MyUtils.getTimestamp());
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -240,47 +241,50 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
      * 获取被加状态
      */
     private void getAddStatus() {
-        String url=HttpAddress.BASE_URL+HttpAddress.GET_ADD_STATUS;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_ADD_STATUS;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    JSONObject jsonObject1=jsonObject.getJSONObject("data");
-                    int status=jsonObject1.getInt("status");        //状态1被动加粉中（开启）2被动加粉中（关闭）0无被加加粉
-                    switch (status){
-                        case 0:
-                            startActivity(new Intent(UserInfoActivity.this, BDAddActivity.class));
-                            break;
-                        case 1:
-                            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(UserInfoActivity.this,R.layout.dialog_bd_close);
-                            myAdvertisementView.showDialog();
-                            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-                                @Override
-                                public void onEvent() {
-                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
-                                    addType="2";
-                                    selectAddStatus();
-                                }
-                            });
-                            break;
+                MyUtils.Loge(TAG, "response:" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    if (errorCode == 1) {
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        int status = jsonObject1.getInt("status");        //状态1被动加粉中（开启）2被动加粉中（关闭）0无被加加粉
+                        switch (status) {
+                            case 0:
+                                startActivity(new Intent(UserInfoActivity.this, BDAddActivity.class));
+                                break;
+                            case 1:
+                                MyAdvertisementView myAdvertisementView = new MyAdvertisementView(UserInfoActivity.this, R.layout.dialog_bd_close);
+                                myAdvertisementView.showDialog();
+                                myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                    @Override
+                                    public void onEvent() {
+                                        MyUtils.Loge(TAG, "微信回调成功，点击了按钮");
+                                        addType = "2";
+                                        selectAddStatus();
+                                    }
+                                });
+                                break;
 
-                        case 2:
-                            MyAdvertisementView myAdvertisementView1 = new MyAdvertisementView(UserInfoActivity.this,R.layout.dialog_bd_open);
-                            myAdvertisementView1.showDialog();
-                            myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-                                @Override
-                                public void onEvent() {
-                                    MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
-                                    addType="1";
-                                    selectAddStatus();
-                                }
-                            });
-                            break;
+                            case 2:
+                                MyAdvertisementView myAdvertisementView1 = new MyAdvertisementView(UserInfoActivity.this, R.layout.dialog_bd_open);
+                                myAdvertisementView1.showDialog();
+                                myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                    @Override
+                                    public void onEvent() {
+                                        MyUtils.Loge(TAG, "微信回调成功，点击了按钮");
+                                        addType = "1";
+                                        selectAddStatus();
+                                    }
+                                });
+                                break;
+                        }
                     }
-                }catch (Exception e){
+                    ActivityUtil.toLogin(UserInfoActivity.this, errorCode);
+                } catch (Exception e) {
 
                 }
 
@@ -288,15 +292,15 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(UserInfoActivity.this,"网络有问题");
+                MyUtils.showToast(UserInfoActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -306,20 +310,19 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     /**
      * 被动加粉开关
      */
-    private void selectAddStatus(){
-        String url=HttpAddress.BASE_URL+HttpAddress.SELECT_ADD_STATUS;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+    private void selectAddStatus() {
+        String url = HttpAddress.BASE_URL + HttpAddress.SELECT_ADD_STATUS;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    String errorMsg=jsonObject.getString("errorMsg");
-                    if(errorCode==0){
-                        MyUtils.showToast(UserInfoActivity.this,errorMsg);
-                    }
-                }catch (Exception e){
+                MyUtils.Loge(TAG, "response:" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    String errorMsg = jsonObject.getString("errorMsg");
+                    MyUtils.showToast(UserInfoActivity.this, errorMsg);
+                    ActivityUtil.toLogin(UserInfoActivity.this, errorCode);
+                } catch (Exception e) {
 
                 }
 
@@ -327,16 +330,16 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(UserInfoActivity.this,"网络有问题");
+                MyUtils.showToast(UserInfoActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("type",addType);
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("type", addType);
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -347,20 +350,21 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
      * 获取钻石数量
      */
     private void getDiamondCount() {
-        String url=HttpAddress.BASE_URL+HttpAddress.GET_DIAMONDCOUNT;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_DIAMONDCOUNT;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    if(errorCode==1){
+                MyUtils.Loge(TAG, "response:" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    if (errorCode == 1) {
                         JSONObject data = jsonObject.getJSONObject("data");
                         String diamondCount = data.getString("diamondCount");
                         info_tv_diamond.setText(diamondCount);
                     }
-                }catch (Exception e){
+                    ActivityUtil.toLogin(UserInfoActivity.this, errorCode);
+                } catch (Exception e) {
 
                 }
 
@@ -368,16 +372,16 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(UserInfoActivity.this,"网络有问题");
+                MyUtils.showToast(UserInfoActivity.this, "网络有问题");
 
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -388,42 +392,42 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
      * 退出
      */
     private void loginOut() {
-        String url=HttpAddress.BASE_URL+HttpAddress.LOGIN_OUT;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        String url = HttpAddress.BASE_URL + HttpAddress.LOGIN_OUT;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
+                MyUtils.Loge(TAG, "response:" + response);
                 try {
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    String errorMsg=jsonObject.getString("errorMsg");
-                    if(errorCode==1){
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    String errorMsg = jsonObject.getString("errorMsg");
+                    if (errorCode == 1) {
 //                        SaveUtils.setString(KeyUtils.user_phone,"");
-                        SaveUtils.setString(KeyUtils.user_login_token,"");
-                        SaveUtils.setString(KeyUtils.user_id,"");
-                        SaveUtils.setString(KeyUtils.user_name,"");
-                        SaveUtils.setString(KeyUtils.user_regcode,"");
-                        SaveUtils.setString(KeyUtils.user_time,"");
-                        SaveUtils.setString(KeyUtils.user_UID,"");
-                        startActivity(new Intent(UserInfoActivity.this,LoginActivity.class));
+                        SaveUtils.setString(KeyUtils.user_login_token, "");
+                        SaveUtils.setString(KeyUtils.user_id, "");
+                        SaveUtils.setString(KeyUtils.user_name, "");
+                        SaveUtils.setString(KeyUtils.user_regcode, "");
+                        SaveUtils.setString(KeyUtils.user_time, "");
+                        SaveUtils.setString(KeyUtils.user_UID, "");
+                        startActivity(new Intent(UserInfoActivity.this, LoginActivity.class));
                         ActivityUtil.exitAll();
                     }
-                }catch (Exception e){
-                    MyUtils.Loge(TAG,"e:"+e.getMessage());
+                } catch (Exception e) {
+                    MyUtils.Loge(TAG, "e:" + e.getMessage());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(UserInfoActivity.this,"网络有问题");
+                MyUtils.showToast(UserInfoActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -446,7 +450,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         tv_sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyUtils.Loge(TAG,"str_name:"+et_name.getText().toString().trim());
+                MyUtils.Loge(TAG, "str_name:" + et_name.getText().toString().trim());
                 if (TextUtils.isEmpty(et_name.getText().toString().trim())) {
                     MyUtils.showToast(UserInfoActivity.this, "请输入昵称");
                     return;
@@ -474,13 +478,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     JSONObject jsonObject = new JSONObject(response);
                     int errorCode = jsonObject.getInt("errorCode");
                     String errorMsg = jsonObject.getString("errorMsg");
-                    if (errorCode == 1) {
-                        MyUtils.showToast(UserInfoActivity.this, errorMsg);
-                    } else {
-                        MyUtils.showToast(UserInfoActivity.this, errorMsg);
-                    }
+                    MyUtils.showToast(UserInfoActivity.this, errorMsg);
+                    ActivityUtil.toLogin(UserInfoActivity.this, errorCode);
                 } catch (Exception e) {
-                    MyUtils.Loge(TAG,"e:"+e.getMessage());
+                    MyUtils.Loge(TAG, "e:" + e.getMessage());
                 }
             }
         }, new Response.ErrorListener() {

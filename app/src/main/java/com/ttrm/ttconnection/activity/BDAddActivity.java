@@ -45,17 +45,17 @@ import java.util.jar.Manifest;
 /**
  * TODO 被动加粉
  */
-public class BDAddActivity extends BaseActivity implements View.OnClickListener,WXPayEntryActivity.OnSuccessListenner {
+public class BDAddActivity extends BaseActivity implements View.OnClickListener, WXPayEntryActivity.OnSuccessListenner {
 
     private ListViewForScrollview bdadd_lv;
-    private String TAG="BDAddActivity";
+    private String TAG = "BDAddActivity";
     private BDAddBean bdAddBean;
     private BDAddLvAdapter adapter;
     private Button bdadd_open;
     private ImageView bdadd_alipay;
     private ImageView bdadd_wx;
     private String payType;
-    private int pos=-1;
+    private int pos = -1;
     private LinearLayout bdadd_ll_alipay;
     private LinearLayout bdadd_ll_wx;
 
@@ -63,7 +63,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bdadd);
-        WXPayEntryActivity wxPayEntryActivity=new WXPayEntryActivity();
+        WXPayEntryActivity wxPayEntryActivity = new WXPayEntryActivity();
         wxPayEntryActivity.setOnSuccessListenner(this);
         ActivityUtil.add(this);
         initViews();
@@ -74,38 +74,37 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
      * 获取加粉规则
      */
     private void initData() {
-        String url= HttpAddress.BASE_URL+HttpAddress.GET_BA_RULE;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_BA_RULE;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    if(errorCode==1){
-                        Gson gson=new Gson();
-                        bdAddBean=gson.fromJson(response,BDAddBean.class);
-                        if(bdAddBean!=null){
+                MyUtils.Loge(TAG, "response:" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    if (errorCode == 1) {
+                        Gson gson = new Gson();
+                        bdAddBean = gson.fromJson(response, BDAddBean.class);
+                        if (bdAddBean != null) {
                             setViews();
                         }
-                    }else {
-
                     }
-                }catch (Exception e){
+                    ActivityUtil.toLogin(BDAddActivity.this, bdAddBean.getErrorCode());
+                } catch (Exception e) {
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(BDAddActivity.this,"网络有问题");
+                MyUtils.showToast(BDAddActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
                 return map;
             }
@@ -116,25 +115,25 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     /**
      * 开通加粉
      */
-    private void openAdd(){
-        MyUtils.Loge(TAG,"点击开通");
-        MyUtils.Loge(TAG,"ruleId"+bdAddBean.getData().getRuleList().get(0).getId());
-        PayUtil.toPay(BDAddActivity.this,payType,bdAddBean.getData().getRuleList().get(0).getId());
+    private void openAdd() {
+        MyUtils.Loge(TAG, "点击开通");
+        MyUtils.Loge(TAG, "ruleId" + bdAddBean.getData().getRuleList().get(0).getId());
+        PayUtil.toPay(BDAddActivity.this, payType, bdAddBean.getData().getRuleList().get(0).getId());
     }
 
     private void setViews() {
-        adapter=new BDAddLvAdapter(BDAddActivity.this,bdAddBean.getData().getRuleList());
+        adapter = new BDAddLvAdapter(BDAddActivity.this, bdAddBean.getData().getRuleList());
         bdadd_lv.setAdapter(adapter);
         bdadd_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(bdAddBean.getData().getRuleList().get(position).isSelect()){
+                if (bdAddBean.getData().getRuleList().get(position).isSelect()) {
                     bdAddBean.getData().getRuleList().get(position).setSelect(false);
-                }else {
+                } else {
                     bdAddBean.getData().getRuleList().get(position).setSelect(true);
-                    pos=position;
-                    for(int i=0;i<bdAddBean.getData().getRuleList().size();i++){
-                        if(i!=position){
+                    pos = position;
+                    for (int i = 0; i < bdAddBean.getData().getRuleList().size(); i++) {
+                        if (i != position) {
                             bdAddBean.getData().getRuleList().get(i).setSelect(false);
                         }
                     }
@@ -146,30 +145,30 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
 
     private void initViews() {
         setToolBar("被动加粉");
-        bdadd_lv=(ListViewForScrollview) findViewById(R.id.bdadd_lv);
-        bdadd_open=(Button)findViewById(R.id.bdadd_open);
+        bdadd_lv = (ListViewForScrollview) findViewById(R.id.bdadd_lv);
+        bdadd_open = (Button) findViewById(R.id.bdadd_open);
         bdadd_open.setOnClickListener(this);
-        bdadd_alipay=(ImageView)findViewById(R.id.bdadd_alipay);
+        bdadd_alipay = (ImageView) findViewById(R.id.bdadd_alipay);
         bdadd_alipay.setOnClickListener(this);
-        bdadd_wx=(ImageView)findViewById(R.id.bdadd_wx);
+        bdadd_wx = (ImageView) findViewById(R.id.bdadd_wx);
         bdadd_wx.setOnClickListener(this);
-        bdadd_ll_alipay=(LinearLayout)findViewById(R.id.bdadd_ll_alipay);
+        bdadd_ll_alipay = (LinearLayout) findViewById(R.id.bdadd_ll_alipay);
         bdadd_ll_alipay.setOnClickListener(this);
-        bdadd_ll_wx=(LinearLayout)findViewById(R.id.bdadd_ll_wx);
+        bdadd_ll_wx = (LinearLayout) findViewById(R.id.bdadd_ll_wx);
         bdadd_ll_wx.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.bdadd_open:
-                if(pos<0){
-                    MyUtils.showToast(BDAddActivity.this,"请选择加粉类型");
+                if (pos < 0) {
+                    MyUtils.showToast(BDAddActivity.this, "请选择加粉类型");
                     return;
                 }
-                if(TextUtils.isEmpty(payType)){
-                    MyUtils.showToast(BDAddActivity.this,"请选择支付方式");
+                if (TextUtils.isEmpty(payType)) {
+                    MyUtils.showToast(BDAddActivity.this, "请选择支付方式");
                     return;
                 }
                 openAdd();
@@ -183,11 +182,11 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
 //                setlectType(payType);
 //                break;
             case R.id.bdadd_ll_alipay:
-                payType="2";
+                payType = "2";
                 setlectType(payType);
                 break;
             case R.id.bdadd_ll_wx:
-                payType="1";
+                payType = "1";
                 setlectType(payType);
                 break;
 
@@ -197,10 +196,11 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
 
     /**
      * 选择支付类型
+     *
      * @param payType
      */
     private void setlectType(String payType) {
-        switch (payType){
+        switch (payType) {
             case "1":
                 bdadd_alipay.setImageResource(R.drawable.vector_drawable_pay_n);
                 bdadd_wx.setImageResource(R.drawable.vector_drawable_pay_y);
@@ -214,23 +214,23 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case 0x1:
-                if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    if(ContextCompat.checkSelfPermission(BDAddActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
-                        ActivityCompat.requestPermissions(BDAddActivity.this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},0X2);
-                    }else {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(BDAddActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(BDAddActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0X2);
+                    } else {
                         openAdd();
                     }
-                }else {
-                    MyUtils.showToast(BDAddActivity.this,"权限获取失败");
+                } else {
+                    MyUtils.showToast(BDAddActivity.this, "权限获取失败");
                 }
                 break;
             case 0x2:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openAdd();
-                }else {
-                    MyUtils.showToast(BDAddActivity.this,"权限获取失败");
+                } else {
+                    MyUtils.showToast(BDAddActivity.this, "权限获取失败");
                 }
                 break;
         }
@@ -242,14 +242,14 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
      */
     @Override
     public void OnSuccess() {
-        MyUtils.Loge(TAG,"进入支付回调");
-        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this,R.layout.dialog_bd_success);
+        MyUtils.Loge(TAG, "进入支付回调");
+        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this, R.layout.dialog_bd_success);
         myAdvertisementView.showDialog();
         myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
             @Override
             public void onEvent() {
 //                MyUtils.showToast(BDAddActivity.this,"点击了按钮");
-                MyUtils.Loge(TAG,"微信回调成功，点击了按钮");
+                MyUtils.Loge(TAG, "微信回调成功，点击了按钮");
                 finish();
             }
         });

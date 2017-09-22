@@ -1,7 +1,10 @@
 package com.ttrm.ttconnection.util;
 
 import android.app.Activity;
+import android.content.Intent;
 
+
+import com.ttrm.ttconnection.activity.LoginActivity;
 
 import java.util.ArrayList;
 
@@ -37,9 +40,12 @@ public class ActivityUtil {
 		return mActivities.get(mActivities.size()-1).toString();
 
 	}
-/*	public static void toLogin(Activity activity){
-		Intent intent=new Intent(activity,LoginActivity.class);
-		intent.putExtra("logout",true);
-		activity.startActivity(intent);
-	}*/
+	public static void toLogin(Activity activity,int errcode){
+		if(errcode==40001) {
+			exitAll();
+			Intent intent = new Intent(activity, LoginActivity.class);
+			intent.putExtra("logout", true);
+			activity.startActivity(intent);
+		}
+	}
 }
