@@ -4,7 +4,6 @@
     android:id="@+id/dialog_rv_big"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
@@ -13,4 +12,10 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:src="@mipmap/share_fail" />
+    <ImageView
+        android:id="@+id/dialog_iv_erm"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"/>
 </RelativeLayout>

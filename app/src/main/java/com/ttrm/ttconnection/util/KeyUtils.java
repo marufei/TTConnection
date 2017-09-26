@@ -9,6 +9,7 @@ public class KeyUtils {
     public static final int SAVE_CODE = 100;
     public static final int DELETE_CODE = 200;
     public static final int LOADING_CODE=300;
+    public static final int IO_BUFFER_SIZE=2*1024;
 
     public static String user_id="userid";
     public static String user_phone="user_phone";

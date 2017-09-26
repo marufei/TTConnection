@@ -1,17 +1,13 @@
-package com.ttrm.ttconnection.fragment;
+package com.ttrm.ttconnection.activity;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -22,11 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
-import com.ttrm.ttconnection.activity.ForgetPwdActivity;
-import com.ttrm.ttconnection.activity.RegisterActivity;
-import com.ttrm.ttconnection.activity.UserInfoActivity;
 import com.ttrm.ttconnection.entity.LoginBean;
-import com.ttrm.ttconnection.entity.RegisterBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.CodeCountDownTimer;
@@ -36,118 +28,88 @@ import com.ttrm.ttconnection.util.SaveUtils;
 
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by MaRufei
- * time on 2017/8/21
- * Phone 13213580912
- * Email 867814102@qq.com
- */
+import static com.ttrm.ttconnection.R.id.register_phone;
 
-public class RegisterFragment extends Fragment implements View.OnClickListener {
-    private View view;
-    private Button register_btn_code;
-    private String TAG="RegisterFragment";
-    private String sms_token="";
-    private EditText register_phone;
-    private EditText register_pwd1;
-    private EditText register_smscode;
-    private EditText register_pwd2;
-    private EditText register_regcode;
-    private Button register_btn_register;
-    //短信验证计时
-    private CodeCountDownTimer mCodeCountDownTimer = null;
-    private String regcode;
+public class RegisterActivity extends BaseActivity  implements View.OnClickListener{
 
-    @Nullable
+    private CodeCountDownTimer mCodeCountDownTimer;
+    private Button register_tv_regcode;
+    private Button register_btn_commit;
+    private String TAG="RegisterActivity";
+    private String sms_token;
+    private String phone;
+    private String regcode="";
+    private EditText register_et_smscode;
+    private EditText register_et_pwd;
+    private TextView register_tv_phone;
+    private TextView register_pro;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_register, null);
-        initViews();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        ActivityUtil.add(this);
+        initView();
         initDatas();
-        return view;
     }
 
     private void initDatas() {
         //倒计时
-        mCodeCountDownTimer = new CodeCountDownTimer(60 * 1000L, 1000L, register_btn_code, R.drawable.btn_white,
+        mCodeCountDownTimer = new CodeCountDownTimer(60 * 1000L, 1000L, register_tv_regcode, R.drawable.btn_white,
                 R.drawable.btn_white);
+        Intent intent=getIntent();
+        phone=intent.getStringExtra("phone");
+        regcode=intent.getStringExtra("regcode");
+
+        register_tv_phone.setText(phone);
+
     }
 
-    private void initViews() {
-        register_btn_code = (Button) view.findViewById(R.id.register_btn_code);
-        register_btn_code.setOnClickListener(this);
-        register_phone=(EditText)view.findViewById(R.id.register_phone);
-        register_pwd1=(EditText)view.findViewById(R.id.register_pwd1);
-        register_smscode=(EditText)view.findViewById(R.id.register_smscode);
-        register_pwd2=(EditText)view.findViewById(R.id.register_pwd2);
-        register_regcode=(EditText)view.findViewById(R.id.register_regcode);
-        register_btn_register=(Button)view.findViewById(R.id.register_btn_register);
-        register_btn_register.setOnClickListener(this);
+    private void initView() {
+        setToolBar("注册");
+        register_tv_regcode=(Button)findViewById(R.id.register_tv_regcode);
+        register_tv_regcode.setOnClickListener(this);
+        register_btn_commit=(Button)findViewById(R.id.register_btn_commit);
+        register_btn_commit.setOnClickListener(this);
+        register_et_smscode=(EditText)findViewById(R.id.register_et_smscode);
+        register_et_pwd=(EditText)findViewById(R.id.register_et_pwd);
+        register_tv_phone=(TextView)findViewById(R.id.register_tv_phone);
+        register_pro=(TextView)findViewById(R.id.register_pro);
+        register_pro.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.register_btn_code:
-                MyUtils.Loge(TAG,"点击了按钮");
-                if(TextUtils.isEmpty(register_phone.getText().toString().trim())){
-                    MyUtils.showToast(getActivity(),"请填写手机号");
-                    return;
-                }
-                if(!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())){
-                    MyUtils.showToast(getActivity(),"请填写正确的手机号");
-                }
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.register_tv_regcode:
                 getSms();
                 break;
-            case R.id.register_btn_register:
-                if(TextUtils.isEmpty(register_phone.getText().toString().trim())){
-                    MyUtils.showToast(getActivity(),"请填写手机号");
+            case R.id.register_btn_commit:
+                if(TextUtils.isEmpty(register_et_smscode.getText().toString())){
+                    MyUtils.showToast(RegisterActivity.this,"请先填写短信验证码");
                     return;
                 }
-//                if(TextUtils.isEmpty(register_pwd1.getText().toString().trim())){
-//                    MyUtils.showToast(getActivity(),"请填写密码");
-//                    return;
-//                }
-//                if(TextUtils.isEmpty(register_smscode.getText().toString().trim())){
-//                    MyUtils.showToast(getActivity(),"请填写验证码");
-//                    return;
-//                }
-//                if(TextUtils.isEmpty(register_pwd2.getText().toString().trim())){
-//                    MyUtils.showToast(getActivity(),"请填写密码");
-//                    return;
-//                }
-                if(!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())){
-                    MyUtils.showToast(getActivity(),"请填写正确的手机号");
+                if(TextUtils.isEmpty(register_et_pwd.getText().toString())){
+                    MyUtils.showToast(RegisterActivity.this,"请完善密码");
+                    return;
                 }
-//                if(!register_pwd1.getText().toString().trim().equals(register_pwd2.getText().toString().trim())){
-//                    MyUtils.showToast(getActivity(),"密码不一致，请重新设置");
-//                    return;
-//                }
-//                if(!TextUtils.isEmpty(sms_token)){
-//                    register();
-//
-//                }else {
-//                    MyUtils.Loge(TAG,"sms_token:"+sms_token);
-//
-//                }
-                if(TextUtils.isEmpty(register_regcode.getText().toString().trim())){
-                    regcode="";
-                }else {
-                    regcode=register_regcode.getText().toString().trim();
+                if(register_et_pwd.getText().toString().trim().length()<6){
+                    MyUtils.showToast(RegisterActivity.this,"密码至少为6位字母或数字");
+                    return;
                 }
-                Intent intent=new Intent(getActivity(), RegisterActivity.class);
-                intent.putExtra("phone",register_phone.getText().toString().trim());
-                intent.putExtra("regcode",regcode);
+                register();
+                break;
+            case R.id.register_pro:
+                Intent intent=new Intent(RegisterActivity.this,WebActivity.class);
+                intent.putExtra("URL","file:///android_asset/TTRMDEALDoc.html");
+                intent.putExtra("title","注册协议");
                 startActivity(intent);
                 break;
         }
     }
-
-
     /**
      * 获取短信验证码
      */
@@ -162,15 +124,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     int errorCode=jsonObject.getInt("errorCode");
                     String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
-                        MyUtils.showToast(getActivity(),"验证码已发送至您手机");
+                        MyUtils.showToast(RegisterActivity.this,"验证码已发送至您手机");
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
                         sms_token=jsonObject1.getString("sms_token");
                         MyUtils.Loge(TAG,"SMS_TOKEN:"+sms_token);
                         mCodeCountDownTimer.start();
                     }else if(errorCode==40001){
-                        ActivityUtil.toLogin(getActivity(), errorCode);
+                        ActivityUtil.toLogin(RegisterActivity.this, errorCode);
                     }else {
-                        MyUtils.showToast(getActivity(),errorMsg);
+                        MyUtils.showToast(RegisterActivity.this,errorMsg);
                     }
                 }catch (Exception e){
 
@@ -179,20 +141,20 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(getActivity(),"请检查网络设置");
+                MyUtils.showToast(RegisterActivity.this,"请检查网络设置");
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("type", "1");
-                map.put("phone",register_phone.getText().toString().trim());
+                map.put("phone",phone);
                 map.put("timeStamp",MyUtils.getTimestamp());
                 map.put("sign",MyUtils.getSign());
                 return map;
             }
         };
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        Volley.newRequestQueue(RegisterActivity.this).add(stringRequest);
     }
     /**
      * 注册
@@ -209,8 +171,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
 //                        MainActivity.startActivity1(getActivity());
-//                        startActivity(new Intent(getActivity(),MainActivity.class));
-//                        getActivity().finish();
+//                        startActivity(new Intent(RegisterActivity.this,MainActivity.class));
+//                        RegisterActivity.this.finish();
 //                        Gson gson=new Gson();
 //                        RegisterBean registerBean=gson.fromJson(response,RegisterBean.class);
 //                        if(registerBean!=null){
@@ -218,9 +180,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 //                        }
                         login();
                     }else if(errorCode==40001){
-                        ActivityUtil.toLogin(getActivity(), errorCode);
+                        ActivityUtil.toLogin(RegisterActivity.this, errorCode);
                     }else {
-                        MyUtils.showToast(getActivity(),errorMsg);
+                        MyUtils.showToast(RegisterActivity.this,errorMsg);
                     }
                 }catch (Exception e){
 
@@ -229,23 +191,23 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(getActivity(),"网络有问题");
+                MyUtils.showToast(RegisterActivity.this,"网络有问题");
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String ,String> map=new HashMap<>();
-                map.put("phone",register_phone.getText().toString().trim());
-                map.put("smsCode",register_smscode.getText().toString().trim());
-                map.put("password",register_pwd1.getText().toString().trim());
+                map.put("phone",phone);
+                map.put("smsCode",register_et_smscode.getText().toString().trim());
+                map.put("password",register_et_pwd.getText().toString().trim());
                 map.put("sms_token",sms_token);
-                map.put("regCode",register_regcode.getText().toString().trim());
+                map.put("regCode",regcode);
                 map.put("timeStamp",MyUtils.getTimestamp());
                 map.put("sign",MyUtils.getSign());
                 return  map;
             }
         };
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        Volley.newRequestQueue(RegisterActivity.this).add(stringRequest);
     }
 
     /**
@@ -273,12 +235,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                             SaveUtils.setString(KeyUtils.user_UID,loginBean.getData().getUserInfo().getUID());
                             SaveUtils.setString(KeyUtils.user_time,loginBean.getData().getUserInfo().getRegtime());
                         }
-                        startActivity(new Intent(getActivity(), MainActivity.class));
-                        getActivity().finish();
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        LoginActivity.loginActivity.finish();
+                        finish();
                     }else if(errorCode==40001){
-                        ActivityUtil.toLogin(getActivity(), errorCode);
+                        ActivityUtil.toLogin(RegisterActivity.this, errorCode);
                     }else {
-                        MyUtils.showToast(getActivity(),errorMsg);
+                        MyUtils.showToast(RegisterActivity.this,errorMsg);
                     }
                 }catch (Exception e){
                     MyUtils.Loge(TAG,"e:"+e.getMessage());
@@ -288,19 +251,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(getActivity(),"网络有问题");
+                MyUtils.showToast(RegisterActivity.this,"网络有问题");
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String ,String > map=new HashMap<>();
-                map.put("phone",register_phone.getText().toString().trim());
-                map.put("password",register_pwd1.getText().toString().trim());
+                map.put("phone",phone);
+                map.put("password",register_et_pwd.getText().toString().trim());
                 map.put("timeStamp",MyUtils.getTimestamp());
                 map.put("sign",MyUtils.getSign());
                 return map;
             }
         };
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        Volley.newRequestQueue(RegisterActivity.this).add(stringRequest);
     }
 }

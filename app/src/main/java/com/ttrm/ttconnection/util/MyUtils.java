@@ -26,10 +26,17 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -460,11 +467,11 @@ public class MyUtils {
     }
 
     /**
-     * 替换  18637752014为 186*****014
+     * 替换  18637752014为 186****9014
      */
     public static String Replace_phone_Str(String s) {
         if (s != null) {
-            String s1 = s.substring(0, 3) + "*****" + s.substring(8, s.length());
+            String s1 = s.substring(0, 3) + "****" + s.substring(7, s.length());
             return s1;
         }
         return s;
@@ -745,6 +752,7 @@ public class MyUtils {
         sign = md5(sign);
         return sign;
     }
+
     /**
      * 版本名
      *
@@ -785,25 +793,102 @@ public class MyUtils {
 
     /**
      * 将网络图片转换成bitmap
+     *
      * @param path
      * @return
      * @throws Exception
      */
-    public static Bitmap getImage(String path) throws Exception{
+    public static Bitmap getImage(String path) throws Exception {
         URL url = new URL(path);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         InputStream is = conn.getInputStream();
         return BitmapFactory.decodeStream(is);
     }
 
+
+    public static Bitmap getBitmap(String url) {
+        Bitmap bm = null;
+        try {
+            URL iconUrl = new URL(url);
+            URLConnection conn = iconUrl.openConnection();
+            HttpURLConnection http = (HttpURLConnection) conn;
+
+            int length = http.getContentLength();
+
+            conn.connect();
+            // 获得图像的字符流
+            InputStream is = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is, length);
+            bm = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();// 关闭流
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bm;
+    }
+
+    public static Bitmap GetLocalOrNetBitmap(String url) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        BufferedOutputStream out = null;
+        try {
+            in = new BufferedInputStream(new URL(url).openStream(), KeyUtils.IO_BUFFER_SIZE);
+            final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+            out = new BufferedOutputStream(dataStream, KeyUtils.IO_BUFFER_SIZE);
+//            copy(in, out);out
+            out.flush();
+            byte[] data = dataStream.toByteArray();
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            data = null;
+            return bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 根据图片的url路径获得Bitmap对象
+     * @param url
+     * @return
+     */
+    public static Bitmap returnBitmap(String url) {
+        URL fileUrl = null;
+        Bitmap bitmap = null;
+
+        try {
+            fileUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            HttpURLConnection conn = (HttpURLConnection) fileUrl
+                    .openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            if(conn!=null) {
+                InputStream is = conn.getInputStream();
+                bitmap = BitmapFactory.decodeStream(is);
+                is.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+
+    }
+
     /**
      * 将两张图片合成一张图片
+     *
      * @param firstBitmap
      * @param secondBitmap
      * @return
      */
     public static Bitmap mergeBitmap(Bitmap firstBitmap, Bitmap secondBitmap) {
-        Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth(), firstBitmap.getHeight(),firstBitmap.getConfig());
+        Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth(), firstBitmap.getHeight(), firstBitmap.getConfig());
         Canvas canvas = new Canvas(bitmap);
         canvas.drawBitmap(firstBitmap, new Matrix(), null);
         canvas.drawBitmap(secondBitmap, 25, 900, null);

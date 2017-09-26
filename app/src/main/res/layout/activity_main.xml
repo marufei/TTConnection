@@ -282,7 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="保底被加2000人，再送1680钻"
+                        android:text="保底被加2000人，再送1680个钻石"
                         android:textColor="@color/white"
                         android:textSize="13sp"/>
                 </LinearLayout>
@@ -661,6 +661,10 @@
                 android:elevation="5dp"
                 android:text="我要提现"/>
         </LinearLayout>
+        <WebView
+            android:id="@+id/main_wv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>
 

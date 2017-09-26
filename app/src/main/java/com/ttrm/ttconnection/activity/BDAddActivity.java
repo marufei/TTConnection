@@ -68,6 +68,9 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
         ActivityUtil.add(this);
         initViews();
         initData();
+        payType = "1";
+        bdadd_alipay.setImageResource(R.drawable.vector_drawable_pay_n);
+        bdadd_wx.setImageResource(R.drawable.vector_drawable_pay_y);
     }
 
     /**

@@ -152,11 +152,8 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 dialog.show();
                 break;
             case R.id.location_btn_sure:
-//                if(TextUtils.isEmpty(location)){
-//                    MyUtils.showToast(LocationAddActivity.this,"请先选择地区");
-//                    return;
-//                }
-                getCanon();
+//                getCanon();
+                saveCanon();
                 break;
         }
     }
@@ -178,8 +175,8 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                         Gson gson = new Gson();
                         CanonBean bean = gson.fromJson(response, CanonBean.class);
                         dataList.addAll(bean.getData().getPhoneList());
-                        saveCanon();
-
+//                        saveCanon();
+                        addPhone();
                     } else if(errorCode==40001){
                         ActivityUtil.toLogin(LocationAddActivity.this, errorCode);
                     }else {
@@ -219,38 +216,32 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0x1);
                 return;
             } else {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < dataList.size(); i++) {
-                            boolean isLast = false;
-                            if (i == dataList.size() - 1) {
-                                isLast = true;
-                            } else {
-                                isLast = false;
-                            }
-                            LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, 2, isLast);
-                        }
-                    }
-                }).start();
+                getCanon();
             }
         } else {
-            //添加通讯录
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < dataList.size(); i++) {
-                        boolean isLast = false;
-                        if (i == dataList.size() - 1) {
-                            isLast = true;
-                        } else {
-                            isLast = false;
-                        }
-                        LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, 2, isLast);
-                    }
-                }
-            }).start();
+            getCanon();
         }
+    }
+
+    /**
+     * 保存到手机
+     */
+    private void addPhone(){
+        //添加通讯录
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < dataList.size(); i++) {
+                    boolean isLast = false;
+                    if (i == dataList.size() - 1) {
+                        isLast = true;
+                    } else {
+                        isLast = false;
+                    }
+                    LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, 2, isLast);
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -265,32 +256,14 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     Toast.makeText(LocationAddActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
                     Log.v("stones", "权限回调--获取权限成功");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (int i = 0; i < dataList.size(); i++) {
-                                boolean isLast = false;
-                                if (i == dataList.size() - 1) {
-                                    isLast = true;
-                                } else {
-                                    isLast = false;
-                                }
-                                LXRUtil.addContacts(LocationAddActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, 2, isLast);
-                            }
-                        }
-                    }).start();
+                    getCanon();
                 }
                 break;
             case 0x2:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(LocationAddActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
                 } else {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            LXRUtil.deleteContacts(LocationAddActivity.this);
-                        }
-                    }).start();
+                    getCanon();
                 }
                 break;
         }

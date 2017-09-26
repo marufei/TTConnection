@@ -11,6 +11,10 @@ public class HttpAddress {
      */
     public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";
     /**
+     * 首页手机号轮播
+     */
+    public static final String PHONE_H5="http://www.tiantianrenmai.com/tt/index.php/Home/Index/lb";
+    /**
      * 注册
      */
     public static final String REGISTER = "/Public/reg";

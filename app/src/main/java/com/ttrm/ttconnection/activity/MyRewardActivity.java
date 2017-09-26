@@ -37,10 +37,13 @@ import com.ttrm.ttconnection.entity.RewardBean;
 import com.ttrm.ttconnection.entity.ShareInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
+import com.ttrm.ttconnection.util.FileUtils;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
+import com.ttrm.ttconnection.util.SaveFileUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
 
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,6 +85,9 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     private ImageView reward_iv_select2;
     private Bitmap qrBitmap;
     private int shareType;
+    private Bitmap bitmap3;
+    private Bitmap realBitmap;
+    private String picPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +102,9 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_regcode))) {
             reward_tv_recode.setText(SaveUtils.getString(KeyUtils.user_regcode));
         }
+        shareType = 1;
+        reward_iv_select1.setImageResource(R.drawable.vector_drawable_pay_y);
+        reward_iv_select2.setImageResource(R.drawable.vector_drawable_pay_n);
         getSignInfo();
         getInfo();
     }
@@ -133,6 +142,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         reward_iv_select1.setOnClickListener(this);
         reward_iv_select2 = (ImageView) findViewById(R.id.reward_iv_select2);
         reward_iv_select2.setOnClickListener(this);
+        reward_iv_ewm=(ImageView)findViewById(R.id.reward_iv_ewm);
         setMenuBtn("邀请明细", this, InviteActivity.class);
     }
 
@@ -272,21 +282,34 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                     shareInfoBean = gson.fromJson(response, ShareInfoBean.class);
                     if (shareInfoBean != null) {
                         if (shareInfoBean.getErrorCode() == 1) {
+                            MyUtils.Loge(TAG,"步骤1 图片--"+shareInfoBean.getData().getConfig().getImgurl());
                             reward_tv_content.setText(shareInfoBean.getData().getConfig().getContent());
+                            MyUtils.Loge(TAG,"步骤2");
                             Picasso.with(MyRewardActivity.this)
                                     .load(shareInfoBean.getData().getConfig().getImgurl())
                                     .error(R.mipmap.ic_icon)
                                     .into(reward_iv_pic);
+                            MyUtils.Loge(TAG,"步骤3");
                             qrBitmap = generateBitmap(shareInfoBean.getData().getConfig().getUrl()
                                     + "?regCode="
                                     + SaveUtils.getString(KeyUtils.user_regcode), 200, 200);
-                            Bitmap realBitmap = getRealBitmap();
-                            reward_iv_pic1.setImageBitmap(realBitmap);
+                            MyUtils.Loge(TAG,"步骤4--qrBitmap:"+qrBitmap);
+                            Picasso.with(MyRewardActivity.this).load(shareInfoBean.getData().getConfig().getImgurl1()).into(reward_iv_pic1);
+                            reward_iv_ewm.setImageBitmap(qrBitmap);
+                            MyUtils.Loge(TAG,"布局获取bitmap--"+reward_rv_pic.getDrawingCache());
+                            realBitmap = getRealBitmap();
+//                            picPath=saveBitmapToSDCard(realBitmap, String.valueOf(System.currentTimeMillis()));
+                            picPath = getInnerSDCardPath() + "img-" + System.currentTimeMillis() + ".jpg";
+                            FileUtils.writeBitmapToSD(picPath,realBitmap,true);
+                            MyUtils.Loge(TAG,"picPath::"+picPath);
+//                            reward_iv_pic1.setImageBitmap(realBitmap);
+//                          String fileUrl=SaveFileUtil.saveBitmap(MyRewardActivity.this,realBitmap);
+//                            MyUtils.Loge(TAG,"步骤5--fileUrl"+fileUrl);
                         }
                         ActivityUtil.toLogin(MyRewardActivity.this, shareInfoBean.getErrorCode());
                     }
                 } catch (Exception e) {
-
+                    MyUtils.Loge(TAG,"e:"+e.getMessage());
                 }
 
             }
@@ -363,9 +386,12 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     /**
      * 生成带二维码的图片bitmap
      */
-    private Bitmap getRealBitmap() throws Exception {
-        Bitmap bitmap1 = MyUtils.getImage(shareInfoBean.getData().getConfig().getImgurl1());
-        Bitmap bitmap3 = MyUtils.mergeBitmap(bitmap1, qrBitmap);
+    private Bitmap getRealBitmap(){
+        Bitmap bitmap1 = MyUtils.returnBitmap(shareInfoBean.getData().getConfig().getImgurl1());
+        MyUtils.Loge(TAG, "步骤 bitmap1:" + bitmap1);
+        bitmap3 = MyUtils.mergeBitmap(bitmap1, qrBitmap);
+        MyUtils.Loge(TAG, "步骤 bitmap3:" + bitmap3);
+        MyUtils.Loge(TAG, "步骤6");
         return bitmap3;
 
     }
@@ -387,22 +413,32 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         oks.setText(shareInfoBean.getData().getConfig().getContent());
         //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
         oks.setImageUrl(shareInfoBean.getData().getConfig().getImgurl1());
+
+
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//        oks.setImagePath(Environment.getExternalStorageDirectory()+ "/xx/a.jpg");//确保SDcard下面存在此张图片
+//        oks.setImagePath(picPath);//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用
         oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
             @Override
             public void onShare(Platform platform, Platform.ShareParams paramsToShare) {
-                if (platform.getName().equalsIgnoreCase(QQ.NAME)) {
+                if (platform.getName().equalsIgnoreCase(QQ.NAME)||platform.getName().equalsIgnoreCase(QZone.NAME)) {
                     paramsToShare.setText(null);
                     paramsToShare.setTitle(null);
                     paramsToShare.setTitleUrl(null);
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/xx/a.jpg");
-                } else if (platform.getName().equalsIgnoreCase(QZone.NAME)) {
-                    paramsToShare.setText(null);
-                    paramsToShare.setTitle(null);
-                    paramsToShare.setTitleUrl(null);
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/xx/a.jpg");
+                    paramsToShare.setImagePath(picPath);
+                }
+//                else if (platform.getName().equalsIgnoreCase(QZone.NAME)) {
+//                    paramsToShare.setText(null);
+//                    paramsToShare.setTitle(null);
+//                    paramsToShare.setTitleUrl(null);
+//                    paramsToShare.setImagePath(picPath);
+//                }
+                if (platform.getName().equalsIgnoreCase(Wechat.NAME)||platform.getName().equalsIgnoreCase(WechatMoments.NAME)) {
+                    try {
+                        paramsToShare.setImageData(realBitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -528,14 +564,17 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         LayoutInflater inflater = getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_pic, null);
         ImageView dialog_iv_pic1 = (ImageView) layout.findViewById(R.id.dialog_iv_pic1);
+        ImageView dialog_iv_erm=(ImageView)layout.findViewById(R.id.dialog_iv_erm);
+        Picasso.with(MyRewardActivity.this).load(shareInfoBean.getData().getConfig().getImgurl1()).into(dialog_iv_pic1);
+        dialog_iv_erm.setImageBitmap(qrBitmap);
         RelativeLayout dialog_rv_big = (RelativeLayout) layout.findViewById(R.id.dialog_rv_big);
         MyUtils.Loge(TAG, "dialog_iv_pic1:" + dialog_iv_pic1);
-        try {
-            Bitmap bitmap = getRealBitmap();
-            dialog_iv_pic1.setImageBitmap(bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Bitmap bitmap = getRealBitmap();
+//            dialog_iv_pic1.setImageBitmap(bitmap);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         dialog_rv_big.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -545,6 +584,13 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         builder.setView(layout);
         dlg = builder.create();
         dlg.setCanceledOnTouchOutside(false);
+    }
+    /**
+     * 获取内置SD卡路径
+     * @return
+     */
+    public static String getInnerSDCardPath() {
+        return Environment.getExternalStorageDirectory().getPath()+"/TTConnection/";
     }
 
 }

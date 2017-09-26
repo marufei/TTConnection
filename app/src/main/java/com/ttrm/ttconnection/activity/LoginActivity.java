@@ -37,12 +37,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TabLayout login_tab;
     private List<String> titleList=new ArrayList<>();
     private List<Fragment> fragmentList=new ArrayList<>();
+    public static LoginActivity loginActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ActivityUtil.add(this);
+        loginActivity=this;
         initViews();
         initData();
     }

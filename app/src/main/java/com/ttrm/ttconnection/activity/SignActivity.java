@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.entity.CanonBean;
@@ -420,12 +421,23 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             case R.id.sign_tv_oneadd:
                 addType="1";
                 inputType=3;
-                getCanon();//获取一键加粉数据
+//                getCanon();//获取一键加粉数据
+//                saveCanon();
+                MyAdvertisementView myAdvertisementView1 = new MyAdvertisementView(SignActivity.this, R.layout.dialog_bj_one);
+                myAdvertisementView1.showDialog();
+                myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                    @Override
+                    public void onEvent() {
+                        MyUtils.Loge(TAG, "朕知道了");
+                        saveCanon();
+                    }
+                });
                 break;
             case R.id.sign_tv_locationadd:
                 addType="2";
                 inputType=4;
-                getCanon();//获取地区加粉数据
+//                getCanon();//获取地区加粉数据
+                saveCanon();
                 break;
             case R.id.sign_tv_wx:
                 type="4";
@@ -520,7 +532,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                         if (bean.getErrorCode() == 1) {
                             dataList.clear();
                             dataList.addAll(bean.getData().getPhoneList());
-                            saveCanon();
+//                            saveCanon();
+                            addPhone();
                         }
                     } else if(errorCode==40001){
                         ActivityUtil.toLogin(SignActivity.this, errorCode);
@@ -561,39 +574,27 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0x1);
                 return;
             } else {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < dataList.size(); i++) {
-                            boolean isLast=false;
-                            if(i==dataList.size()-1){
-                                isLast=true;
-                            }else {
-                                isLast=false;
-                            }
-                            MyUtils.Loge(TAG,"isLast:"+isLast);
-                            LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
-                        }
-                    }
-                }).start();
+               getCanon();
             }
         } else {
-            //添加通讯录
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < dataList.size(); i++) {
-                        boolean isLast=false;
-                        if(i==dataList.size()-1){
-                            isLast=true;
-                        }else {
-                            isLast=false;
-                        }
-                        LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
-                    }
-                }
-            }).start();
+            getCanon();
         }
+    }
+    private void addPhone(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < dataList.size(); i++) {
+                    boolean isLast=false;
+                    if(i==dataList.size()-1){
+                        isLast=true;
+                    }else {
+                        isLast=false;
+                    }
+                    LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
+                }
+            }
+        }).start();
     }
 
     /**
@@ -675,20 +676,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     Toast.makeText(SignActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
                     Log.v("stones", "权限回调--获取权限成功");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (int i = 0; i < dataList.size(); i++) {
-                                boolean isLast=false;
-                                if(i==dataList.size()-1){
-                                    isLast=true;
-                                }else {
-                                    isLast=false;
-                                }
-                                LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
-                            }
-                        }
-                    }).start();
+                    getCanon();
                 }
                 break;
             case 0x2:
