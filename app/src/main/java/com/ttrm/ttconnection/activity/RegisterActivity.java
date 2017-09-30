@@ -103,9 +103,11 @@ public class RegisterActivity extends BaseActivity  implements View.OnClickListe
                 register();
                 break;
             case R.id.register_pro:
-                Intent intent=new Intent(RegisterActivity.this,WebActivity.class);
-                intent.putExtra("URL","file:///android_asset/TTRMDEALDoc.html");
-                intent.putExtra("title","注册协议");
+//                Intent intent=new Intent(RegisterActivity.this,WebActivity.class);
+//                intent.putExtra("URL","file:///android_asset/TTRMDEALDoc.html");
+//                intent.putExtra("title","注册协议");
+//                startActivity(intent);
+                Intent intent=new Intent(RegisterActivity.this,ProtocolActivity.class);
                 startActivity(intent);
                 break;
         }

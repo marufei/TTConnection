@@ -23,7 +23,6 @@ import com.ttrm.ttconnection.util.MyUtils;
  */
 public class WebActivity extends BaseActivity {
     private WebView webView;
-    private String url;
     private String urlShow;
 
     @Override
@@ -31,7 +30,6 @@ public class WebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ActivityUtil.add(this);
-        url = getIntent().getStringExtra("URL");
         String title=getIntent().getStringExtra("title");
         if(!TextUtils.isEmpty(title)) {
             setToolBar(title);

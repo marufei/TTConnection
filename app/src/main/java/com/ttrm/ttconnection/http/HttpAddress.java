@@ -7,13 +7,19 @@ package com.ttrm.ttconnection.http;
 
 public class HttpAddress {
     /**
-     * 基地址
+     * 基地址(测试)
      */
-    public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";
+//    public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";  //https://www.tiantianrenmai.com
+
+    /**
+     * 基地址(正式)
+     */
+    public static final String BASE_URL = "https://www.tiantianrenmai.com/tt/index.php/Api";  //https://www.tiantianrenmai.com
+
     /**
      * 首页手机号轮播
      */
-    public static final String PHONE_H5="http://www.tiantianrenmai.com/tt/index.php/Home/Index/lb";
+    public static final String PHONE_H5 = "http://www.tiantianrenmai.com/tt/index.php/Home/Index/lb";
     /**
      * 注册
      */
@@ -74,67 +80,67 @@ public class HttpAddress {
     /**
      * 提交提现申请
      */
-    public static final String TO_CASH="/UserCenter/toCash";
+    public static final String TO_CASH = "/UserCenter/toCash";
     /**
      * 兑换码兑换
      */
-    public static final String TO_DH="/UserCenter/todh";
+    public static final String TO_DH = "/UserCenter/todh";
     /**
      * 获取钻石数量
      */
-    public static final String GET_DIAMONDCOUNT="/Diamond/getDiamondCount";
+    public static final String GET_DIAMONDCOUNT = "/Diamond/getDiamondCount";
     /**
      * 获取版本信息
      */
-    public static final String GET_VERSION="/Public/getVersion";
+    public static final String GET_VERSION = "/Public/getVersion";
     /**
      * 获取推荐信息
      */
-    public static final String GET_MAIN_INFO="/UserCenter/getRecomeInfo";
+    public static final String GET_MAIN_INFO = "/UserCenter/getRecomeInfo";
     /**
      * 获取被加状态
      */
-    public static final String GET_ADD_STATUS="/Edjf/getjfStatus";
+    public static final String GET_ADD_STATUS = "/Edjf/getjfStatus";
     /**
      * 被动加粉开关
      */
-    public static final String SELECT_ADD_STATUS="/Edjf/switchEdJf";
+    public static final String SELECT_ADD_STATUS = "/Edjf/switchEdJf";
     /**
      * 获取签到状态
      */
-    public static final String GET_SIGN_STATUS="/Diamond/getSignStatus";
+    public static final String GET_SIGN_STATUS = "/Diamond/getSignStatus";
     /**
      * 获取分享配置
      */
-    public static final String GET_SHARE_INFO="/Public/getShareConfig";
+    public static final String GET_SHARE_INFO = "/Public/getShareConfig";
     /**
      * 获取爆机规则
      */
-    public static final String GET_BAOJI_RULE="/Hit/ruleList";
+    public static final String GET_BAOJI_RULE = "/Hit/ruleList";
     /**
      * 爆机
      */
-    public static final String BAOJI="/Hit/hit";
+    public static final String BAOJI = "/Hit/hit";
     /**
      * 获取爆机状态
      */
-    public static final String GET_BAOJI_STATUS="/Hit/getHitStatus";
+    public static final String GET_BAOJI_STATUS = "/Hit/getHitStatus";
     /**
      * 获取推荐数据
      */
-    public static final String GET_REWARD_DATA="/UserCenter/getRecomeInfo";
+    public static final String GET_REWARD_DATA = "/UserCenter/getRecomeInfo";
     /**
      * 获取剩余加粉数
      */
-    public static final String GET_LAST_NUM="/Jf/jfCount";
+    public static final String GET_LAST_NUM = "/Jf/jfCount";
     /**
      * 提现列表
      */
-    public static final String GET_CASH_LIST="/UserCenter/cashLog";
+    public static final String GET_CASH_LIST = "/UserCenter/cashLog";
     /**
      * 邀请列表
      */
-    public static final String GET_INVITE_LIST="/UserCenter/recomLog";
+    public static final String GET_INVITE_LIST = "/UserCenter/recomLog";
 
 
 }

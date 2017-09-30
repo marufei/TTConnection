@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -56,11 +57,13 @@ import com.ttrm.ttconnection.entity.ListNumBean;
 import com.ttrm.ttconnection.entity.RecomeInfo;
 import com.ttrm.ttconnection.entity.VersionInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
+import com.ttrm.ttconnection.service.UpdateService;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.UpdateManger;
 import com.ttrm.ttconnection.view.ImageCycleView;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 
@@ -148,6 +151,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     dlg.show();
                     int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
+                    break;
+            }
+        }
+    };
+
+    private Handler handler4 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case DOWN_ERROR:
+                    //下载apk失败
+                    Toast.makeText(getApplicationContext(), "下载新版本失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -250,15 +267,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if (versionBean != null) {
                             MyApplication.update_url = versionBean.getData().getVersion().getUrl();
                             MyApplication.update_content = versionBean.getData().getVersion().getMsg();
-                            if (Double.valueOf(versionBean.getData().getVersion().getVersion()) > MyUtils.getVersionCode(MainActivity.this)) {
+                            if (Double.valueOf(versionBean.getData().getVersion().getSversion()) > MyUtils.getVersionCode(MainActivity.this)&&!TextUtils.isEmpty(versionBean.getData().getVersion().getUrl())) {
                                 // TODO 下载
-
+                                showVersionDialog(MainActivity.this,versionBean.getData().getVersion().getUrl());
                             }
+
                         }
                     }
                     ActivityUtil.toLogin(MainActivity.this, errorCode);
                 } catch (Exception e) {
-
+                    MyUtils.Loge(TAG,"e:"+e.getMessage());
                 }
             }
         }, new Response.ErrorListener() {
@@ -273,14 +291,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 map.put("type", "1");
                 map.put("timeStamp", MyUtils.getTimestamp());
                 map.put("sign", MyUtils.getSign());
-                return super.getParams();
+                return map;
             }
         };
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
     /**
-     * 假的加载动画
+     * 删除加载动画
      */
     private static void showLoading() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ma);
@@ -1001,7 +1019,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 弹出提示更新的对话框
      */
-    private void showVersionDialog(final Context context, final Map<String, String> map) {
+    private void showVersionDialog(final Context context, final String url) {
         View view = LayoutInflater.from(context).inflate(R.layout.verion_dialog, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(context).setView(view).create();
         alertDialog.show();
@@ -1013,7 +1031,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downLoadApk(map.get("link"));
+//                downLoadApk(url);
+
+
+         /*       MyUtils.Loge(TAG,"下载");
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            0x14);
+                    return;
+                }
+                startService(new Intent(MainActivity.this, UpdateService.class));*/
+         new UpdateManger(context,1).checkUpdateInfo();
             }
         });
         no.setOnClickListener(new View.OnClickListener() {
@@ -1029,7 +1060,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 从服务器中下载APK
      */
-    private void downLoadApk(final String url) {
+    private void downLoadApk(final String  url) {
+        MyUtils.Loge(TAG,"url::"+url);
         final ProgressDialog pd;    //进度条对话框
         pd = new ProgressDialog(MainActivity.this);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -1044,9 +1076,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     installApk(file);
                     pd.dismiss(); //结束掉进度条对话框
                 } catch (Exception e) {
+                    MyUtils.Loge(TAG,"e:"+e.getMessage());
                     Message msg = new Message();
                     msg.what = DOWN_ERROR;
-                    handler.sendMessage(msg);
+                    handler4.sendMessage(msg);
                     e.printStackTrace();
                 }
             }
@@ -1062,11 +1095,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             //获取到文件的大小
             pd.setMax(conn.getContentLength());
+            MyUtils.Loge(TAG,"getFileFromServer---1");
             InputStream is = conn.getInputStream();
-            File file = new File(Environment.getExternalStorageDirectory(), "baozmj.apk");
+            MyUtils.Loge(TAG,"getFileFromServer---2");
+            File file = new File(Environment.getExternalStorageDirectory().getPath()+"/TTConnection/", "添添人脉.apk");
+            MyUtils.Loge(TAG,"getFileFromServer---3 file:"+file.getCanonicalPath());
             FileOutputStream fos = new FileOutputStream(file);
+
+            /* File file = new File(Environment.getExternalStorageDirectory(), "baozmj.apk");
+            FileOutputStream fos = new FileOutputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(is);*/
+            MyUtils.Loge(TAG,"getFileFromServer---4");
             BufferedInputStream bis = new BufferedInputStream(is);
+            MyUtils.Loge(TAG,"getFileFromServer---5");
             byte[] buffer = new byte[1024];
+            MyUtils.Loge(TAG,"getFileFromServer---6");
             int len;
             int total = 0;
             while ((len = bis.read(buffer)) != -1) {
@@ -1089,6 +1132,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
 
     protected void installApk(File file) {
+        MyUtils.Loge(TAG,"安装apk");
         Intent intent = new Intent();
         //执行动作
         intent.setAction(Intent.ACTION_VIEW);

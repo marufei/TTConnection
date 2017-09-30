@@ -59,6 +59,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private TextView info_tv_bmdl;
     private TextView activity_user_info_bj;
     private TextView activity_user_info_bd;
+    private TextView info_tv_version;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         info_tv_bmdl = (TextView) findViewById(R.id.info_tv_bmdl);
         activity_user_info_bj=(TextView)findViewById(R.id.activity_user_info_bj);
         activity_user_info_bd=(TextView)findViewById(R.id.activity_user_info_bd);
+
+        info_tv_version=(TextView)findViewById(R.id.info_tv_version);
     }
 
     @Override
@@ -185,6 +188,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
             info_tv_bmdl.setText(SaveUtils.getString(KeyUtils.user_name));
         }
+        info_tv_version.setText("v"+MyUtils.getVersionName(UserInfoActivity.this));
     }
 
     /**

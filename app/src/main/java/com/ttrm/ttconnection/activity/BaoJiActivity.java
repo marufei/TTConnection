@@ -104,6 +104,8 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void setViews() {
+        baojiBean.getData().getRuleList().get(0).setType(true);
+        ruleId = baojiBean.getData().getRuleList().get(0).getId();
         adapter = new BaojiLvAdapter(BaoJiActivity.this, baojiBean.getData().getRuleList());
         baoji_lv.setAdapter(adapter);
         baoji_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -150,7 +152,8 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                                 finish();
                             }
                         });
-                    } else if (errorCode == 2) {  //钻石不足
+                    }
+                    if (errorCode == 2) {  //钻石不足
                         MyAdvertisementView myAdvertisementView = new MyAdvertisementView(BaoJiActivity.this, R.layout.dialog_bj_no);
                         myAdvertisementView.showDialog();
                         myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
@@ -212,4 +215,6 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
             baoJi();
         }
     }
+
+
 }

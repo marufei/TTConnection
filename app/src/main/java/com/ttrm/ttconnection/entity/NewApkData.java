@@ -1,15 +1,15 @@
 package com.ttrm.ttconnection.entity;
 
 /**
- * Created by MaRufei on 2017/9/4.
+ * Created by MaRufei on 2017/9/28.
  */
 
-public class VersionInfoBean {
+public class NewApkData {
 
     /**
      * errorCode : 1
      * errorMsg : 获取最新版本信息成功!
-     * data : {"version":{"id":"1","version":"1.4","url":"http://139.224.194.108/lh/uploads/lanhuws_fb_v1.4.apk","msg":"第4版","type":"1","addtime":"20170817125800","sversion":"1"}}
+     * data : {"version":{"id":"1","version":"1.4","url":"http://www.tiantianrenmai/app/app-anzhimarket-release.apk","msg":"第4版","type":"1","addtime":"20170817125800","sversion":"1"}}
      */
 
     private int errorCode;
@@ -42,7 +42,7 @@ public class VersionInfoBean {
 
     public static class DataBean {
         /**
-         * version : {"id":"1","version":"1.4","url":"http://139.224.194.108/lh/uploads/lanhuws_fb_v1.4.apk","msg":"第4版","type":"1","addtime":"20170817125800","sversion":"1"}
+         * version : {"id":"1","version":"1.4","url":"http://www.tiantianrenmai/app/app-anzhimarket-release.apk","msg":"第4版","type":"1","addtime":"20170817125800","sversion":"1"}
          */
 
         private VersionBean version;
@@ -59,7 +59,7 @@ public class VersionInfoBean {
             /**
              * id : 1
              * version : 1.4
-             * url : http://139.224.194.108/lh/uploads/lanhuws_fb_v1.4.apk
+             * url : http://www.tiantianrenmai/app/app-anzhimarket-release.apk
              * msg : 第4版
              * type : 1
              * addtime : 20170817125800

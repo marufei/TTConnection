@@ -6,6 +6,8 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.mob.MobApplication;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.ttrm.ttconnection.entity.NewApkData;
 
 /**
  * Created by MaRufei
@@ -20,11 +22,21 @@ public class MyApplication extends MobApplication {
     public static String update_url;    //更新APP地址
     public static String update_content;    //更新APP内容
 
+    public NewApkData getmNewApkData() {
+        return mNewApkData;
+    }
+
+    public void setmNewApkData(NewApkData mNewApkData) {
+        this.mNewApkData = mNewApkData;
+    }
+
+    private NewApkData mNewApkData; //更新APP内容
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
         mContext = getApplicationContext();
+        CrashReport.initCrashReport(getApplicationContext(),"585ed57d98", false);
     }
     public static MyApplication getInstance() {
         return mInstance;

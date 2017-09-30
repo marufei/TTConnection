@@ -88,6 +88,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     private Bitmap bitmap3;
     private Bitmap realBitmap;
     private String picPath;
+    private AlertDialog dlg1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_my_reward);
         ActivityUtil.add(this);
         initViews();
+        showLoading();
         initDatas();
     }
 
@@ -272,6 +274,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
      * 获取分享配置
      */
     public void getSignInfo() {
+        dlg1.show();
         String url = HttpAddress.BASE_URL + HttpAddress.GET_SHARE_INFO;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -296,6 +299,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                             MyUtils.Loge(TAG,"步骤4--qrBitmap:"+qrBitmap);
                             Picasso.with(MyRewardActivity.this).load(shareInfoBean.getData().getConfig().getImgurl1()).into(reward_iv_pic1);
                             reward_iv_ewm.setImageBitmap(qrBitmap);
+                            dlg1.dismiss();
                             MyUtils.Loge(TAG,"布局获取bitmap--"+reward_rv_pic.getDrawingCache());
                             realBitmap = getRealBitmap();
 //                            picPath=saveBitmapToSDCard(realBitmap, String.valueOf(System.currentTimeMillis()));
@@ -310,12 +314,14 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                     }
                 } catch (Exception e) {
                     MyUtils.Loge(TAG,"e:"+e.getMessage());
+                    dlg1.dismiss();
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                dlg1.dismiss();
                 MyUtils.showToast(MyRewardActivity.this, "网络有问题");
             }
         }) {
@@ -591,6 +597,18 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
      */
     public static String getInnerSDCardPath() {
         return Environment.getExternalStorageDirectory().getPath()+"/TTConnection/";
+    }
+
+    /**
+     * 删除加载动画
+     */
+    private  void showLoading() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyRewardActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View layout = inflater.inflate(R.layout.dialog_delete, null);
+        builder.setView(layout);
+        dlg1 = builder.create();
+        dlg1.setCanceledOnTouchOutside(false);
     }
 
 }
