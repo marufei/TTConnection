@@ -6,12 +6,16 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -39,6 +43,7 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by MaRufei
@@ -75,6 +80,70 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         //倒计时
         mCodeCountDownTimer = new CodeCountDownTimer(60 * 1000L, 1000L, register_btn_code, R.drawable.btn_white,
                 R.drawable.btn_white);
+        register_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(register_phone.length()==11){
+                    getInviteCode();
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取web邀请码
+     */
+    private void getInviteCode() {
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_WEB_REGCODE;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    String errorMsg=jsonObject.getString("errorMsg");
+                    if(errorCode==1){
+                        JSONObject jsonObject1=jsonObject.getJSONObject("data");
+                        String regcode=jsonObject1.getString("regcode");
+
+                        if(!TextUtils.isEmpty(regcode)){
+                            register_regcode.setText(regcode);
+                        }
+                    }else if(errorCode==40001){
+                        ActivityUtil.toLogin(getActivity(), errorCode);
+                    }else {
+                        MyUtils.showToast(getActivity(),errorMsg);
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(getActivity(),"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("phone",register_phone.getText().toString().trim());
+                map.put("timeStamp",MyUtils.getTimestamp());
+                map.put("sign",MyUtils.getSign());
+                return map;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 
     private void initViews() {

@@ -55,7 +55,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     private ImageView bdadd_alipay;
     private ImageView bdadd_wx;
     private String payType;
-    private int pos = -1;
+    private int pos = 0;
     private LinearLayout bdadd_ll_alipay;
     private LinearLayout bdadd_ll_wx;
 
@@ -120,13 +120,14 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
      */
     private void openAdd() {
         MyUtils.Loge(TAG, "点击开通");
-        MyUtils.Loge(TAG, "ruleId" + bdAddBean.getData().getRuleList().get(0).getId());
-        PayUtil.toPay(BDAddActivity.this, payType, bdAddBean.getData().getRuleList().get(0).getId());
+        MyUtils.Loge(TAG, "ruleId" + bdAddBean.getData().getRuleList().get(pos).getId());
+        PayUtil.toPay(BDAddActivity.this, payType, bdAddBean.getData().getRuleList().get(pos).getId());
     }
 
     private void setViews() {
         adapter = new BDAddLvAdapter(BDAddActivity.this, bdAddBean.getData().getRuleList());
         bdadd_lv.setAdapter(adapter);
+        bdAddBean.getData().getRuleList().get(0).setSelect(true);//默认选中第一个
         bdadd_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

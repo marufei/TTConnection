@@ -570,17 +570,17 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         LayoutInflater inflater = getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_pic, null);
         ImageView dialog_iv_pic1 = (ImageView) layout.findViewById(R.id.dialog_iv_pic1);
-        ImageView dialog_iv_erm=(ImageView)layout.findViewById(R.id.dialog_iv_erm);
-        Picasso.with(MyRewardActivity.this).load(shareInfoBean.getData().getConfig().getImgurl1()).into(dialog_iv_pic1);
-        dialog_iv_erm.setImageBitmap(qrBitmap);
+//        ImageView dialog_iv_erm=(ImageView)layout.findViewById(R.id.dialog_iv_erm);
+//        Picasso.with(MyRewardActivity.this).load(shareInfoBean.getData().getConfig().getImgurl1()).into(dialog_iv_pic1);
+//        dialog_iv_erm.setImageBitmap(qrBitmap);
         RelativeLayout dialog_rv_big = (RelativeLayout) layout.findViewById(R.id.dialog_rv_big);
         MyUtils.Loge(TAG, "dialog_iv_pic1:" + dialog_iv_pic1);
-//        try {
-//            Bitmap bitmap = getRealBitmap();
-//            dialog_iv_pic1.setImageBitmap(bitmap);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Bitmap bitmap = getRealBitmap();
+            dialog_iv_pic1.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         dialog_rv_big.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

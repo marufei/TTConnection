@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="240dp"
-        android:layout_height="380dp"
+        android:layout_height="360dp"
         android:layout_centerInParent="true"
         android:background="@mipmap/location_success">
 
@@ -19,7 +19,7 @@
             android:text="tuichu"
             android:textColor="@android:color/transparent" />
 
-        <Button
+        <ImageView
             android:id="@+id/dialog_bt_event"
             android:layout_width="120dp"
             android:layout_height="40dp"

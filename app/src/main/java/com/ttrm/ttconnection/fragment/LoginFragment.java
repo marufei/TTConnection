@@ -135,7 +135,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(getActivity(),"网络有问题");
+                MyUtils.showToast(getActivity(),"网络有问题"+error.getMessage());
             }
         }){
             @Override

@@ -172,6 +172,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                     JSONObject jsonObject = new JSONObject(response);
                     int errorCode = jsonObject.getInt("errorCode");
                     if (errorCode == 1) {
+                        dataList.clear();
                         Gson gson = new Gson();
                         CanonBean bean = gson.fromJson(response, CanonBean.class);
                         dataList.addAll(bean.getData().getPhoneList());

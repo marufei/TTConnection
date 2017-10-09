@@ -144,13 +144,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     });
                     break;
                 case KeyUtils.DELETE_CODE:
-                    dlg1.dismiss();
-                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
+//                    dlg1.dismiss();
+//                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
                     break;
                 case KeyUtils.LOADING_CODE:
                     dlg.show();
                     int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
+                    break;
+            }
+        }
+    };
+    public static Handler handler3 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case KeyUtils.DELETE_CODE:
+                    dlg1.dismiss();
+                    Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -528,6 +539,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(MainActivity.this, LocationAddActivity.class));
                 break;
             case R.id.clear_linear://清除通讯录
+
                 MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this, R.layout.dialog_clear);
                 myAdvertisementView.showDialog();
                 myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
@@ -748,9 +760,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new Date());
         MyUtils.Loge(TAG, "当前日期：" + date);
+        MyUtils.Loge(TAG, "url：" + bannerBean.getData().getPopBannerList().get(0).getUrl());
         if (SaveUtils.getString(KeyUtils.TIME) != null && SaveUtils.getString(KeyUtils.TIME).equals(date)) {
         } else {
-            final MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this, R.layout.dialog_adds);
+            final MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this, R.layout.dialog_adds,bannerBean.getData().getPopBannerList().get(0).getUrl());
             myAdvertisementView.showDialog();
             myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                 @Override
@@ -762,6 +775,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     myAdvertisementView.dismiss();
                 }
             });
+
         }
         SaveUtils.setString(KeyUtils.TIME, date);
     }
@@ -897,6 +911,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void deleteCanon() {
         dlg1.show();
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+//                Toast.makeText(MyApplication.mContext, "删除成功", Toast.LENGTH_SHORT).show();
+//                MyUtils.showToast(MyApplication.mContext,"删除成功");
+//                dlg1.dismiss();
+
+                Message message = Message.obtain();
+                message.what = KeyUtils.DELETE_CODE;
+               handler3.sendMessage(message);
+            }
+        }.start();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 0x2);

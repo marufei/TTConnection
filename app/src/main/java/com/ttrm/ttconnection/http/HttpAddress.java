@@ -9,12 +9,12 @@ public class HttpAddress {
     /**
      * 基地址(测试)
      */
-//    public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";  //https://www.tiantianrenmai.com
+    public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";  //https://www.tiantianrenmai.com
 
     /**
      * 基地址(正式)
      */
-    public static final String BASE_URL = "https://www.tiantianrenmai.com/tt/index.php/Api";  //https://www.tiantianrenmai.com
+//    public static final String BASE_URL = "https://www.tiantianrenmai.com/tt/index.php/Api";  //https://www.tiantianrenmai.com
 
     /**
      * 首页手机号轮播
@@ -141,6 +141,10 @@ public class HttpAddress {
      * 邀请列表
      */
     public static final String GET_INVITE_LIST = "/UserCenter/recomLog";
+    /**
+     * web邀请码
+     */
+    public static final String GET_WEB_REGCODE="/Public/getRegCode";
 
 
 }

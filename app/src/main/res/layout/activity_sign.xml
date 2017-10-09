@@ -559,7 +559,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="钻石是天天人脉的虚拟积分，用于兑换爆机的。"
+                    android:text="钻石是添添人脉的虚拟积分，用于兑换爆机的。"
                     android:textSize="12sp"
                     android:layout_marginTop="3dp"
                     android:textColor="@color/gray_3"/>
