@@ -56,7 +56,7 @@ public class WebActivity extends BaseActivity {
         //设置可以访问文件
         webSettings.setAllowFileAccess(true);
         //设置支持缩放
-        webSettings.setBuiltInZoomControls(true);//WebView中包含一个ZoomButtonsController，当使用web.getSettings().setBuiltInZoomControls(true);启用后，用户一旦触摸屏幕，就会出现缩放控制图标。
+        webSettings.setBuiltInZoomControls(false);//WebView中包含一个ZoomButtonsController，当使用web.getSettings().setBuiltInZoomControls(true);启用后，用户一旦触摸屏幕，就会出现缩放控制图标。
 //        webSettings.setPluginState(WebSettings.PluginState.ON);
 //        webSettings.setPluginsEnabled(true);//可以使用插件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -89,8 +89,8 @@ public class WebActivity extends BaseActivity {
         //可以跳转QQ
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url){
-                view.loadUrl(url);
-                return true;
+//                view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view,url);
             }
             @Override public WebResourceResponse shouldInterceptRequest (WebView view, String url){
                 if (url.startsWith("http") || url.startsWith("https")) {
@@ -110,7 +110,7 @@ public class WebActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webView.setVisibility(View.GONE);//ZoomButtonsController有一个register和unregister的过程
+//        webView.setVisibility(View.GONE);//ZoomButtonsController有一个register和unregister的过程
         webView.destroy();
     }
 

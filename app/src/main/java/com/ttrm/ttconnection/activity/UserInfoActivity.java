@@ -117,13 +117,28 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.info_ll_add:
                 MyUtils.Loge(TAG, "点击了加粉");
-                getAddStatus();
+                if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                    getAddStatus();
+                } else {
+                    showAlertDialog("提示", "请完善一下您的昵称再继续吧~", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(UserInfoActivity.this, EditNameActivity.class));
+                            dialogInterface.dismiss();
+                        }
+                    }, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                }
                 break;
             case R.id.info_ll_bj:
                 if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
                     getBjStatus();
                 } else {
-                    showAlertDialog("提示", "请完善一下您的姓名再继续爆机吧~", "确定", new DialogInterface.OnClickListener() {
+                    showAlertDialog("提示", "请完善一下您的昵称再继续吧~", "确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             startActivity(new Intent(UserInfoActivity.this, EditNameActivity.class));

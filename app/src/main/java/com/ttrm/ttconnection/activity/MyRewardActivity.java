@@ -362,7 +362,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             oks.setTitle(shareInfoBean.getData().getConfig().getTitle());
 
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl());
+            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
 
             // text是分享文本，所有平台都需要这个字段
             oks.setText(shareInfoBean.getData().getConfig().getContent());
@@ -370,7 +370,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //            oks.setImagePath(path);//确保SDcard下面存在此张图片
             // url仅在微信（包括好友和朋友圈）中使用
-            oks.setUrl(shareInfoBean.getData().getConfig().getUrl());
+            oks.setUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
 //            oks.setImageUrl("file:///android_asset/icon_launcher.png");
 //            if (type.equals("1") ||type.equals("2"))
             oks.setImageUrl(shareInfoBean.getData().getConfig().getImgurl());
@@ -380,7 +380,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             oks.setSite(getString(R.string.app_name));
 
             // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl());
+            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
 
             // 启动分享GUI
             oks.show(this);
@@ -566,14 +566,15 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
      */
     private void showBigPic() {
         MyUtils.Loge(TAG, "url:" + shareInfoBean.getData().getConfig().getImgurl1());
-        AlertDialog.Builder builder = new AlertDialog.Builder(MyRewardActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyRewardActivity.this,R.style.myDialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_pic, null);
+        layout.setBackgroundColor(getResources().getColor(R.color.transparent));
         ImageView dialog_iv_pic1 = (ImageView) layout.findViewById(R.id.dialog_iv_pic1);
 //        ImageView dialog_iv_erm=(ImageView)layout.findViewById(R.id.dialog_iv_erm);
 //        Picasso.with(MyRewardActivity.this).load(shareInfoBean.getData().getConfig().getImgurl1()).into(dialog_iv_pic1);
 //        dialog_iv_erm.setImageBitmap(qrBitmap);
-        RelativeLayout dialog_rv_big = (RelativeLayout) layout.findViewById(R.id.dialog_rv_big);
+        LinearLayout dialog_rv_big = (LinearLayout) layout.findViewById(R.id.dialog_rv_big);
         MyUtils.Loge(TAG, "dialog_iv_pic1:" + dialog_iv_pic1);
         try {
             Bitmap bitmap = getRealBitmap();

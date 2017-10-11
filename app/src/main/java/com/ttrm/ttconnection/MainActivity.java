@@ -82,6 +82,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.wechat.friends.Wechat;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private final int DOWN_ERROR = 0;
     private static TextView dialog_loading_num;
@@ -226,7 +229,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initWebview() {
-        urlShow=HttpAddress.PHONE_H5;
+        urlShow = HttpAddress.PHONE_H5;
         MyUtils.Loge("aaa", "改后----urlShow::" + urlShow);
         WebSettings webSettings = main_wv.getSettings();
         //设置WebView属性，能够执行Javascript脚本
@@ -263,7 +266,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 获取版本信息
      */
     private void getVersion() {
-        MyUtils.Loge(TAG,"获取版本 时间戳:"+MyUtils.getTimestamp());
+        MyUtils.Loge(TAG, "获取版本 时间戳:" + MyUtils.getTimestamp());
         String url = HttpAddress.BASE_URL + HttpAddress.GET_VERSION;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -278,16 +281,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if (versionBean != null) {
                             MyApplication.update_url = versionBean.getData().getVersion().getUrl();
                             MyApplication.update_content = versionBean.getData().getVersion().getMsg();
-                            if (Double.valueOf(versionBean.getData().getVersion().getSversion()) > MyUtils.getVersionCode(MainActivity.this)&&!TextUtils.isEmpty(versionBean.getData().getVersion().getUrl())) {
+                            if (Double.valueOf(versionBean.getData().getVersion().getSversion()) > MyUtils.getVersionCode(MainActivity.this) && !TextUtils.isEmpty(versionBean.getData().getVersion().getUrl())) {
                                 // TODO 下载
-                                showVersionDialog(MainActivity.this,versionBean.getData().getVersion().getUrl());
+//                                showVersionDialog(MainActivity.this,versionBean.getData().getVersion().getUrl());
+                                selectPermission();
                             }
 
                         }
                     }
                     ActivityUtil.toLogin(MainActivity.this, errorCode);
                 } catch (Exception e) {
-                    MyUtils.Loge(TAG,"e:"+e.getMessage());
+                    MyUtils.Loge(TAG, "e:" + e.getMessage());
                 }
             }
         }, new Response.ErrorListener() {
@@ -306,6 +310,40 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    /**
+     * 下载APP
+     */
+    private void downloadApk() {
+
+        new UpdateManger(MainActivity.this, 1).checkUpdateInfo();
+    }
+
+    /**
+     * 判断读写权限
+     */
+    private void selectPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {       //6.0以上运行时权限
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                MyUtils.Loge(TAG, "READ permission IS NOT granted...");
+
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                    MyUtils.Loge(TAG, "11111111111111");
+                } else {
+                    // 0 是自己定义的请求coude
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                    MyUtils.Loge(TAG, "222222222222");
+                }
+            } else {
+                MyUtils.Loge(TAG, "READ permission is granted...");
+                downloadApk();
+            }
+        } else {
+            downloadApk();
+        }
     }
 
     /**
@@ -419,7 +457,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         main_tv_bj = (TextView) findViewById(R.id.main_tv_bj);
         mian_tv_sign = (TextView) findViewById(R.id.mian_tv_sign);
         mian_tv_sign.setOnClickListener(this);
-        main_wv=(WebView)findViewById(R.id.main_wv);
+        main_wv = (WebView) findViewById(R.id.main_wv);
 
     }
 
@@ -471,7 +509,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
 
                 } else {
-                    showAlertDialog("提示", "请完善一下您的姓名再继续吧~", "确定", new DialogInterface.OnClickListener() {
+                    showAlertDialog("提示", "请完善一下您的昵称再继续吧~", "确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             startActivity(new Intent(MainActivity.this, EditNameActivity.class));
@@ -504,7 +542,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             break;
                     }
                 } else {
-                    showAlertDialog("提示", "请完善一下您的姓名再继续吧~", "确定", new DialogInterface.OnClickListener() {
+                    showAlertDialog("提示", "请完善一下您的昵称再继续吧~", "确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             startActivity(new Intent(MainActivity.this, EditNameActivity.class));
@@ -763,7 +801,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         MyUtils.Loge(TAG, "url：" + bannerBean.getData().getPopBannerList().get(0).getUrl());
         if (SaveUtils.getString(KeyUtils.TIME) != null && SaveUtils.getString(KeyUtils.TIME).equals(date)) {
         } else {
-            final MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this, R.layout.dialog_adds,bannerBean.getData().getPopBannerList().get(0).getUrl());
+            final MyAdvertisementView myAdvertisementView = new MyAdvertisementView(MainActivity.this, R.layout.dialog_adds, bannerBean.getData().getPopBannerList().get(0).getUrl());
             myAdvertisementView.showDialog();
             myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                 @Override
@@ -888,7 +926,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 添加到通讯录
      */
-    private void addPhone(){
+    private void addPhone() {
         //添加通讯录
         new Thread(new Runnable() {
             @Override
@@ -911,7 +949,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void deleteCanon() {
         dlg1.show();
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -926,7 +964,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 Message message = Message.obtain();
                 message.what = KeyUtils.DELETE_CODE;
-               handler3.sendMessage(message);
+                handler3.sendMessage(message);
             }
         }.start();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -1022,156 +1060,171 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     saveCanon();
                 }
                 break;
+            case 0:
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted
+                    // request successfully, handle you transactions
+                    downloadApk();
+                } else {
+
+                    // permission denied
+                    // request failed
+                    MyUtils.Loge(TAG, "权限失败");
+                }
+                break;
         }
     }
 
-    /**
-     * 2. 获取当前程序的版本号
-     * 3.
-     */
-    private int getVersionaCode() throws Exception {
-        //获取packagemanager的实例
-        PackageManager packageManager = getPackageManager();
-        //getPackageName()是你当前类的包名，0代表是获取版本信息
-        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-        return packInfo.versionCode;
-    }
+//    /**
+//     * 2. 获取当前程序的版本号
+//     * 3.
+//     */
+//    private int getVersionaCode() throws Exception {
+//        //获取packagemanager的实例
+//        PackageManager packageManager = getPackageManager();
+//        //getPackageName()是你当前类的包名，0代表是获取版本信息
+//        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+//        return packInfo.versionCode;
+//    }
+//
+//    /**
+//     * 获取当前程序的版本名称
+//     */
+//    private String getVersionName() throws Exception {
+//        //获取packagemanager的实例
+//        PackageManager packageManager = getPackageManager();
+//        //getPackageName()是你当前类的包名，0代表是获取版本信息
+//        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+//        return packInfo.versionName;
+//    }
+//
+//    /**
+//     * 弹出提示更新的对话框
+//     */
+//    private void showVersionDialog(final Context context, final String url) {
+//        View view = LayoutInflater.from(context).inflate(R.layout.verion_dialog, null);
+//        final AlertDialog alertDialog = new AlertDialog.Builder(context).setView(view).create();
+//        alertDialog.show();
+//        TextView yes = (TextView) view.findViewById(R.id.version_update_yes);
+//        TextView no = (TextView) view.findViewById(R.id.version_update_no);
+//        TextView nameTxt = (TextView) view.findViewById(R.id.version_update_name);
+//        final TextView contentTxt = (TextView) view.findViewById(R.id.version_update_content);
+//        TextView timeTxt = (TextView) view.findViewById(R.id.version_update_time);
+//        yes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                downLoadApk(url);
+//
+//
+//         /*       MyUtils.Loge(TAG,"下载");
+//                if (ContextCompat.checkSelfPermission(MainActivity.this,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(MainActivity.this,
+//                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                            0x14);
+//                    return;
+//                }
+//                startService(new Intent(MainActivity.this, UpdateService.class));*/
+//                new UpdateManger(context, 1).checkUpdateInfo();
+//            }
+//        });
+//        no.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alertDialog.dismiss();
+//                   /* Intent intent=new Intent(context,MainActivity.class);
+//                    context.startActivity(intent);*/
+//            }
+//        });
+//    }
+//
+//    /**
+//     * 从服务器中下载APK
+//     */
+//    private void downLoadApk(final String url) {
+//        MyUtils.Loge(TAG, "url::" + url);
+//        final ProgressDialog pd;    //进度条对话框
+//        pd = new ProgressDialog(MainActivity.this);
+//        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        pd.setMessage("正在下载更新");
+//        pd.show();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    File file = getFileFromServer(url, pd);
+//                    sleep(1000);
+//                    installApk(file);
+//                    pd.dismiss(); //结束掉进度条对话框
+//                } catch (Exception e) {
+//                    MyUtils.Loge(TAG, "e:" + e.getMessage());
+//                    Message msg = new Message();
+//                    msg.what = DOWN_ERROR;
+//                    handler4.sendMessage(msg);
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
+//    }
 
-    /**
-     * 获取当前程序的版本名称
-     */
-    private String getVersionName() throws Exception {
-        //获取packagemanager的实例
-        PackageManager packageManager = getPackageManager();
-        //getPackageName()是你当前类的包名，0代表是获取版本信息
-        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-        return packInfo.versionName;
-    }
-
-    /**
-     * 弹出提示更新的对话框
-     */
-    private void showVersionDialog(final Context context, final String url) {
-        View view = LayoutInflater.from(context).inflate(R.layout.verion_dialog, null);
-        final AlertDialog alertDialog = new AlertDialog.Builder(context).setView(view).create();
-        alertDialog.show();
-        TextView yes = (TextView) view.findViewById(R.id.version_update_yes);
-        TextView no = (TextView) view.findViewById(R.id.version_update_no);
-        TextView nameTxt = (TextView) view.findViewById(R.id.version_update_name);
-        final TextView contentTxt = (TextView) view.findViewById(R.id.version_update_content);
-        TextView timeTxt = (TextView) view.findViewById(R.id.version_update_time);
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                downLoadApk(url);
-
-
-         /*       MyUtils.Loge(TAG,"下载");
-                if (ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            0x14);
-                    return;
-                }
-                startService(new Intent(MainActivity.this, UpdateService.class));*/
-         new UpdateManger(context,1).checkUpdateInfo();
-            }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-                   /* Intent intent=new Intent(context,MainActivity.class);
-                    context.startActivity(intent);*/
-            }
-        });
-    }
-
-    /**
-     * 从服务器中下载APK
-     */
-    private void downLoadApk(final String  url) {
-        MyUtils.Loge(TAG,"url::"+url);
-        final ProgressDialog pd;    //进度条对话框
-        pd = new ProgressDialog(MainActivity.this);
-        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pd.setMessage("正在下载更新");
-        pd.show();
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    File file = getFileFromServer(url, pd);
-                    sleep(1000);
-                    installApk(file);
-                    pd.dismiss(); //结束掉进度条对话框
-                } catch (Exception e) {
-                    MyUtils.Loge(TAG,"e:"+e.getMessage());
-                    Message msg = new Message();
-                    msg.what = DOWN_ERROR;
-                    handler4.sendMessage(msg);
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
-    private File getFileFromServer(String path, ProgressDialog pd) throws Exception {
-        //如果相等的话表示当前的sdcard挂载在手机上并且是可用的
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            URL url = new URL(path);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-
-            //获取到文件的大小
-            pd.setMax(conn.getContentLength());
-            MyUtils.Loge(TAG,"getFileFromServer---1");
-            InputStream is = conn.getInputStream();
-            MyUtils.Loge(TAG,"getFileFromServer---2");
-            File file = new File(Environment.getExternalStorageDirectory().getPath()+"/TTConnection/", "添添人脉.apk");
-            MyUtils.Loge(TAG,"getFileFromServer---3 file:"+file.getCanonicalPath());
-            FileOutputStream fos = new FileOutputStream(file);
-
-            /* File file = new File(Environment.getExternalStorageDirectory(), "baozmj.apk");
-            FileOutputStream fos = new FileOutputStream(file);
-            BufferedInputStream bis = new BufferedInputStream(is);*/
-            MyUtils.Loge(TAG,"getFileFromServer---4");
-            BufferedInputStream bis = new BufferedInputStream(is);
-            MyUtils.Loge(TAG,"getFileFromServer---5");
-            byte[] buffer = new byte[1024];
-            MyUtils.Loge(TAG,"getFileFromServer---6");
-            int len;
-            int total = 0;
-            while ((len = bis.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
-                total += len;
-                //获取当前下载量
-                pd.setProgress(total);
-            }
-            fos.close();
-            bis.close();
-            is.close();
-            return file;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     *  安装apk
-     */
-
-    protected void installApk(File file) {
-        MyUtils.Loge(TAG,"安装apk");
-        Intent intent = new Intent();
-        //执行动作
-        intent.setAction(Intent.ACTION_VIEW);
-        //执行的数据类型
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");//编者按：此处Android应为android，否则造成安装不了
-        startActivity(intent);
-    }
+//    private File getFileFromServer(String path, ProgressDialog pd) throws Exception {
+//        //如果相等的话表示当前的sdcard挂载在手机上并且是可用的
+//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//            URL url = new URL(path);
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setConnectTimeout(5000);
+//
+//            //获取到文件的大小
+//            pd.setMax(conn.getContentLength());
+//            MyUtils.Loge(TAG, "getFileFromServer---1");
+//            InputStream is = conn.getInputStream();
+//            MyUtils.Loge(TAG, "getFileFromServer---2");
+//            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/TTConnection/", "添添人脉.apk");
+//            MyUtils.Loge(TAG, "getFileFromServer---3 file:" + file.getCanonicalPath());
+//            FileOutputStream fos = new FileOutputStream(file);
+//
+//            /* File file = new File(Environment.getExternalStorageDirectory(), "baozmj.apk");
+//            FileOutputStream fos = new FileOutputStream(file);
+//            BufferedInputStream bis = new BufferedInputStream(is);*/
+//            MyUtils.Loge(TAG, "getFileFromServer---4");
+//            BufferedInputStream bis = new BufferedInputStream(is);
+//            MyUtils.Loge(TAG, "getFileFromServer---5");
+//            byte[] buffer = new byte[1024];
+//            MyUtils.Loge(TAG, "getFileFromServer---6");
+//            int len;
+//            int total = 0;
+//            while ((len = bis.read(buffer)) != -1) {
+//                fos.write(buffer, 0, len);
+//                total += len;
+//                //获取当前下载量
+//                pd.setProgress(total);
+//            }
+//            fos.close();
+//            bis.close();
+//            is.close();
+//            return file;
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//    /**
+//     * 安装apk
+//     */
+//
+//    protected void installApk(File file) {
+//        MyUtils.Loge(TAG, "安装apk");
+//        Intent intent = new Intent();
+//        //执行动作
+//        intent.setAction(Intent.ACTION_VIEW);
+//        //执行的数据类型
+//        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");//编者按：此处Android应为android，否则造成安装不了
+//        startActivity(intent);
+//    }
 
     /**
      * 返回键的监听

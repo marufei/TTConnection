@@ -1,6 +1,8 @@
 package com.ttrm.ttconnection.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -175,7 +177,23 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
                     MyUtils.showToast(BDAddActivity.this, "请选择支付方式");
                     return;
                 }
-                openAdd();
+
+                if (TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                    showAlertDialog("提示", "请完善一下您的昵称再继续吧~", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(BDAddActivity.this, EditNameActivity.class));
+                            dialogInterface.dismiss();
+                        }
+                    }, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                } else {
+                    openAdd();
+                }
                 break;
 //            case R.id.bdadd_alipay:
 //                payType="2";

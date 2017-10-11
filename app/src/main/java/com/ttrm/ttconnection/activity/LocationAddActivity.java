@@ -153,6 +153,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.location_btn_sure:
 //                getCanon();
+                location_btn_sure.setClickable(false);
                 saveCanon();
                 break;
         }
@@ -181,16 +182,18 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                     } else if(errorCode==40001){
                         ActivityUtil.toLogin(LocationAddActivity.this, errorCode);
                     }else {
+                        location_btn_sure.setEnabled(true);
                         Toast.makeText(LocationAddActivity.this, jsonObject.getString("errorMsg"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-
+                    location_btn_sure.setEnabled(true);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 MyUtils.showToast(LocationAddActivity.this, "网络有问题");
+                location_btn_sure.setEnabled(true);
             }
         }) {
             @Override
@@ -228,6 +231,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
      * 保存到手机
      */
     private void addPhone(){
+        location_btn_sure.setEnabled(true);
         //添加通讯录
         new Thread(new Runnable() {
             @Override
@@ -253,7 +257,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.v("stones", "权限回调--获取权限失败");
                     Toast.makeText(LocationAddActivity.this, "请打开手机设置，权限管理，允许天天人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
-
+                    location_btn_sure.setEnabled(true);
                 } else {
                     Toast.makeText(LocationAddActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
                     Log.v("stones", "权限回调--获取权限成功");

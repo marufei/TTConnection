@@ -97,12 +97,12 @@ public class UpdateManger {
 
 //        //判断是否强制更新
 //        if (!MDApp.Update_Type) {
-//            builder.setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                }
-//            });
+            builder.setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 //        }
 
         noticeDialog = builder.create();
@@ -139,7 +139,7 @@ public class UpdateManger {
                 installApk();
             }
         });
-        //先看看有没有下载好
+/*        //先看看有没有下载好
         if (new File(saveFileName).exists()) {
             progressBar.setVisibility(View.GONE);
             dialogsuccess.setVisibility(View.VISIBLE);
@@ -148,13 +148,15 @@ public class UpdateManger {
         } else {
             //启动下载
             downloadApk();
-        }
+        }*/
+        downloadApk();
     }
 
     /**
      * 启动下载
      */
     private void downloadApk() {
+
         downLoadThread = new Thread(mdownApkRunnable);
         downLoadThread.start();
     }
@@ -223,6 +225,7 @@ public class UpdateManger {
                 ins.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                MyUtils.Loge(TAG,"e:"+e.getMessage());
             }
         }
     };
