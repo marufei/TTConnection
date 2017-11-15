@@ -41,6 +41,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +52,7 @@ public class MyUtils {
     public static Toast mToast;
     private static Pattern mPattern;
     private static Matcher mMatcher;
-    public static boolean logStatus = true;
+    public static boolean logStatus = false;
 
     public static void Loge(String TAG, String msg) {
         try {
@@ -856,25 +857,35 @@ public class MyUtils {
     public static Bitmap returnBitmap(String url) {
         URL fileUrl = null;
         Bitmap bitmap = null;
-
+        MyUtils.Loge(TAG,"returnBitmap---1");
         try {
             fileUrl = new URL(url);
+            MyUtils.Loge(TAG,"returnBitmap---2");
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            MyUtils.Loge(TAG,"returnBitmap---3");
         }
 
         try {
             HttpURLConnection conn = (HttpURLConnection) fileUrl
                     .openConnection();
+            MyUtils.Loge(TAG,"returnBitmap---4");
             conn.setDoInput(true);
+            MyUtils.Loge(TAG,"returnBitmap---5");
             conn.connect();
+            MyUtils.Loge(TAG,"returnBitmap---6");
             if(conn!=null) {
+                MyUtils.Loge(TAG,"returnBitmap---7");
                 InputStream is = conn.getInputStream();
+                MyUtils.Loge(TAG,"returnBitmap---8");
                 bitmap = BitmapFactory.decodeStream(is);
+                MyUtils.Loge(TAG,"returnBitmap---9");
                 is.close();
+                MyUtils.Loge(TAG,"returnBitmap---10");
             }
         } catch (IOException e) {
             e.printStackTrace();
+            MyUtils.Loge(TAG,"returnBitmap---11");
         }
         return bitmap;
 
@@ -893,6 +904,26 @@ public class MyUtils {
         canvas.drawBitmap(firstBitmap, new Matrix(), null);
         canvas.drawBitmap(secondBitmap, 25, 900, null);
         return bitmap;
+    }
+
+    /**
+     * 判断qq是否可用
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isQQClientAvailable(Context context) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mobileqq")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

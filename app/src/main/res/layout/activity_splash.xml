@@ -4,10 +4,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.ttrm.ttconnection.activity.SplashActivity">
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/ttrm_pic"
-        android:scaleType="fitXY"/>
+        android:layout_height="0dp"
+        android:layout_weight="41">
+        <!--广告显示-->
+        <ImageView
+            android:id="@+id/img_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+
+        <Button
+            android:id="@+id/adv_next"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/yuanjiao_f0black"
+            android:text="0 秒"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <!--广告两字-->
+        <TextView
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:id="@+id/startup_adt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yuanjiao_f0black"
+            android:gravity="center"
+            android:text="广告"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:gravity="center">
+
+
+    </LinearLayout>
 </LinearLayout>

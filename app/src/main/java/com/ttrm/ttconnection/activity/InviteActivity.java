@@ -25,6 +25,7 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +67,9 @@ public class InviteActivity extends BaseActivity {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-
+                currentPage++;
+                refreshType=REFRESH_UP;
+                getInviteList();
             }
         });
     }
@@ -97,7 +100,7 @@ public class InviteActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                MyUtils.showToast(InviteActivity.this,"网络有问题");
             }
         }){
             @Override
@@ -110,6 +113,7 @@ public class InviteActivity extends BaseActivity {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -117,6 +121,7 @@ public class InviteActivity extends BaseActivity {
         if(currentPage==1&&inviteBean.getData().getRecomLog().size()==0){
             invite_show.setVisibility(View.GONE);
             invite_kong.setVisibility(View.VISIBLE);
+            return;
         }else {
             MyUtils.Loge(TAG,"展示listview");
             invite_kong.setVisibility(View.GONE);

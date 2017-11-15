@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_use_instructions2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+  <include layout="@layout/toolbar_layout"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+
+        <!--android:text="为了让您能正常使用蓝狐微商，请您进行以下设置"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textStyle="bold"/>-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="14sp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_marginTop="@dimen/dimen_5"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:text="1.打开手机设置，找到应用程序管理\n2.在应用列表中，找到“蓝狐微商”\n3.找到权限管理，将“读取联系人信息”，“写入联系人信息“和“删除联系人”的权限设置为“允许”\n4.打开蓝狐微商，以后就可以使用蓝狐微商爆粉啦"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:text="常见问题解答:"-->
+        <!--android:id="@+id/textView"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textSize="14sp"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textSize="14sp"-->
+    <!--android:layout_marginTop="@dimen/dimen_5"-->
+    <!--android:layout_marginLeft="@dimen/dimen_5"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:text="问: 为什么要设置“读取联系人信息”，“写入联系人信息”和”删除联系人“?" />-->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="14sp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginLeft="@dimen/dimen_5"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:text="答：1.“立即加粉”的功能是将您选中的数据导入您的手机，然后您打开微信，新的朋友，添加好友，通讯录好友，就可以匹配到您导入的好友信息.\n2.如果不设置的话，蓝狐微商不可以将数据写入您的手机通讯录，也就没有办法使用“立即加粉”和其他的导入通讯录的功能.\n3.针对手机的不同，可能会强制关闭或者导入数据为空." />-->
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="14sp"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginLeft="@dimen/dimen_5"-->
+        <!--android:text="问:为什么我导入了通讯录，微信里面，新的好友还是零?"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="14sp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginLeft="@dimen/dimen_5"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:text="答:1.可能是“读取联系人信息”和“写入联系人信息”没有设置为允许.\n2.可能是您没有在微信上传通讯录，上传就可以了."-->
+        <!--android:id="@+id/textView3" />-->
+    <WebView
+        android:id="@+id/wv_my_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <!--<com.tencent.smtt.sdk.WebView-->
+        <!--android:id="@+id/wv_my_show"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></com.tencent.smtt.sdk.WebView>-->
+
+</LinearLayout>

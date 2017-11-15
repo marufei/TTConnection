@@ -20,6 +20,7 @@ import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.CodeCountDownTimer;
 import com.ttrm.ttconnection.util.MyUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import org.json.JSONObject;
 
@@ -159,6 +160,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(ForgetPwdActivity.this).add(stringRequest);
     }
 
@@ -205,6 +207,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(ForgetPwdActivity.this).add(stringRequest);
     }
 }

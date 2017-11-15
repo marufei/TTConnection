@@ -142,6 +142,7 @@ public class PayUtil {
                     return map;
                 }
             };
+            VolleyUtils.setTimeOut(stringRequest);
             Volley.newRequestQueue(activity).add(stringRequest);
         }
 

@@ -25,6 +25,7 @@ import com.ttrm.ttconnection.util.CodeCountDownTimer;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import org.json.JSONObject;
 
@@ -116,11 +117,13 @@ public class RegisterActivity extends BaseActivity  implements View.OnClickListe
      * 获取短信验证码
      */
     private void getSms() {
+        MyUtils.showToast(RegisterActivity.this,"注册：手机号："+phone+"\n时间戳："+MyUtils.getTimestamp()+"\n签名:"+MyUtils.getSign());
         String url= HttpAddress.BASE_URL + HttpAddress.GET_SMS;
         StringRequest stringRequest = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 MyUtils.Loge(TAG,"response:"+response);
+                MyUtils.showToast(RegisterActivity.this,"返回数据:---"+response);
                 try {
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
@@ -156,6 +159,7 @@ public class RegisterActivity extends BaseActivity  implements View.OnClickListe
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(RegisterActivity.this).add(stringRequest);
     }
     /**
@@ -209,6 +213,7 @@ public class RegisterActivity extends BaseActivity  implements View.OnClickListe
                 return  map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(RegisterActivity.this).add(stringRequest);
     }
 
@@ -266,6 +271,7 @@ public class RegisterActivity extends BaseActivity  implements View.OnClickListe
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(RegisterActivity.this).add(stringRequest);
     }
 }

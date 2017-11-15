@@ -37,6 +37,7 @@ import com.ttrm.ttconnection.util.CodeCountDownTimer;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import org.json.JSONObject;
 
@@ -104,7 +105,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * 获取web邀请码
      */
     private void getInviteCode() {
-        String url=HttpAddress.BASE_URL+HttpAddress.GET_WEB_REGCODE;
+        String url=HttpAddress.BASE_URL+HttpAddress.GET_WEB_REG;
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -143,6 +144,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 
@@ -191,6 +193,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 //                }
                 if(!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())){
                     MyUtils.showToast(getActivity(),"请填写正确的手机号");
+                    return;
                 }
 //                if(!register_pwd1.getText().toString().trim().equals(register_pwd2.getText().toString().trim())){
 //                    MyUtils.showToast(getActivity(),"密码不一致，请重新设置");
@@ -261,6 +264,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
     /**
@@ -314,6 +318,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 return  map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 
@@ -370,6 +375,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 }

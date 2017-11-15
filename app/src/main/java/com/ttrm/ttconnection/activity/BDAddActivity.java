@@ -34,6 +34,7 @@ import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.PayUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.ListViewForScrollview;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 import com.ttrm.ttconnection.wxapi.WXPayEntryActivity;
@@ -114,6 +115,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(BDAddActivity.this).add(stringRequest);
     }
 
@@ -265,15 +267,16 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void OnSuccess() {
         MyUtils.Loge(TAG, "进入支付回调");
-        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this, R.layout.dialog_bd_success);
-        myAdvertisementView.showDialog();
-        myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-            @Override
-            public void onEvent() {
-//                MyUtils.showToast(BDAddActivity.this,"点击了按钮");
-                MyUtils.Loge(TAG, "微信回调成功，点击了按钮");
-                finish();
-            }
-        });
+//        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this, R.layout.dialog_bd_success);
+//        myAdvertisementView.showDialog();
+//        myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+//            @Override
+//            public void onEvent() {
+////                MyUtils.showToast(BDAddActivity.this,"点击了按钮");
+//                MyUtils.Loge(TAG, "微信回调成功，点击了按钮");
+//                finish();
+//            }
+//        });
+        finish();
     }
 }

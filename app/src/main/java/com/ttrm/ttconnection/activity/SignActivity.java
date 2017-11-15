@@ -38,6 +38,7 @@ import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
@@ -272,6 +273,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(signActivity).add(stringRequest);
     }
 
@@ -318,6 +320,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(SignActivity.this).add(stringRequest);
     }
 
@@ -368,6 +371,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -408,6 +412,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -487,7 +492,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             oks.setTitle(shareInfoBean.getData().getConfig().getTitle());
 
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl());
+            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
 
             // text是分享文本，所有平台都需要这个字段
             oks.setText(shareInfoBean.getData().getConfig().getContent());
@@ -495,7 +500,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //            oks.setImagePath(path);//确保SDcard下面存在此张图片
             // url仅在微信（包括好友和朋友圈）中使用
-            oks.setUrl(shareInfoBean.getData().getConfig().getUrl());
+            oks.setUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
 //            oks.setImageUrl("file:///android_asset/icon_launcher.png");
 //            if (type.equals("1") ||type.equals("2"))
                 oks.setImageUrl(shareInfoBean.getData().getConfig().getImgurl());
@@ -505,7 +510,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             oks.setSite(getString(R.string.app_name));
 
             // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl());
+            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
 
             // 启动分享GUI
             oks.show(this);
@@ -560,6 +565,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(SignActivity.this).add(stringRequest);
     }
 

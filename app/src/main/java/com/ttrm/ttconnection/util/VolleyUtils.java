@@ -3,6 +3,7 @@ package com.ttrm.ttconnection.util;
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,74 +31,13 @@ import java.util.Map;
  */
 
 public class VolleyUtils {
-    private  RequestQueue requestQueue;
-    private  Context context;
-    private VolleyListener volleyListener;
-
-    public  RequestQueue getRequestQueue(){
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(context);
+    private static final int TIME_OUT=10*1000;//设置超时时间
+    public static void setTimeOut(StringRequest stringRequest){
+        if(stringRequest!=null) {
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    TIME_OUT,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         }
-        return requestQueue;
-    }
-    public  void Post(String url, final Map<String,String> map, final Class cls){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpAddress.BASE_URL + url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-//                jsonData(response,cls);
-                volleyListener.onSuccess();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return map;
-            }
-        };
-        getRequestQueue().add(stringRequest);
-    }
-    public void Get(String url){
-        StringRequest stringRequest=new StringRequest(HttpAddress.BASE_URL + url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        getRequestQueue().add(stringRequest);
-    }
-
-    private void jsonData(String response,Class cls) {
-        try{
-            JSONObject jsonObject=new JSONObject(response);
-            int errorCode=jsonObject.getInt("errorCode");
-            String errorMsg=jsonObject.getString("errorMsg");
-            if(errorCode==1){
-                Object mData = new GsonBuilder()
-                        .setPrettyPrinting()
-                        .disableHtmlEscaping()
-                        .create().fromJson(response, cls);
-
-
-            }else {
-                MyUtils.showToast(context,errorMsg);
-            }
-        }catch (Exception e){
-
-        }
-    }
-    interface VolleyListener{
-        /**
-         * 请求成功
-         */
-        void onSuccess();
     }
 }

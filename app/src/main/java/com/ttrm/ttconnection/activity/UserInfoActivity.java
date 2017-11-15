@@ -28,6 +28,7 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
@@ -168,8 +169,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 //                myName();
                 startActivity(new Intent(UserInfoActivity.this, EditNameActivity.class));
                 break;
-            case R.id.info_ll_version:
-
+            case R.id.info_ll_version: //版本更新
+                MyUtils.showToast(this,"暂无新版本");
                 break;
             case R.id.info_ll_custom:       //联系客服
                 Intent intent1 = new Intent(this, WebActivity.class);
@@ -260,6 +261,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
     /**
@@ -307,6 +309,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
     /**
@@ -379,6 +382,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -431,6 +435,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
     /**
@@ -469,6 +474,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -511,6 +517,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -557,6 +564,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(UserInfoActivity.this).add(stringRequest);
     }
 
@@ -626,6 +634,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(UserInfoActivity.this).add(stringRequest);
     }
 

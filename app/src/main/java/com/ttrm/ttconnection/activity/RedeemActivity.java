@@ -19,6 +19,7 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import org.json.JSONObject;
 
@@ -103,6 +104,7 @@ public class RedeemActivity extends BaseActivity implements View.OnClickListener
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 }

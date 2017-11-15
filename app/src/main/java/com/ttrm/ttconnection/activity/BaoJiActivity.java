@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,6 +29,7 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.ListViewForScrollview;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 
@@ -100,6 +102,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -189,6 +192,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 

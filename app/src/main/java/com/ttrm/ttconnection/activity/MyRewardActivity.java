@@ -2,6 +2,7 @@ package com.ttrm.ttconnection.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -42,6 +43,7 @@ import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveFileUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
@@ -89,6 +91,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     private Bitmap realBitmap;
     private String picPath;
     private AlertDialog dlg1;
+    private boolean isShare = true; //判断图片是否合成成功，如果合成失败false,如果合成成功true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +147,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         reward_iv_select1.setOnClickListener(this);
         reward_iv_select2 = (ImageView) findViewById(R.id.reward_iv_select2);
         reward_iv_select2.setOnClickListener(this);
-        reward_iv_ewm=(ImageView)findViewById(R.id.reward_iv_ewm);
+        reward_iv_ewm = (ImageView) findViewById(R.id.reward_iv_ewm);
         setMenuBtn("邀请明细", this, InviteActivity.class);
     }
 
@@ -152,30 +155,30 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.reward_btn_circle:
-                MyUtils.Loge(TAG,"shareType:"+shareType);
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                MyUtils.Loge(TAG, "shareType:" + shareType);
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(WechatMoments.NAME);
                 break;
             case R.id.reward_btn_wx:
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(Wechat.NAME);
                 break;
             case R.id.reward_btn_qq:
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(QQ.NAME);
                 break;
             case R.id.reward_btn_qzone:
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(QZone.NAME);
@@ -184,29 +187,29 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                 startActivity(new Intent(MyRewardActivity.this, WithdrawCashActivity.class));
                 break;
             case R.id.reward_ll_wx:
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(Wechat.NAME);
                 break;
             case R.id.reward_ll_circle:
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(WechatMoments.NAME);
                 break;
             case R.id.reward_ll_qq:
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(QQ.NAME);
                 break;
             case R.id.reward_ll_qzone:
-                if(shareType!=1&&shareType!=2){
-                    MyUtils.showToast(MyRewardActivity.this,"请先选择分享类型");
+                if (shareType != 1 && shareType != 2) {
+                    MyUtils.showToast(MyRewardActivity.this, "请先选择分享类型");
                     return;
                 }
                 selectPermission(QZone.NAME);
@@ -221,7 +224,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                 reward_iv_select2.setImageResource(R.drawable.vector_drawable_pay_n);
                 break;
             case R.id.reward_iv_select2:
-                shareType=2;
+                shareType = 2;
                 reward_iv_select1.setImageResource(R.drawable.vector_drawable_pay_n);
                 reward_iv_select2.setImageResource(R.drawable.vector_drawable_pay_y);
                 break;
@@ -267,6 +270,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -285,35 +289,42 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                     shareInfoBean = gson.fromJson(response, ShareInfoBean.class);
                     if (shareInfoBean != null) {
                         if (shareInfoBean.getErrorCode() == 1) {
-                            MyUtils.Loge(TAG,"步骤1 图片--"+shareInfoBean.getData().getConfig().getImgurl());
+                            MyUtils.Loge(TAG, "步骤1 图片--" + shareInfoBean.getData().getConfig().getImgurl());
                             reward_tv_content.setText(shareInfoBean.getData().getConfig().getContent());
-                            MyUtils.Loge(TAG,"步骤2");
+                            MyUtils.Loge(TAG, "步骤2");
                             Picasso.with(MyRewardActivity.this)
                                     .load(shareInfoBean.getData().getConfig().getImgurl())
                                     .error(R.mipmap.ic_icon)
                                     .into(reward_iv_pic);
-                            MyUtils.Loge(TAG,"步骤3");
+                            MyUtils.Loge(TAG, "步骤3");
                             qrBitmap = generateBitmap(shareInfoBean.getData().getConfig().getUrl()
                                     + "?regCode="
                                     + SaveUtils.getString(KeyUtils.user_regcode), 200, 200);
-                            MyUtils.Loge(TAG,"步骤4--qrBitmap:"+qrBitmap);
+                            MyUtils.Loge(TAG, "步骤4--qrBitmap:" + qrBitmap);
                             Picasso.with(MyRewardActivity.this).load(shareInfoBean.getData().getConfig().getImgurl1()).into(reward_iv_pic1);
+                            MyUtils.Loge(TAG, "步骤5");
                             reward_iv_ewm.setImageBitmap(qrBitmap);
+                            MyUtils.Loge(TAG, "步骤6");
                             dlg1.dismiss();
-                            MyUtils.Loge(TAG,"布局获取bitmap--"+reward_rv_pic.getDrawingCache());
+//                            MyUtils.Loge(TAG,"布局获取bitmap--"+reward_rv_pic.getDrawingCache());
+                            MyUtils.Loge(TAG, "步骤6.1");
                             realBitmap = getRealBitmap();
+                            MyUtils.Loge(TAG, "步骤7");
 //                            picPath=saveBitmapToSDCard(realBitmap, String.valueOf(System.currentTimeMillis()));
                             picPath = getInnerSDCardPath() + "img-" + System.currentTimeMillis() + ".jpg";
-                            FileUtils.writeBitmapToSD(picPath,realBitmap,true);
-                            MyUtils.Loge(TAG,"picPath::"+picPath);
+                            MyUtils.Loge(TAG, "步骤8");
+                            FileUtils.writeBitmapToSD(picPath, realBitmap, true);
+                            MyUtils.Loge(TAG, "picPath::" + picPath);
 //                            reward_iv_pic1.setImageBitmap(realBitmap);
 //                          String fileUrl=SaveFileUtil.saveBitmap(MyRewardActivity.this,realBitmap);
 //                            MyUtils.Loge(TAG,"步骤5--fileUrl"+fileUrl);
+                            isShare = true;
                         }
                         ActivityUtil.toLogin(MyRewardActivity.this, shareInfoBean.getErrorCode());
                     }
                 } catch (Exception e) {
-                    MyUtils.Loge(TAG,"e:"+e.getMessage());
+                    MyUtils.Loge(TAG, "e:" + e.getMessage());
+                    isShare = false;
                     dlg1.dismiss();
                 }
 
@@ -333,6 +344,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -362,7 +374,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             oks.setTitle(shareInfoBean.getData().getConfig().getTitle());
 
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
+            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl() + "?regCode=" + SaveUtils.getString(KeyUtils.user_regcode));
 
             // text是分享文本，所有平台都需要这个字段
             oks.setText(shareInfoBean.getData().getConfig().getContent());
@@ -370,7 +382,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //            oks.setImagePath(path);//确保SDcard下面存在此张图片
             // url仅在微信（包括好友和朋友圈）中使用
-            oks.setUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
+            oks.setUrl(shareInfoBean.getData().getConfig().getUrl() + "?regCode=" + SaveUtils.getString(KeyUtils.user_regcode));
 //            oks.setImageUrl("file:///android_asset/icon_launcher.png");
 //            if (type.equals("1") ||type.equals("2"))
             oks.setImageUrl(shareInfoBean.getData().getConfig().getImgurl());
@@ -380,7 +392,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             oks.setSite(getString(R.string.app_name));
 
             // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
+            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl() + "?regCode=" + SaveUtils.getString(KeyUtils.user_regcode));
 
             // 启动分享GUI
             oks.show(this);
@@ -392,7 +404,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     /**
      * 生成带二维码的图片bitmap
      */
-    private Bitmap getRealBitmap(){
+    private Bitmap getRealBitmap() {
         Bitmap bitmap1 = MyUtils.returnBitmap(shareInfoBean.getData().getConfig().getImgurl1());
         MyUtils.Loge(TAG, "步骤 bitmap1:" + bitmap1);
         bitmap3 = MyUtils.mergeBitmap(bitmap1, qrBitmap);
@@ -427,7 +439,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
             @Override
             public void onShare(Platform platform, Platform.ShareParams paramsToShare) {
-                if (platform.getName().equalsIgnoreCase(QQ.NAME)||platform.getName().equalsIgnoreCase(QZone.NAME)) {
+                if (platform.getName().equalsIgnoreCase(QQ.NAME) || platform.getName().equalsIgnoreCase(QZone.NAME)) {
                     paramsToShare.setText(null);
                     paramsToShare.setTitle(null);
                     paramsToShare.setTitleUrl(null);
@@ -439,7 +451,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
 //                    paramsToShare.setTitleUrl(null);
 //                    paramsToShare.setImagePath(picPath);
 //                }
-                if (platform.getName().equalsIgnoreCase(Wechat.NAME)||platform.getName().equalsIgnoreCase(WechatMoments.NAME)) {
+                if (platform.getName().equalsIgnoreCase(Wechat.NAME) || platform.getName().equalsIgnoreCase(WechatMoments.NAME)) {
                     try {
                         paramsToShare.setImageData(realBitmap);
                     } catch (Exception e) {
@@ -474,10 +486,26 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                     // permission was granted
                     // request successfully, handle you transactions
                     plat = ShareSDK.getPlatform(Wechat.NAME);
-                    if(shareType==1){
-                        mySharePic(plat.getName());
+                    if (shareType == 1) {
+                        if (isShare) {
+                            mySharePic(plat.getName());
+                        } else {
+//                        MyUtils.showToast(MyRewardActivity.this,"系统忙，请返回上一页稍后再试");
+                            showAlertDialog("温馨提示", "哎呀，专属二维码出小差了，请返回上一步重新生成", "确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                    dialogInterface.dismiss();
+                                }
+                            }, "取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                        }
                     }
-                    if(shareType==2) {
+                    if (shareType == 2) {
                         myShare(plat.getName());
                     }
 
@@ -485,7 +513,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
 
                     // permission denied
                     // request failed
-                    MyUtils.Loge(TAG, "权限失败");
+                    MyUtils.Loge(TAG, "权限获取失败");
                 }
 
                 return;
@@ -517,19 +545,49 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             } else {
                 MyUtils.Loge(TAG, "READ permission is granted...");
                 plat = ShareSDK.getPlatform(name);
-                if(shareType==1){
-                    mySharePic(plat.getName());
+                if (shareType == 1) {
+                    if (isShare) {
+                        mySharePic(plat.getName());
+                    } else {
+                        showAlertDialog("温馨提示", "哎呀，专属二维码出小差了，请返回上一步重新生成", "确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                                dialogInterface.dismiss();
+                            }
+                        }, "取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                    }
                 }
-                if(shareType==2) {
+                if (shareType == 2) {
                     myShare(plat.getName());
                 }
             }
         } else {
             plat = ShareSDK.getPlatform(name);
-            if(shareType==1){
-                mySharePic(plat.getName());
+            if (shareType == 1) {
+                if (isShare) {
+                    mySharePic(plat.getName());
+                } else {
+                    showAlertDialog("温馨提示", "哎呀，专属二维码出小差了，请返回上一步重新生成", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                            dialogInterface.dismiss();
+                        }
+                    }, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                }
             }
-            if(shareType==2) {
+            if (shareType == 2) {
                 myShare(plat.getName());
             }
         }
@@ -566,7 +624,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
      */
     private void showBigPic() {
         MyUtils.Loge(TAG, "url:" + shareInfoBean.getData().getConfig().getImgurl1());
-        AlertDialog.Builder builder = new AlertDialog.Builder(MyRewardActivity.this,R.style.myDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyRewardActivity.this, R.style.myDialogTheme);
         LayoutInflater inflater = getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_pic, null);
         layout.setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -592,18 +650,20 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         dlg = builder.create();
         dlg.setCanceledOnTouchOutside(false);
     }
+
     /**
      * 获取内置SD卡路径
+     *
      * @return
      */
     public static String getInnerSDCardPath() {
-        return Environment.getExternalStorageDirectory().getPath()+"/TTConnection/";
+        return Environment.getExternalStorageDirectory().getPath() + "/TTConnection/";
     }
 
     /**
      * 删除加载动画
      */
-    private  void showLoading() {
+    private void showLoading() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MyRewardActivity.this);
         LayoutInflater inflater = getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_delete, null);

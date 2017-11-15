@@ -35,6 +35,7 @@ import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.Dialogshow;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 
@@ -206,6 +207,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(LocationAddActivity.this).add(stringRequest);
     }
 

@@ -19,6 +19,7 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import org.json.JSONObject;
 
@@ -107,6 +108,7 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(EditNameActivity.this).add(stringRequest);
     }
 }

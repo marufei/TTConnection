@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.ttrm.ttconnection.activity.SignActivity">
     <include layout="@layout/toolbar_layout"/>
     <ScrollView
@@ -95,8 +96,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="好友通过你的邀请码注册，你和好友各+30"
-                        android:textSize="12sp"
+                        android:text="好友通过你的邀请码注册，你和好友各+30颗钻石"
+                        android:textSize="10sp"
                         android:id="@+id/textView3" />
                 </LinearLayout>
                 <TextView

@@ -40,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.activity.BDAddActivity;
+import com.ttrm.ttconnection.activity.BannerActivity;
 import com.ttrm.ttconnection.activity.BaoJiActivity;
 import com.ttrm.ttconnection.activity.BaseActivity;
 import com.ttrm.ttconnection.activity.EditNameActivity;
@@ -64,6 +65,7 @@ import com.ttrm.ttconnection.util.LXRUtil;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.util.UpdateManger;
+import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.ImageCycleView;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 
@@ -309,6 +311,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -413,6 +416,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -590,7 +594,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.jcdshy_linear://检测单删好友
                 Intent intent = new Intent(this, WebActivity.class);
-                intent.putExtra("URL", HttpAddress.URL_H5_DELETE);
+                intent.putExtra("URL", HttpAddress.H5_GONGJUXIANG);
                 intent.putExtra("title", "检测单删好友");
                 startActivity(intent);
                 break;
@@ -650,6 +654,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -703,6 +708,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -745,6 +751,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -778,6 +785,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 MyUtils.showToast(MainActivity.this, "网络有问题");
+                MyUtils.Loge(TAG,"error::"+error.getMessage());
             }
         }) {
             @Override
@@ -788,6 +796,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(MainActivity.this).add(stringRequest);
     }
 
@@ -839,7 +848,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         //TODO 跳转web
                         MyUtils.Loge(TAG, "跳转web网页");
                         if (!TextUtils.isEmpty(bannerBean.getData().getBannerList().get(position).getLink())) {
-                            Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                            Intent intent = new Intent(MainActivity.this, BannerActivity.class);
                             intent.putExtra("URL", bannerBean.getData().getBannerList().get(position).getLink());
                             intent.putExtra("title", "详情");
                             startActivity(intent);
@@ -890,6 +899,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 MyUtils.showToast(MainActivity.this, "网络有问题");
+                MyUtils.Loge(TAG,"error::"+error.getMessage());
             }
         }) {
             @Override
@@ -902,6 +912,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(MainActivity.this).add(stringRequest);
     }
 
@@ -1024,6 +1035,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 MyUtils.showToast(ma, "网络有问题");
+                MyUtils.Loge(TAG,"error::"+error.getMessage());
             }
         }) {
             @Override
@@ -1036,6 +1048,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         Volley.newRequestQueue(ma).add(stringRequest);
+        VolleyUtils.setTimeOut(stringRequest);
     }
 
     @Override

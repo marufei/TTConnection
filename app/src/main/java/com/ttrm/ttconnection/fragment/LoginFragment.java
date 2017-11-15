@@ -91,6 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 }
                 if(TextUtils.isEmpty(login_pwd.getText().toString().trim())){
                     MyUtils.showToast(getActivity(),"请填写密码");
+                    return;
                 }
                 if(!MyUtils.isPhoneNumber(login_phone.getText().toString().trim())){
                     MyUtils.showToast(getActivity(),"请填写正确的手机号");
@@ -101,11 +102,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }
     }
     public void login(){
+        MyUtils.showToast(getContext(),"手机号："+
+                login_phone.getText().toString().trim()+"\n密码："+
+                login_pwd.getText().toString().trim()+"\n时间戳："+
+                MyUtils.getTimestamp()+"\n签名："+
+                MyUtils.getSign());
         String url= HttpAddress.BASE_URL+HttpAddress.LOGIN;
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 MyUtils.Loge(TAG,"response:"+response);
+                MyUtils.showToast(getContext(),"返回JSON数据：--"+ response);
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
@@ -135,7 +142,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(getActivity(),"网络有问题"+error.getMessage());
+                MyUtils.showToast(getActivity(),"网络有问题");
             }
         }){
             @Override
@@ -148,6 +155,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 }

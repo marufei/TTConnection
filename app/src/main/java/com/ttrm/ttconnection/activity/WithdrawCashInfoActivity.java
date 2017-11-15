@@ -23,6 +23,7 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
+import com.ttrm.ttconnection.util.VolleyUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,6 +121,7 @@ public class WithdrawCashInfoActivity extends BaseActivity {
                 return map;
             }
         };
+        VolleyUtils.setTimeOut(stringRequest);
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
@@ -127,6 +129,7 @@ public class WithdrawCashInfoActivity extends BaseActivity {
         if(currentPage==1&&listBean.getData().getCashLog().size()==0){
             withdraw_info_show.setVisibility(View.GONE);
             withdraw_info_kong.setVisibility(View.VISIBLE);
+            return;
         }else {
             MyUtils.Loge(TAG,"展示listview");
             withdraw_info_kong.setVisibility(View.GONE);

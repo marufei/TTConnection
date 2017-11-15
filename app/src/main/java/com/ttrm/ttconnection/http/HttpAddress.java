@@ -9,12 +9,12 @@ public class HttpAddress {
     /**
      * 基地址(测试)
      */
-    public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";  //https://www.tiantianrenmai.com
+//    public static final String BASE_URL = "http://116.62.195.53/tt/index.php/Api";  //https://www.tiantianrenmai.com
 
     /**
      * 基地址(正式)
      */
-//    public static final String BASE_URL = "https://www.tiantianrenmai.com/tt/index.php/Api";  //https://www.tiantianrenmai.com
+    public static final String BASE_URL = "https://www.tiantianrenmai.com/tt/index.php/Api";  //https://www.tiantianrenmai.com
 
     /**
      * 首页手机号轮播
@@ -137,14 +137,24 @@ public class HttpAddress {
      * 提现列表
      */
     public static final String GET_CASH_LIST = "/UserCenter/cashLog";
+
     /**
      * 邀请列表
      */
     public static final String GET_INVITE_LIST = "/UserCenter/recomLog";
+
     /**
      * web邀请码
      */
-    public static final String GET_WEB_REGCODE="/Public/getRegCode";
+    public static final String GET_WEB_REG = "/Public/getRegCode";
+    /**
+     * 工具箱
+     */
+    public static final String H5_GONGJUXIANG="http://www.tiantianrenmai.com/tt/index.php/Home/Index/gj.html";
 
+    /**
+     * 科大讯飞广告 id.
+     */
+    public static final String ADD_ID="EC450F18F5329CEE6E721C584E1F0AE0";
 
 }

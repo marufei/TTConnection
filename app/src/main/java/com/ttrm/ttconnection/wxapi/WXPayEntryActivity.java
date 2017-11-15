@@ -62,6 +62,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                         @Override
                         public void onEvent() {
+//                            onSuccessListenner.OnSuccess();
+                            finish();
                         }
                     });
                 break;
