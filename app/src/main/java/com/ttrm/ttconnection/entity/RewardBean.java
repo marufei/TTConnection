@@ -9,7 +9,7 @@ public class RewardBean {
     /**
      * errorCode : 1
      * errorMsg : 获取推荐信息成功！
-     * data : {"recomCount":"1","income":"0","balance":"50"}
+     * data : {"recomCount":"0","income":0,"balance":0,"restCount":"30","alldiaCount":"30"}
      */
 
     private int errorCode;
@@ -42,14 +42,18 @@ public class RewardBean {
 
     public static class DataBean {
         /**
-         * recomCount : 1
+         * recomCount : 0
          * income : 0
-         * balance : 50
+         * balance : 0
+         * restCount : 30
+         * alldiaCount : 30
          */
 
         private String recomCount;
-        private String income;
-        private String balance;
+        private int income;
+        private int balance;
+        private String restCount;
+        private String alldiaCount;
 
         public String getRecomCount() {
             return recomCount;
@@ -59,20 +63,36 @@ public class RewardBean {
             this.recomCount = recomCount;
         }
 
-        public String getIncome() {
+        public int getIncome() {
             return income;
         }
 
-        public void setIncome(String income) {
+        public void setIncome(int income) {
             this.income = income;
         }
 
-        public String getBalance() {
+        public int getBalance() {
             return balance;
         }
 
-        public void setBalance(String balance) {
+        public void setBalance(int balance) {
             this.balance = balance;
+        }
+
+        public String getRestCount() {
+            return restCount;
+        }
+
+        public void setRestCount(String restCount) {
+            this.restCount = restCount;
+        }
+
+        public String getAlldiaCount() {
+            return alldiaCount;
+        }
+
+        public void setAlldiaCount(String alldiaCount) {
+            this.alldiaCount = alldiaCount;
         }
     }
 }

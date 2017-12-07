@@ -64,7 +64,8 @@ public class BDAddBean implements Serializable {
             private String id;
             private String diamondcount;
             private String addcount;
-            private boolean select=false;
+            private String remark;
+            private boolean select = false;
 
             public boolean isSelect() {
                 return select;
@@ -72,6 +73,14 @@ public class BDAddBean implements Serializable {
 
             public void setSelect(boolean select) {
                 this.select = select;
+            }
+
+            public String getRemark() {
+                return remark;
+            }
+
+            public void setRemark(String remark) {
+                this.remark = remark;
             }
 
             public String getId() {

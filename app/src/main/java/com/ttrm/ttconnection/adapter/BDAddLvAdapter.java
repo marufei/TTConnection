@@ -51,16 +51,16 @@ public class BDAddLvAdapter extends BaseAdapter {
         }
         switch (position){
             case 0:
-                viewHolder.tv_num.setText("被加"+listBean.get(position).getAddcount()+"人左右（体验）");
+                viewHolder.tv_num.setText(listBean.get(position).getRemark());
                 break;
             case 1:
-                viewHolder.tv_num.setText("保底被加"+listBean.get(position).getAddcount()+"人");
+                viewHolder.tv_num.setText(listBean.get(position).getRemark());
                 break;
             case 2:
-                viewHolder.tv_num.setText("保底被加"+listBean.get(position).getAddcount()+"人（赠送1680钻）");
+                viewHolder.tv_num.setText(listBean.get(position).getRemark());
                 break;
             default:
-                viewHolder.tv_num.setText("保底被加"+listBean.get(position).getAddcount()+"人（赠送1680钻）");
+                viewHolder.tv_num.setText(listBean.get(position).getRemark());
                 break;
 
         }

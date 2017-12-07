@@ -122,7 +122,7 @@ public class WithdrawCashInfoActivity extends BaseActivity {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private void setViews() {

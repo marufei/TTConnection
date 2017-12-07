@@ -70,6 +70,15 @@ public class InviteBean {
             private String addtime;
             private String remark;
             private double fee;
+            private int diamond;
+
+            public int getDiamond() {
+                return diamond;
+            }
+
+            public void setDiamond(int diamond) {
+                this.diamond = diamond;
+            }
 
             public String getId() {
                 return id;

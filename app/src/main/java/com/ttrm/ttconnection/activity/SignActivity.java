@@ -274,7 +274,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(signActivity).add(stringRequest);
+        VolleyUtils.getInstance(signActivity).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -321,7 +321,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(SignActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -372,7 +372,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -413,7 +413,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     @Override
@@ -566,7 +566,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(SignActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**

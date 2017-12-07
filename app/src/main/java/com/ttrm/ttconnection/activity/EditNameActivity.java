@@ -109,6 +109,6 @@ public class EditNameActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(EditNameActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 }

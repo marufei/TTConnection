@@ -161,7 +161,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(ForgetPwdActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -208,6 +208,6 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(ForgetPwdActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 }

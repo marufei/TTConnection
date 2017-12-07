@@ -226,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:layout_marginTop="8dp"
-                        android:text="每次爆机20人左右，爆机免费使用"
+                        android:text="签到任务得钻石，用钻石开启爆机"
                         android:textSize="13sp"/>
                 </LinearLayout>
                 <ImageView
@@ -283,7 +283,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="保底被加2000人，再送1680个钻石"
+                        android:text="坐等被加，解放双手，不够包补"
                         android:textColor="@color/white"
                         android:textSize="13sp"/>
                 </LinearLayout>
@@ -501,6 +501,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             android:background="@color/white">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -641,6 +642,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:padding="15dp">
             <Button
                 android:id="@+id/main_invite"
@@ -664,8 +666,17 @@
         </LinearLayout>
         <WebView
             android:id="@+id/main_wv"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_reward"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:scaleType="fitXY" />
     </LinearLayout>
 </ScrollView>
 

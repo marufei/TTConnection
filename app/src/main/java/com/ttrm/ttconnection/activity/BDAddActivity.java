@@ -24,6 +24,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BDAddLvAdapter;
@@ -61,6 +63,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     private int pos = 0;
     private LinearLayout bdadd_ll_alipay;
     private LinearLayout bdadd_ll_wx;
+    private ImageView bdadd_png;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +119,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(BDAddActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -164,6 +167,8 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
         bdadd_ll_alipay.setOnClickListener(this);
         bdadd_ll_wx = (LinearLayout) findViewById(R.id.bdadd_ll_wx);
         bdadd_ll_wx.setOnClickListener(this);
+        bdadd_png=(ImageView)findViewById(R.id.bdadd_png);
+        Picasso.with(this).load(HttpAddress.BDADD_PNG).memoryPolicy(MemoryPolicy.NO_CACHE).into(bdadd_png);
 
     }
 

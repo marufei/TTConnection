@@ -73,7 +73,7 @@ public class BannerActivity extends BaseActivity {
         //设置可以访问文件
         webSettings.setAllowFileAccess(true);
         //设置支持缩放
-        webSettings.setBuiltInZoomControls(true);//WebView中包含一个ZoomButtonsController，当使用web.getSettings().setBuiltInZoomControls(true);启用后，用户一旦触摸屏幕，就会出现缩放控制图标。
+        webSettings.setBuiltInZoomControls(false);//WebView中包含一个ZoomButtonsController，当使用web.getSettings().setBuiltInZoomControls(true);启用后，用户一旦触摸屏幕，就会出现缩放控制图标。
 //        webSettings.setPluginState(WebSettings.PluginState.ON);
 //        webSettings.setPluginsEnabled(true);//可以使用插件
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);

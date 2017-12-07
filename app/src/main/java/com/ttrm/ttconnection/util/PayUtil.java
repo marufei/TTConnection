@@ -143,7 +143,7 @@ public class PayUtil {
                 }
             };
             VolleyUtils.setTimeOut(stringRequest);
-            Volley.newRequestQueue(activity).add(stringRequest);
+            VolleyUtils.getInstance(activity).addToRequestQueue(stringRequest);
         }
 
 

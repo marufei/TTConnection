@@ -11,9 +11,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,6 +26,7 @@ import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BaojiLvAdapter;
 import com.ttrm.ttconnection.entity.BaojiRuleBean;
+import com.ttrm.ttconnection.entity.Contant;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
@@ -103,7 +106,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private void setViews() {
@@ -182,6 +185,8 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                 MyUtils.showToast(BaoJiActivity.this, "网络有问题");
             }
         }) {
+
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
@@ -193,7 +198,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     @Override

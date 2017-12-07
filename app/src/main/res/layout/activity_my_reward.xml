@@ -34,7 +34,7 @@
                         android:id="@+id/reward_tv_reward"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--元"
+                        android:text="--钻"
                         android:textColor="@color/gray_3"
                         android:textSize="13sp" />
 
@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="累计收入"
+                        android:text="累计获得"
                         android:textColor="@color/gray_3"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -58,7 +58,7 @@
                         android:id="@+id/reward_tv_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--元"
+                        android:text="--钻"
                         android:textColor="@color/gray_3"
                         android:textSize="17sp" />
 
@@ -66,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="我的余额"
+                        android:text="剩余钻石"
                         android:textColor="@color/gray_3"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -139,7 +139,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="好友通过您的邀请码注册您即可获得0.5元返现"
+                        android:text="好友通过您的邀请码注册，您和好友各+30颗钻石"
                         android:textColor="@color/gray_6"
                         android:textSize="10sp" />
                 </LinearLayout>
@@ -150,6 +150,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/btn_red"
                     android:elevation="5dp"
+                    android:visibility="gone"
                     android:text="我要提现"
                     android:textColor="@color/white"
                     android:textSize="14sp" />

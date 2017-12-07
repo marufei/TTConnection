@@ -245,8 +245,8 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                     rewardBean = gson.fromJson(response, RewardBean.class);
                     if (rewardBean != null) {
                         if (rewardBean.getErrorCode() == 1) {
-                            reward_tv_reward.setText(rewardBean.getData().getIncome() + "元");
-                            reward_tv_balance.setText(rewardBean.getData().getBalance() + "元");
+                            reward_tv_reward.setText(rewardBean.getData().getAlldiaCount() + "颗");
+                            reward_tv_balance.setText(rewardBean.getData().getRestCount() + "颗");
                             reward_tv_yq.setText(rewardBean.getData().getRecomCount() + "人");
                         }
                         ActivityUtil.toLogin(MyRewardActivity.this, rewardBean.getErrorCode());
@@ -271,7 +271,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -345,7 +345,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**

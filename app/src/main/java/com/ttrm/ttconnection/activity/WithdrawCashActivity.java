@@ -129,6 +129,6 @@ public class WithdrawCashActivity extends BaseActivity implements View.OnClickLi
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 }

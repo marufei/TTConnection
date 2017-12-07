@@ -19,6 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:background="@mipmap/sign_bac">
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -92,6 +93,11 @@
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
+            <ImageView
+                android:id="@+id/bdadd_png"
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:scaleType="fitXY"/>
             <com.ttrm.ttconnection.view.ListViewForScrollview
                 android:id="@+id/bdadd_lv"
                 android:layout_width="match_parent"
@@ -179,30 +185,25 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1.被加手机号收不到验证码，请联系客服"
-                    android:textColor="#444444"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2.钻石用于兑换爆机，钻石暂不开放购买"
+                    android:text="1.钻石用于兑换爆机，钻石暂不开放购买"
                     android:layout_marginTop="3dp"
                     android:textColor="#444444"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3.注册添添人脉的手机号与微信绑定的手机号一致，被动加粉才会有大量人加。"
+                    android:text="2.注册添添人脉的手机号与微信绑定的手机号一致，被动加粉才会有大量人加。"
                     android:layout_marginTop="3dp"
                     android:textColor="#444444"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.请到微信设置-我-设置-隐私-添加我的方式-手机号打开。"
+                    android:text="3.请到微信设置-我-设置-隐私-添加我的方式-手机号打开。"
                     android:layout_marginTop="3dp"
                     android:textColor="#444444"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5.请到微信设置-隐私-加我为朋友时需要验证关闭。"
+                    android:text="4.请到微信设置-隐私-加我为朋友时需要验证打开。"
                     android:layout_marginTop="3dp"
                     android:textColor="#444444"/>
             </LinearLayout>

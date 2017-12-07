@@ -208,7 +208,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(LocationAddActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**

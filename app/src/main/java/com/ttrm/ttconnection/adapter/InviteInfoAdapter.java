@@ -59,7 +59,9 @@ public class InviteInfoAdapter extends BaseAdapter {
         viewHolder.tv_title.setText(beanList.get(i).getRemark());
         viewHolder.tv_time.setText(str_time);
         if(beanList.get(i).getFee()>=0) {
-            viewHolder.tv_price.setText("+"+String.valueOf(beanList.get(i).getFee()));
+            viewHolder.tv_price.setText("+"+String.valueOf(beanList.get(i).getDiamond()));
+        }else {
+            viewHolder.tv_price.setText(String.valueOf(beanList.get(i).getDiamond()));
         }
         return view;
     }

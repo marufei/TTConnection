@@ -52,12 +52,12 @@ public class MyUtils {
     public static Toast mToast;
     private static Pattern mPattern;
     private static Matcher mMatcher;
-    public static boolean logStatus = false;
+    public static boolean logStatus = true;
 
     public static void Loge(String TAG, String msg) {
         try {
             if (logStatus) {
-                Log.e(TAG + "-lanhu", msg);
+                Log.e(TAG + "-ttrm", msg);
             }
         } catch (Exception e) {
             Log.e(TAG + "e=", e.toString());

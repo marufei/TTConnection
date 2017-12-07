@@ -156,5 +156,21 @@ public class HttpAddress {
      * 科大讯飞广告 id.
      */
     public static final String ADD_ID="EC450F18F5329CEE6E721C584E1F0AE0";
+    /**
+     * web验证码
+     */
+    public static final String CODE_H5="https://www.tiantianrenmai.com/tt/index.php/Api/ImgCode/verify";
+    /**
+     * 校验 图形验证码
+     */
+    public static final String IMAGE_CODE="/Public/valImgCode";
+    /**
+     * 首页图片
+     */
+    public static final String MAIN_PNG="http://www.tiantianrenmai.com/tt/Public/Upload/img/fxyl.png";
+    /**
+     * 被动加粉界面背景
+     */
+    public static final String BDADD_PNG="http://www.tiantianrenmai.com/tt/Public/Upload/img/jf.png";
 
 }

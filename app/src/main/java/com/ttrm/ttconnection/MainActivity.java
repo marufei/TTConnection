@@ -1,21 +1,16 @@
 package com.ttrm.ttconnection;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -36,8 +31,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.BannerActivity;
@@ -58,7 +53,6 @@ import com.ttrm.ttconnection.entity.ListNumBean;
 import com.ttrm.ttconnection.entity.RecomeInfo;
 import com.ttrm.ttconnection.entity.VersionInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
-import com.ttrm.ttconnection.service.UpdateService;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.LXRUtil;
@@ -71,21 +65,12 @@ import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.wechat.friends.Wechat;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private final int DOWN_ERROR = 0;
@@ -207,6 +192,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView mian_tv_sign;
     private WebView main_wv;
     private String urlShow;
+    private ImageView iv_reward;
 
 
     @Override
@@ -312,7 +298,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -417,7 +403,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     public static void startActivity1(Context context) {
@@ -462,6 +448,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mian_tv_sign = (TextView) findViewById(R.id.mian_tv_sign);
         mian_tv_sign.setOnClickListener(this);
         main_wv = (WebView) findViewById(R.id.main_wv);
+        iv_reward = (ImageView) findViewById(R.id.iv_reward);
+        Picasso.with(this).load(HttpAddress.MAIN_PNG).memoryPolicy(MemoryPolicy.NO_CACHE).into(iv_reward);
+        iv_reward.setOnClickListener(this);
 
     }
 
@@ -607,6 +596,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.mian_tv_sign:
                 startActivity(new Intent(MainActivity.this, SignActivity.class));
                 break;
+            case R.id.iv_reward:
+                startActivity(new Intent(MainActivity.this, MyRewardActivity.class));
+                break;
         }
     }
 
@@ -655,7 +647,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -709,7 +701,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -752,7 +744,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -785,7 +777,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 MyUtils.showToast(MainActivity.this, "网络有问题");
-                MyUtils.Loge(TAG,"error::"+error.getMessage());
+                MyUtils.Loge(TAG, "error::" + error.getMessage());
             }
         }) {
             @Override
@@ -797,7 +789,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -899,7 +891,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 MyUtils.showToast(MainActivity.this, "网络有问题");
-                MyUtils.Loge(TAG,"error::"+error.getMessage());
+                MyUtils.Loge(TAG, "error::" + error.getMessage());
             }
         }) {
             @Override
@@ -913,7 +905,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -1035,7 +1027,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 MyUtils.showToast(ma, "网络有问题");
-                MyUtils.Loge(TAG,"error::"+error.getMessage());
+                MyUtils.Loge(TAG, "error::" + error.getMessage());
             }
         }) {
             @Override
@@ -1047,8 +1039,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return map;
             }
         };
-        Volley.newRequestQueue(ma).add(stringRequest);
         VolleyUtils.setTimeOut(stringRequest);
+        VolleyUtils.getInstance(ma).addToRequestQueue(stringRequest);
     }
 
     @Override
@@ -1090,154 +1082,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
         }
     }
-
-//    /**
-//     * 2. 获取当前程序的版本号
-//     * 3.
-//     */
-//    private int getVersionaCode() throws Exception {
-//        //获取packagemanager的实例
-//        PackageManager packageManager = getPackageManager();
-//        //getPackageName()是你当前类的包名，0代表是获取版本信息
-//        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-//        return packInfo.versionCode;
-//    }
-//
-//    /**
-//     * 获取当前程序的版本名称
-//     */
-//    private String getVersionName() throws Exception {
-//        //获取packagemanager的实例
-//        PackageManager packageManager = getPackageManager();
-//        //getPackageName()是你当前类的包名，0代表是获取版本信息
-//        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-//        return packInfo.versionName;
-//    }
-//
-//    /**
-//     * 弹出提示更新的对话框
-//     */
-//    private void showVersionDialog(final Context context, final String url) {
-//        View view = LayoutInflater.from(context).inflate(R.layout.verion_dialog, null);
-//        final AlertDialog alertDialog = new AlertDialog.Builder(context).setView(view).create();
-//        alertDialog.show();
-//        TextView yes = (TextView) view.findViewById(R.id.version_update_yes);
-//        TextView no = (TextView) view.findViewById(R.id.version_update_no);
-//        TextView nameTxt = (TextView) view.findViewById(R.id.version_update_name);
-//        final TextView contentTxt = (TextView) view.findViewById(R.id.version_update_content);
-//        TextView timeTxt = (TextView) view.findViewById(R.id.version_update_time);
-//        yes.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                downLoadApk(url);
-//
-//
-//         /*       MyUtils.Loge(TAG,"下载");
-//                if (ContextCompat.checkSelfPermission(MainActivity.this,
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions(MainActivity.this,
-//                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                            0x14);
-//                    return;
-//                }
-//                startService(new Intent(MainActivity.this, UpdateService.class));*/
-//                new UpdateManger(context, 1).checkUpdateInfo();
-//            }
-//        });
-//        no.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                alertDialog.dismiss();
-//                   /* Intent intent=new Intent(context,MainActivity.class);
-//                    context.startActivity(intent);*/
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 从服务器中下载APK
-//     */
-//    private void downLoadApk(final String url) {
-//        MyUtils.Loge(TAG, "url::" + url);
-//        final ProgressDialog pd;    //进度条对话框
-//        pd = new ProgressDialog(MainActivity.this);
-//        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//        pd.setMessage("正在下载更新");
-//        pd.show();
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    File file = getFileFromServer(url, pd);
-//                    sleep(1000);
-//                    installApk(file);
-//                    pd.dismiss(); //结束掉进度条对话框
-//                } catch (Exception e) {
-//                    MyUtils.Loge(TAG, "e:" + e.getMessage());
-//                    Message msg = new Message();
-//                    msg.what = DOWN_ERROR;
-//                    handler4.sendMessage(msg);
-//                    e.printStackTrace();
-//                }
-//            }
-//        }.start();
-//    }
-
-//    private File getFileFromServer(String path, ProgressDialog pd) throws Exception {
-//        //如果相等的话表示当前的sdcard挂载在手机上并且是可用的
-//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-//            URL url = new URL(path);
-//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//            conn.setConnectTimeout(5000);
-//
-//            //获取到文件的大小
-//            pd.setMax(conn.getContentLength());
-//            MyUtils.Loge(TAG, "getFileFromServer---1");
-//            InputStream is = conn.getInputStream();
-//            MyUtils.Loge(TAG, "getFileFromServer---2");
-//            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/TTConnection/", "添添人脉.apk");
-//            MyUtils.Loge(TAG, "getFileFromServer---3 file:" + file.getCanonicalPath());
-//            FileOutputStream fos = new FileOutputStream(file);
-//
-//            /* File file = new File(Environment.getExternalStorageDirectory(), "baozmj.apk");
-//            FileOutputStream fos = new FileOutputStream(file);
-//            BufferedInputStream bis = new BufferedInputStream(is);*/
-//            MyUtils.Loge(TAG, "getFileFromServer---4");
-//            BufferedInputStream bis = new BufferedInputStream(is);
-//            MyUtils.Loge(TAG, "getFileFromServer---5");
-//            byte[] buffer = new byte[1024];
-//            MyUtils.Loge(TAG, "getFileFromServer---6");
-//            int len;
-//            int total = 0;
-//            while ((len = bis.read(buffer)) != -1) {
-//                fos.write(buffer, 0, len);
-//                total += len;
-//                //获取当前下载量
-//                pd.setProgress(total);
-//            }
-//            fos.close();
-//            bis.close();
-//            is.close();
-//            return file;
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    /**
-//     * 安装apk
-//     */
-//
-//    protected void installApk(File file) {
-//        MyUtils.Loge(TAG, "安装apk");
-//        Intent intent = new Intent();
-//        //执行动作
-//        intent.setAction(Intent.ACTION_VIEW);
-//        //执行的数据类型
-//        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");//编者按：此处Android应为android，否则造成安装不了
-//        startActivity(intent);
-//    }
 
     /**
      * 返回键的监听

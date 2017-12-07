@@ -262,7 +262,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
     /**
      * 初始化爆机状态
@@ -310,7 +310,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
     /**
      * 获取被加状态
@@ -383,7 +383,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -436,7 +436,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
     /**
      * 被动加粉开关
@@ -475,7 +475,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -518,7 +518,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -565,7 +565,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(UserInfoActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**
@@ -635,7 +635,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(UserInfoActivity.this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
 

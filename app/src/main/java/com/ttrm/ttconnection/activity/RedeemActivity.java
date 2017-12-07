@@ -105,6 +105,6 @@ public class RedeemActivity extends BaseActivity implements View.OnClickListener
             }
         };
         VolleyUtils.setTimeOut(stringRequest);
-        Volley.newRequestQueue(this).add(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 }
