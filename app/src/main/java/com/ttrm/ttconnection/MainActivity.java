@@ -49,8 +49,10 @@ import com.ttrm.ttconnection.activity.WithdrawCashActivity;
 import com.ttrm.ttconnection.entity.BannerBean;
 import com.ttrm.ttconnection.entity.BaoJiStatusBean;
 import com.ttrm.ttconnection.entity.CanonBean;
+import com.ttrm.ttconnection.entity.Contant;
 import com.ttrm.ttconnection.entity.ListNumBean;
 import com.ttrm.ttconnection.entity.RecomeInfo;
+import com.ttrm.ttconnection.entity.RewardRuleBean;
 import com.ttrm.ttconnection.entity.VersionInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
@@ -73,6 +75,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
+    private static AlertDialog dlg2;
     private final int DOWN_ERROR = 0;
     private static TextView dialog_loading_num;
     private static AlertDialog dlg;
@@ -207,6 +210,50 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         showLoading();
         //删除动画
         deleteDialog();
+        //加载动画
+        showLoad();
+        //获取奖励的文案
+        getRewardRule();
+    }
+
+    /**
+     * 获取奖励的文案
+     */
+    private void getRewardRule() {
+        String url=HttpAddress.BASE_URL+HttpAddress.REWARD_RULE;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"奖励规则---response:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    if(errorCode==1){
+                        Gson gson=new Gson();
+                        RewardRuleBean rewardRuleBean=gson.fromJson(response,RewardRuleBean.class);
+                        Contant.rewardRuleBean=rewardRuleBean;
+                    }
+                    ActivityUtil.toLogin(MainActivity.this, errorCode);
+                }catch (Exception e){
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(ma,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
+                return map;
+            }
+        };
+        VolleyUtils.setTimeOut(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private void initData() {
@@ -345,6 +392,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         builder.setView(layout);
         dlg1 = builder.create();
         dlg1.setCanceledOnTouchOutside(false);
+    }
+    /**
+     * 加载动画
+     */
+    private static void showLoad() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ma);
+        LayoutInflater inflater = ma.getLayoutInflater();
+        final View layout = inflater.inflate(R.layout.dialog_show, null);
+        builder.setView(layout);
+        dlg2 = builder.create();
+        dlg2.setCanceledOnTouchOutside(false);
     }
 
     /**
@@ -557,7 +615,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 myAdvertisementView1.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                     @Override
                     public void onEvent() {
-                        MyUtils.Loge(TAG, "朕知道了");
+                        MyUtils.Loge(TAG, "1.弹窗出现："+System.currentTimeMillis()/1000);
+                        dlg2.show();
                         saveCanon();
                     }
                 });
@@ -864,8 +923,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG, "canon:" + response);
-
+//                MyUtils.Loge(TAG, "canon:" + response);
+                MyUtils.Loge(TAG, "3.获取加粉数据："+System.currentTimeMillis()/1000);
+                dlg2.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     int errorCode = jsonObject.getInt("errorCode");
@@ -876,6 +936,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             dataList.clear();
                             dataList.addAll(bean.getData().getPhoneList());
 //                            saveCanon();
+                            MyUtils.Loge(TAG, "3.2获取数据成功："+System.currentTimeMillis()/1000);
                             addPhone();
                         }
                     } else if (errorCode == 40001) {
@@ -890,6 +951,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                dlg2.dismiss();
                 MyUtils.showToast(MainActivity.this, "网络有问题");
                 MyUtils.Loge(TAG, "error::" + error.getMessage());
             }
@@ -919,9 +981,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0x1);
                 return;
             } else {
+                MyUtils.Loge(TAG, "2.1申请权限："+System.currentTimeMillis()/1000);
                 getCanon();//获取数据
             }
         } else {
+            MyUtils.Loge(TAG, "2.2申请权限："+System.currentTimeMillis()/1000);
             getCanon();
         }
     }
@@ -930,6 +994,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 添加到通讯录
      */
     private void addPhone() {
+        MyUtils.Loge(TAG, "4.1开始添加通讯录："+System.currentTimeMillis()/1000);
         //添加通讯录
         new Thread(new Runnable() {
             @Override
@@ -945,6 +1010,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         }).start();
+        MyUtils.Loge(TAG, "4.2添加通讯录结束："+System.currentTimeMillis()/1000);
     }
 
     /**
@@ -1049,19 +1115,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (requestCode) {
             case 0x1:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    MyUtils.Loge("stones", "权限回调--获取权限失败");
+                    MyUtils.Loge(TAG, "2.3申请权限："+System.currentTimeMillis()/1000);
                     Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许添添人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Toast.makeText(MainActivity.this, "权限获取成功", Toast.LENGTH_SHORT).show();
-                    MyUtils.Loge("stones", "权限回调--获取权限成功");
+                    MyUtils.Loge(TAG, "2.4申请权限："+System.currentTimeMillis()/1000);
                     saveCanon();
                 }
                 break;
             case 0x2:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(MainActivity.this, "请打开手机设置，权限管理，允许添添人脉读取、写入和删除联系人信息后再使用立即加粉", Toast.LENGTH_SHORT).show();
+                    MyUtils.Loge(TAG, "2.5申请权限："+System.currentTimeMillis()/1000);
                 } else {
+                    MyUtils.Loge(TAG, "2.6申请权限："+System.currentTimeMillis()/1000);
                     saveCanon();
                 }
                 break;

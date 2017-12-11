@@ -52,7 +52,7 @@ public class MyUtils {
     public static Toast mToast;
     private static Pattern mPattern;
     private static Matcher mMatcher;
-    public static boolean logStatus = true;
+    public static boolean logStatus = false;
 
     public static void Loge(String TAG, String msg) {
         try {

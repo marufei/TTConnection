@@ -52,6 +52,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
     private static TextView dialog_loading_num;
     private static AlertDialog dlg;
     private static int num;
+    private static AlertDialog dlg2;
     private TextView location_tv_select;
     private Button location_btn_sure;
     public static String location;
@@ -114,6 +115,8 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         initViews();
         //假的加载动画
         showLoading();
+        //加载等待
+        showLoad();
     }
 
     /**
@@ -155,6 +158,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
             case R.id.location_btn_sure:
 //                getCanon();
                 location_btn_sure.setClickable(false);
+                dlg2.show();
                 saveCanon();
                 break;
         }
@@ -169,7 +173,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onResponse(String response) {
                 MyUtils.Loge(TAG, "canon:" + response);
-
+                dlg2.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     int errorCode = jsonObject.getInt("errorCode");
@@ -193,6 +197,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                dlg2.dismiss();
                 MyUtils.showToast(LocationAddActivity.this, "网络有问题");
                 location_btn_sure.setEnabled(true);
             }
@@ -209,6 +214,18 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         };
         VolleyUtils.setTimeOut(stringRequest);
         VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    /**
+     * 加载动画
+     */
+    private static void showLoad() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(locatiionAddActivity);
+        LayoutInflater inflater = locatiionAddActivity.getLayoutInflater();
+        final View layout = inflater.inflate(R.layout.dialog_show, null);
+        builder.setView(layout);
+        dlg2 = builder.create();
+        dlg2.setCanceledOnTouchOutside(false);
     }
 
     /**

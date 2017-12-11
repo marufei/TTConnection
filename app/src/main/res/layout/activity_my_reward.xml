@@ -136,10 +136,11 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/reward_tv_js"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="好友通过您的邀请码注册，您和好友各+30颗钻石"
+                        android:text=""
                         android:textColor="@color/gray_6"
                         android:textSize="10sp" />
                 </LinearLayout>

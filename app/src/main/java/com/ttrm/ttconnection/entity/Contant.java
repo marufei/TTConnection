@@ -13,4 +13,8 @@ public class Contant {
      * sessonId
      */
     public static String cookie="";
+    /**
+     * 奖励规则
+     */
+    public static RewardRuleBean rewardRuleBean=new RewardRuleBean();
 }

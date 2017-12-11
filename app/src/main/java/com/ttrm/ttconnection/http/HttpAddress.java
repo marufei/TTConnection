@@ -172,5 +172,9 @@ public class HttpAddress {
      * 被动加粉界面背景
      */
     public static final String BDADD_PNG="http://www.tiantianrenmai.com/tt/Public/Upload/img/jf.png";
+    /**
+     * 奖励文案
+     */
+    public static final String REWARD_RULE="/Public/getDiaCata";
 
 }

@@ -34,6 +34,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.R;
+import com.ttrm.ttconnection.entity.Contant;
 import com.ttrm.ttconnection.entity.RewardBean;
 import com.ttrm.ttconnection.entity.ShareInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
@@ -92,6 +93,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     private String picPath;
     private AlertDialog dlg1;
     private boolean isShare = true; //判断图片是否合成成功，如果合成失败false,如果合成成功true;
+    private TextView reward_tv_js;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +151,12 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         reward_iv_select2.setOnClickListener(this);
         reward_iv_ewm = (ImageView) findViewById(R.id.reward_iv_ewm);
         setMenuBtn("邀请明细", this, InviteActivity.class);
+        reward_tv_js=(TextView)findViewById(R.id.reward_tv_js);
+        for(int i=0;i< Contant.rewardRuleBean.getData().getCataList().size();i++){
+            if(Contant.rewardRuleBean.getData().getCataList().get(i).getCataid().equals("11")){
+                reward_tv_js.setText("好友通过您的邀请码注册，您和好友各+"+Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount()+"颗钻石");
+            }
+        }
     }
 
     @Override

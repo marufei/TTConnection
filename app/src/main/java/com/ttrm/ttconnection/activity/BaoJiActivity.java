@@ -144,6 +144,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onResponse(String response) {
                 MyUtils.Loge(TAG, "爆机:response:" + response);
+                baoji_btn.setClickable(true);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     int errorCode = jsonObject.getInt("errorCode");
@@ -182,11 +183,10 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                baoji_btn.setClickable(true);
                 MyUtils.showToast(BaoJiActivity.this, "网络有问题");
             }
         }) {
-
-
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
@@ -221,6 +221,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
                 }
             });
         } else {
+            baoji_btn.setClickable(false);
             baoJi();
         }
     }

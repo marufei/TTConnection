@@ -91,14 +91,33 @@
                             android:textSize="18sp"
                             android:textColor="@color/red_left"/>
                     </LinearLayout>
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="好友通过你的邀请码注册，你和好友各+30颗钻石"
-                        android:textSize="10sp"
-                        android:id="@+id/textView3" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="好友通过你的邀请码注册，你和好友各+"
+                            android:textSize="10sp"
+                            android:id="@+id/textView3" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="--"
+                            android:textSize="10sp"
+                            android:id="@+id/textView5" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="颗钻石"
+                            android:textSize="10sp"
+                            android:id="@+id/textView4" />
+                    </LinearLayout>
+
                 </LinearLayout>
                 <TextView
                     android:id="@+id/sign_tv_sign"
@@ -197,11 +216,12 @@
                             android:textColor="@color/gray_3"
                             android:text="一键加粉"/>
                         <TextView
+                            android:id="@+id/sign_oneadd1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+10"
+                            android:text=""
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -209,9 +229,10 @@
                             android:src="@drawable/vector_drawable_zuanshi"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/sign_oneadd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天有两次奖励机会，每次奖励10颗钻石"
+                        android:text=""
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>
@@ -256,11 +277,12 @@
                             android:textColor="@color/gray_3"
                             android:text="地区加粉"/>
                         <TextView
+                            android:id="@+id/sign_location1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+10"
+                            android:text=""
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -268,9 +290,10 @@
                             android:src="@drawable/vector_drawable_zuanshi"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/sign_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天有两次奖励机会，每次奖励10颗钻石"
+                        android:text=""
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>
@@ -316,11 +339,12 @@
                             android:textColor="@color/gray_3"
                             android:text="分享到微信好友"/>
                         <TextView
+                            android:id="@+id/sign_wx1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+5"
+                            android:text=""
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -328,9 +352,10 @@
                             android:src="@drawable/vector_drawable_zuanshi"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/sign_wx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天有两次奖励机会，每次奖励5颗钻石"
+                        android:text=""
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>
@@ -375,11 +400,12 @@
                             android:textColor="@color/gray_3"
                             android:text="分享到朋友圈"/>
                         <TextView
+                            android:id="@+id/sign_circle1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+10"
+                            android:text=""
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -387,9 +413,10 @@
                             android:src="@drawable/vector_drawable_zuanshi"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/sign_circle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天有一次奖励机会，每次奖励10颗钻石"
+                        android:text=""
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>
@@ -434,11 +461,12 @@
                             android:textColor="@color/gray_3"
                             android:text="分享到QQ好友"/>
                         <TextView
+                            android:id="@+id/sign_qq1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+5"
+                            android:text=""
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -446,9 +474,10 @@
                             android:src="@drawable/vector_drawable_zuanshi"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/sign_qq"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每天有两次奖励机会，每次奖励5颗钻石"
+                        android:text=""
                         android:textColor="@color/gray_6"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"/>
@@ -493,11 +522,12 @@
                             android:textColor="@color/gray_3"
                             android:text="分享到QQ空间"/>
                         <TextView
+                            android:id="@+id/sign_qqzone1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:text="+10"
+                            android:text=""
                             android:textColor="@color/yellow_ff"/>
                         <ImageView
                             android:layout_width="15dp"
@@ -505,6 +535,7 @@
                             android:src="@drawable/vector_drawable_zuanshi"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/sign_qqzone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="每天有一次奖励机会，每次奖励10颗钻石"

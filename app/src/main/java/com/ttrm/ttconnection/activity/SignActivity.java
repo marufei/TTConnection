@@ -30,6 +30,7 @@ import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.entity.CanonBean;
+import com.ttrm.ttconnection.entity.Contant;
 import com.ttrm.ttconnection.entity.ShareInfoBean;
 import com.ttrm.ttconnection.entity.SignStatusBean;
 import com.ttrm.ttconnection.http.HttpAddress;
@@ -58,7 +59,6 @@ import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
 
-
 /**
  * TODO 每日签到
  */
@@ -74,7 +74,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private TextView sign_tv_circle;
     private TextView sign_tv_qq;
     private TextView sign_tv_space;
-    private static String TAG="SignActivity";
+    private static String TAG = "SignActivity";
     private String type;
     private Platform plat;
     private SignStatusBean signStatusBean;
@@ -85,7 +85,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private static SignActivity signActivity;
     private static AlertDialog dlg;
     private static TextView dialog_loading_num;
-    private static int inputType=0;
+    private static int inputType = 0;
 
     private static int currentCount;
     public static Handler handler = new Handler() {
@@ -94,17 +94,17 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case KeyUtils.SAVE_CODE:
                     currentCount = (int) msg.obj;
-                    MyUtils.Loge(TAG,"currentCount:"+currentCount+"--msg.obj:"+msg.obj);
+                    MyUtils.Loge(TAG, "currentCount:" + currentCount + "--msg.obj:" + msg.obj);
 //                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                     dlg.dismiss();
                     selectDiamonds();
-                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity,R.layout.dialog_location_success);
+                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity, R.layout.dialog_location_success);
                     myAdvertisementView.showDialog();
                     myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                         @Override
                         public void onEvent() {
-                            MyUtils.Loge("AAA","打开微信");
+                            MyUtils.Loge("AAA", "打开微信");
                             try {
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
@@ -124,7 +124,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                     break;
                 case KeyUtils.LOADING_CODE:
                     dlg.show();
-                    int count=(int) msg.obj;
+                    int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
                     break;
             }
@@ -136,17 +136,17 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case KeyUtils.SAVE_CODE:
                     currentCount = (int) msg.obj;
-                    MyUtils.Loge(TAG,"currentCount:"+currentCount+"--msg.obj:"+msg.obj);
+                    MyUtils.Loge(TAG, "currentCount:" + currentCount + "--msg.obj:" + msg.obj);
 //                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                     dlg.dismiss();
                     selectDiamonds();
-                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity,R.layout.dialog_location_success);
+                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(signActivity, R.layout.dialog_location_success);
                     myAdvertisementView.showDialog();
                     myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
                         @Override
                         public void onEvent() {
-                            MyUtils.Loge("AAA","打开微信");
+                            MyUtils.Loge("AAA", "打开微信");
                             try {
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
@@ -166,60 +166,122 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                     break;
                 case KeyUtils.LOADING_CODE:
                     dlg.show();
-                    int count=(int) msg.obj;
+                    int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
                     break;
             }
         }
     };
+    private TextView textView5;
+    private TextView sign_oneadd;
+    private TextView sign_location;
+    private TextView sign_wx;
+    private TextView sign_circle;
+    private TextView sign_qq;
+    private TextView sign_qqzone;
+    private TextView sign_oneadd1;
+    private TextView sign_location1;
+    private TextView sign_wx1;
+    private TextView sign_circle1;
+    private TextView sign_qq1;
+    private TextView sign_qqzone1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
         ActivityUtil.add(this);
-        signActivity=this;
+        signActivity = this;
         initViews();
         //假的加载动画
         showLoading();
     }
+
     /**
      * 假的加载动画
      */
     private static void showLoading() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(signActivity);
-        LayoutInflater inflater=signActivity.getLayoutInflater();
-        final View layout=inflater.inflate(R.layout.dialog_loading,null);
-        dialog_loading_num= (TextView) layout.findViewById(R.id.dialog_loading_num);
+        AlertDialog.Builder builder = new AlertDialog.Builder(signActivity);
+        LayoutInflater inflater = signActivity.getLayoutInflater();
+        final View layout = inflater.inflate(R.layout.dialog_loading, null);
+        dialog_loading_num = (TextView) layout.findViewById(R.id.dialog_loading_num);
         builder.setView(layout);
-        dlg=builder.create();
+        dlg = builder.create();
         dlg.setCanceledOnTouchOutside(false);
     }
 
     private void initViews() {
         setToolBar("每日签到");
-        sign_tv_zs=(TextView)findViewById(R.id.sign_tv_zs);
-        sign_tv_regcode=(TextView)findViewById(R.id.sign_tv_regcode);
-        if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_regcode))){
+        sign_tv_zs = (TextView) findViewById(R.id.sign_tv_zs);
+        sign_tv_regcode = (TextView) findViewById(R.id.sign_tv_regcode);
+        if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_regcode))) {
             sign_tv_regcode.setText(SaveUtils.getString(KeyUtils.user_regcode));
         }
-        sign_tv_sign=(TextView)findViewById(R.id.sign_tv_sign);
+        sign_tv_sign = (TextView) findViewById(R.id.sign_tv_sign);
         sign_tv_sign.setOnClickListener(this);
-        sign_tv_tb=(TextView)findViewById(R.id.sign_tv_tb);
+        sign_tv_tb = (TextView) findViewById(R.id.sign_tv_tb);
         sign_tv_tb.setOnClickListener(this);
-        sign_tv_oneadd=(TextView)findViewById(R.id.sign_tv_oneadd);
+        sign_tv_oneadd = (TextView) findViewById(R.id.sign_tv_oneadd);
         sign_tv_oneadd.setOnClickListener(this);
-        sign_tv_locationadd=(TextView)findViewById(R.id.sign_tv_locationadd);
+        sign_tv_locationadd = (TextView) findViewById(R.id.sign_tv_locationadd);
         sign_tv_locationadd.setOnClickListener(this);
-        sign_tv_wx=(TextView)findViewById(R.id.sign_tv_wx);
+        sign_tv_wx = (TextView) findViewById(R.id.sign_tv_wx);
         sign_tv_wx.setOnClickListener(this);
-        sign_tv_circle=(TextView)findViewById(R.id.sign_tv_circle);
+        sign_tv_circle = (TextView) findViewById(R.id.sign_tv_circle);
         sign_tv_circle.setOnClickListener(this);
-        sign_tv_qq=(TextView)findViewById(R.id.sign_tv_qq);
+        sign_tv_qq = (TextView) findViewById(R.id.sign_tv_qq);
         sign_tv_qq.setOnClickListener(this);
-        sign_tv_space=(TextView)findViewById(R.id.sign_tv_space);
+        sign_tv_space = (TextView) findViewById(R.id.sign_tv_space);
         sign_tv_space.setOnClickListener(this);
-        sign_tv_add=(TextView)findViewById(R.id.sign_tv_add);
+        sign_tv_add = (TextView) findViewById(R.id.sign_tv_add);
+
+        textView5 = (TextView) findViewById(R.id.textView5);
+        sign_oneadd = (TextView) findViewById(R.id.sign_oneadd);
+        sign_oneadd1 = (TextView) findViewById(R.id.sign_oneadd1);
+        sign_location = (TextView) findViewById(R.id.sign_location);
+        sign_location1 = (TextView) findViewById(R.id.sign_location1);
+        sign_wx = (TextView) findViewById(R.id.sign_wx);
+        sign_wx1 = (TextView) findViewById(R.id.sign_wx1);
+        sign_circle = (TextView) findViewById(R.id.sign_circle);
+        sign_circle1 = (TextView) findViewById(R.id.sign_circle1);
+        sign_qq = (TextView) findViewById(R.id.sign_qq);
+        sign_qq1=(TextView)findViewById(R.id.sign_qq1);
+        sign_qqzone = (TextView) findViewById(R.id.sign_qqzone);
+        sign_qqzone1=(TextView)findViewById(R.id.sign_qqzone1);
+        for (int i = 0; i < Contant.rewardRuleBean.getData().getCataList().size(); i++) {
+            switch (Contant.rewardRuleBean.getData().getCataList().get(i).getCataid()) {
+                case "1":
+                    sign_tv_sign.setText("签到+" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+                case "2":
+                    sign_oneadd.setText("每天有两次奖励机会，每次奖励" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount() + "颗钻石");
+                    sign_oneadd1.setText("+" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+                case "3":
+                    sign_location.setText("每天有两次奖励机会，每次奖励" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount() + "颗钻石");
+                    sign_location1.setText("+" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+                case "4":
+                    sign_wx.setText("每天有两次奖励机会，每次奖励" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount() + "颗钻石");
+                    sign_wx1.setText("+" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+                case "5":
+                    sign_circle.setText("每天有两次奖励机会，每次奖励" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount() + "颗钻石");
+                    sign_circle1.setText("+" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+                case "6":
+                    sign_qq.setText("每天有两次奖励机会，每次奖励" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount() + "颗钻石");
+                    sign_qq1.setText("+"+Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+                case "7":
+                    sign_qqzone.setText("每天有两次奖励机会，每次奖励" + Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount() + "颗钻石");
+                    sign_qqzone1.setText("+"+Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+                case "11":
+                    textView5.setText(Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount());
+                    break;
+            }
+        }
     }
 
     @Override
@@ -233,43 +295,43 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 查询钻石数量
      */
-    public static void selectDiamonds(){
-        String url= HttpAddress.BASE_URL+HttpAddress.SELECT_DIAMONDS;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+    public static void selectDiamonds() {
+        String url = HttpAddress.BASE_URL + HttpAddress.SELECT_DIAMONDS;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"钻石数量---response:"+response);
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    if(errorCode==1){
-                        JSONObject jsonObject1=jsonObject.getJSONObject("data");
-                        String diamondCount=jsonObject1.getString("diamondCount");
-                        String todayCount=jsonObject1.getString("todayCount");
-                        if(todayCount.equals("null")) {
+                MyUtils.Loge(TAG, "钻石数量---response:" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    if (errorCode == 1) {
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        String diamondCount = jsonObject1.getString("diamondCount");
+                        String todayCount = jsonObject1.getString("todayCount");
+                        if (todayCount.equals("null")) {
                             sign_tv_add.setText("+0");
-                        }else {
+                        } else {
                             sign_tv_add.setText("+" + todayCount);
                         }
                         sign_tv_zs.setText(diamondCount);
                     }
                     ActivityUtil.toLogin(signActivity, errorCode);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(signActivity,"网络有问题");
+                MyUtils.showToast(signActivity, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
+                Map<String, String> map = new HashMap<>();
                 map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -280,43 +342,43 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 获取钻石
      */
-    public  void getDiamonds(){
-        String url=HttpAddress.BASE_URL+HttpAddress.GET_DIAMONDS;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+    public void getDiamonds() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_DIAMONDS;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    String errorMsg=jsonObject.getString("errorMsg");
-                    if(errorCode==1){
-                        MyUtils.showToast(SignActivity.this,errorMsg);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    String errorMsg = jsonObject.getString("errorMsg");
+                    if (errorCode == 1) {
+                        MyUtils.showToast(SignActivity.this, errorMsg);
                         sign_tv_sign.setBackgroundResource(R.drawable.btn_gray);
                         sign_tv_sign.setClickable(false);
                         selectDiamonds();
 
-                    }else if(errorCode==40001){
+                    } else if (errorCode == 40001) {
                         ActivityUtil.toLogin(signActivity, errorCode);
-                    }else {
-                        MyUtils.showToast(SignActivity.this,errorMsg);
+                    } else {
+                        MyUtils.showToast(SignActivity.this, errorMsg);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(SignActivity.this,"网络有问题");
+                MyUtils.showToast(SignActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("type",type);
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("type", type);
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -327,18 +389,18 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 获取签到状态
      */
-    private void getSignStatus(){
-        String url=HttpAddress.BASE_URL+HttpAddress.GET_SIGN_STATUS;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+    private void getSignStatus() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_SIGN_STATUS;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
-                try{
-                    Gson gson=new Gson();
-                    signStatusBean=gson.fromJson(response, SignStatusBean.class);
-                    if(signStatusBean!=null){
-                        if(signStatusBean.getErrorCode()==1){
-                            switch (signStatusBean.getData().getStatus()){
+                MyUtils.Loge(TAG, "response:" + response);
+                try {
+                    Gson gson = new Gson();
+                    signStatusBean = gson.fromJson(response, SignStatusBean.class);
+                    if (signStatusBean != null) {
+                        if (signStatusBean.getErrorCode() == 1) {
+                            switch (signStatusBean.getData().getStatus()) {
                                 case 0:     //未签到
                                     sign_tv_sign.setBackgroundResource(R.drawable.btn_red);
                                     sign_tv_sign.setClickable(true);
@@ -351,7 +413,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                         }
                         ActivityUtil.toLogin(signActivity, signStatusBean.getErrorCode());
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -359,15 +421,15 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(SignActivity.this,"网络有问题");
+                MyUtils.showToast(SignActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
-                map.put("timeStamp",MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                Map<String, String> map = new HashMap<>();
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -378,22 +440,22 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 获取分享配置
      */
-    public void getSignInfo(){
-        String url=HttpAddress.BASE_URL+HttpAddress.GET_SHARE_INFO;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+    public void getSignInfo() {
+        String url = HttpAddress.BASE_URL + HttpAddress.GET_SHARE_INFO;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"response:"+response);
-                try{
-                    Gson gson=new Gson();
-                    shareInfoBean=gson.fromJson(response, ShareInfoBean.class);
-                    if(shareInfoBean!=null){
-                        if(shareInfoBean.getErrorCode()==1){
+                MyUtils.Loge(TAG, "response:" + response);
+                try {
+                    Gson gson = new Gson();
+                    shareInfoBean = gson.fromJson(response, ShareInfoBean.class);
+                    if (shareInfoBean != null) {
+                        if (shareInfoBean.getErrorCode() == 1) {
 
                         }
                         ActivityUtil.toLogin(signActivity, shareInfoBean.getErrorCode());
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -401,14 +463,14 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(SignActivity.this,"网络有问题");
+                MyUtils.showToast(SignActivity.this, "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map=new HashMap<>();
+                Map<String, String> map = new HashMap<>();
                 map.put("timeStamp", MyUtils.getTimestamp());
-                map.put("sign",MyUtils.getSign());
+                map.put("sign", MyUtils.getSign());
                 return map;
             }
         };
@@ -418,14 +480,14 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.sign_tv_sign:
-                type="1";
+                type = "1";
                 getDiamonds();
                 break;
             case R.id.sign_tv_oneadd:
-                addType="1";
-                inputType=3;
+                addType = "1";
+                inputType = 3;
 //                getCanon();//获取一键加粉数据
 //                saveCanon();
                 MyAdvertisementView myAdvertisementView1 = new MyAdvertisementView(SignActivity.this, R.layout.dialog_bj_one);
@@ -439,42 +501,43 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 });
                 break;
             case R.id.sign_tv_locationadd:
-                addType="2";
-                inputType=4;
+                addType = "2";
+                inputType = 4;
 //                getCanon();//获取地区加粉数据
                 saveCanon();
                 break;
             case R.id.sign_tv_wx:
-                type="4";
+                type = "4";
                 selectPermission(Wechat.NAME);
                 break;
             case R.id.sign_tv_circle:
-                type="5";
+                type = "5";
                 selectPermission(WechatMoments.NAME);
                 break;
             case R.id.sign_tv_qq:
-                type="6";
+                type = "6";
                 selectPermission(QQ.NAME);
                 break;
             case R.id.sign_tv_space:
-                type="7";
+                type = "7";
                 selectPermission(QZone.NAME);
                 break;
             case R.id.sign_tv_tb:
-                type="9";
+                type = "9";
                 getDiamonds();
                 break;
         }
     }
+
     /**
      * 分享
      */
     private void myShare(String platform) {
 //        MyUtils.Loge(TAG, "Regcode:" + getApplicationContext().getUser().getRegcode());
-        MyUtils.Loge(TAG, "title:"+shareInfoBean.getData().getConfig().getTitle()+
-        "--url:"+shareInfoBean.getData().getConfig().getUrl()+"--context:"+
-        shareInfoBean.getData().getConfig().getContent()+"--iamge:"+
-        shareInfoBean.getData().getConfig().getImgurl());
+        MyUtils.Loge(TAG, "title:" + shareInfoBean.getData().getConfig().getTitle() +
+                "--url:" + shareInfoBean.getData().getConfig().getUrl() + "--context:" +
+                shareInfoBean.getData().getConfig().getContent() + "--iamge:" +
+                shareInfoBean.getData().getConfig().getImgurl());
         if (true) {
             OnekeyShare oks = new OnekeyShare();
             if (platform != null)
@@ -492,7 +555,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             oks.setTitle(shareInfoBean.getData().getConfig().getTitle());
 
             // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
+            oks.setTitleUrl(shareInfoBean.getData().getConfig().getUrl() + "?regCode=" + SaveUtils.getString(KeyUtils.user_regcode));
 
             // text是分享文本，所有平台都需要这个字段
             oks.setText(shareInfoBean.getData().getConfig().getContent());
@@ -500,17 +563,17 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
             // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //            oks.setImagePath(path);//确保SDcard下面存在此张图片
             // url仅在微信（包括好友和朋友圈）中使用
-            oks.setUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
+            oks.setUrl(shareInfoBean.getData().getConfig().getUrl() + "?regCode=" + SaveUtils.getString(KeyUtils.user_regcode));
 //            oks.setImageUrl("file:///android_asset/icon_launcher.png");
 //            if (type.equals("1") ||type.equals("2"))
-                oks.setImageUrl(shareInfoBean.getData().getConfig().getImgurl());
+            oks.setImageUrl(shareInfoBean.getData().getConfig().getImgurl());
             // comment是我对这条分享的评论，仅在人人网和QQ空间使用
 //            oks.setComment("我是测试评论文本");
             // site是分享此内容的网站名称，仅在QQ空间使用
             oks.setSite(getString(R.string.app_name));
 
             // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl()+"?regCode="+SaveUtils.getString(KeyUtils.user_regcode));
+            oks.setSiteUrl(shareInfoBean.getData().getConfig().getUrl() + "?regCode=" + SaveUtils.getString(KeyUtils.user_regcode));
 
             // 启动分享GUI
             oks.show(this);
@@ -540,9 +603,9 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 //                            saveCanon();
                             addPhone();
                         }
-                    } else if(errorCode==40001){
+                    } else if (errorCode == 40001) {
                         ActivityUtil.toLogin(SignActivity.this, errorCode);
-                    }else {
+                    } else {
                         Toast.makeText(SignActivity.this, jsonObject.getString("errorMsg"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
@@ -580,24 +643,25 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0x1);
                 return;
             } else {
-               getCanon();
+                getCanon();
             }
         } else {
             getCanon();
         }
     }
-    private void addPhone(){
+
+    private void addPhone() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < dataList.size(); i++) {
-                    boolean isLast=false;
-                    if(i==dataList.size()-1){
-                        isLast=true;
-                    }else {
-                        isLast=false;
+                    boolean isLast = false;
+                    if (i == dataList.size() - 1) {
+                        isLast = true;
+                    } else {
+                        isLast = false;
                     }
-                    LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i,inputType,isLast);
+                    LXRUtil.addContacts(SignActivity.this, dataList.get(i).getNickname(), dataList.get(i).getPhone(), i, inputType, isLast);
                 }
             }
         }).start();
@@ -610,22 +674,23 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-            MyUtils.Loge(TAG,"分享成功");
+            MyUtils.Loge(TAG, "分享成功");
             getDiamonds();
         }
 
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
-            MyUtils.Loge(TAG,"分享失败--"+throwable.getMessage());
+            MyUtils.Loge(TAG, "分享失败--" + throwable.getMessage());
         }
 
         @Override
         public void onCancel(Platform platform, int i) {
-            MyUtils.Loge(TAG,"分享取消");
+            MyUtils.Loge(TAG, "分享取消");
         }
     }
+
     @TargetApi(Build.VERSION_CODES.M)
-    private void selectPermission(String name){
+    private void selectPermission(String name) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {       //6.0以上运行时权限
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -644,7 +709,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                 plat = ShareSDK.getPlatform(name);
                 myShare(plat.getName());
             }
-        }else {
+        } else {
             plat = ShareSDK.getPlatform(name);
             myShare(plat.getName());
         }
@@ -669,7 +734,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
 
                     // permission denied
                     // request failed
-                    MyUtils.Loge(TAG,"权限失败");
+                    MyUtils.Loge(TAG, "权限失败");
                 }
 
                 return;
@@ -697,7 +762,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                     }).start();
                 }
                 break;
-            
+
             default:
                 break;
 
