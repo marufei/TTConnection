@@ -52,7 +52,7 @@ public class MyUtils {
     public static Toast mToast;
     private static Pattern mPattern;
     private static Matcher mMatcher;
-    public static boolean logStatus = false;
+    public static boolean logStatus = true;
 
     public static void Loge(String TAG, String msg) {
         try {
@@ -587,14 +587,16 @@ public class MyUtils {
     /**
      * 验证手机号 11位手机号
      *
-     * @param number
+     * @param mobiles
      * @return
      */
-    public static boolean isPhoneNumber(String number) {
-        mPattern = Pattern
-                .compile("^((13[0-9])|(15[^4,\\D])|(18[0,0-9])|(17[0-9]))\\d{8}$");
-        mMatcher = mPattern.matcher(number);
-        return mMatcher.matches();
+    public static boolean isPhoneNumber(String mobiles) {
+        if (TextUtils.isEmpty(mobiles)) {
+            return false;
+        }
+        Pattern p = Pattern.compile("^1[34578]\\d(?!(\\d)\\\\1{7})\\d{8}?");
+        Matcher m = p.matcher(mobiles);
+        return m.matches();
     }
 
     /**
@@ -851,41 +853,42 @@ public class MyUtils {
 
     /**
      * 根据图片的url路径获得Bitmap对象
+     *
      * @param url
      * @return
      */
     public static Bitmap returnBitmap(String url) {
         URL fileUrl = null;
         Bitmap bitmap = null;
-        MyUtils.Loge(TAG,"returnBitmap---1");
+        MyUtils.Loge(TAG, "returnBitmap---1");
         try {
             fileUrl = new URL(url);
-            MyUtils.Loge(TAG,"returnBitmap---2");
+            MyUtils.Loge(TAG, "returnBitmap---2");
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            MyUtils.Loge(TAG,"returnBitmap---3");
+            MyUtils.Loge(TAG, "returnBitmap---3");
         }
 
         try {
             HttpURLConnection conn = (HttpURLConnection) fileUrl
                     .openConnection();
-            MyUtils.Loge(TAG,"returnBitmap---4");
+            MyUtils.Loge(TAG, "returnBitmap---4");
             conn.setDoInput(true);
-            MyUtils.Loge(TAG,"returnBitmap---5");
+            MyUtils.Loge(TAG, "returnBitmap---5");
             conn.connect();
-            MyUtils.Loge(TAG,"returnBitmap---6");
-            if(conn!=null) {
-                MyUtils.Loge(TAG,"returnBitmap---7");
+            MyUtils.Loge(TAG, "returnBitmap---6");
+            if (conn != null) {
+                MyUtils.Loge(TAG, "returnBitmap---7");
                 InputStream is = conn.getInputStream();
-                MyUtils.Loge(TAG,"returnBitmap---8");
+                MyUtils.Loge(TAG, "returnBitmap---8");
                 bitmap = BitmapFactory.decodeStream(is);
-                MyUtils.Loge(TAG,"returnBitmap---9");
+                MyUtils.Loge(TAG, "returnBitmap---9");
                 is.close();
-                MyUtils.Loge(TAG,"returnBitmap---10");
+                MyUtils.Loge(TAG, "returnBitmap---10");
             }
         } catch (IOException e) {
             e.printStackTrace();
-            MyUtils.Loge(TAG,"returnBitmap---11");
+            MyUtils.Loge(TAG, "returnBitmap---11");
         }
         return bitmap;
 

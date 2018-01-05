@@ -29,9 +29,6 @@ public class BannerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_use_instructions2);
-//        getWindow().setFormat(PixelFormat.TRANSLUCENT);//（这个对宿主没什么影响，建议声明）
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
         initView();
 
 
@@ -50,17 +47,6 @@ public class BannerActivity extends BaseActivity {
         if (!TextUtils.isEmpty(urlShow)) {
             initData();
         }
-
-
-//        Intent intent = getIntent();
-//        urlShow = intent.getStringExtra("url");
-//        MyUtils.Loge("aaa", "urlShow::" + urlShow);
-//        if(urlShow.length()>0&&urlShow.contains("https")){
-//            urlShow=urlShow.replaceFirst("https","http");
-//        }
-//        if(!TextUtils.isEmpty(urlShow)) {
-//            initData();
-//        }
     }
 
     private void initData() {
@@ -114,16 +100,6 @@ public class BannerActivity extends BaseActivity {
     }
 
     private void initView() {
-//        toolbar = (Toolbar) findViewById(R.id.index_toolbar);
-//        toolbar.setTitle("新手必看");
-//        toolbar.setTitleTextColor(Color.WHITE);
-//        toolbar.setNavigationIcon(R.mipmap.backimg);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
         setTitle("详情");
         wv_show = (WebView) findViewById(R.id.wv_my_show);
     }
@@ -132,7 +108,6 @@ public class BannerActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         wv_show.setVisibility(View.GONE);//ZoomButtonsController有一个register和unregister的过程
-//        wv_show.destroy();
     }
 
     /**
