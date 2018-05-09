@@ -17,12 +17,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.ttrm.ttconnection.MainActivity;
-import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.activity.ForgetPwdActivity;
+import com.ttrm.ttconnection.activity.Main2Activity;
 import com.ttrm.ttconnection.entity.LoginBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.KeyUtils;
@@ -32,7 +30,6 @@ import com.ttrm.ttconnection.util.VolleyUtils;
 
 import org.json.JSONObject;
 
-import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,7 +126,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                             SaveUtils.setString(KeyUtils.user_UID,loginBean.getData().getUserInfo().getUID());
                             SaveUtils.setString(KeyUtils.user_time,loginBean.getData().getUserInfo().getRegtime());
                         }
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        startActivity(new Intent(getActivity(), Main2Activity.class));
                         getActivity().finish();
                     }else {
                         MyUtils.showToast(getActivity(),errorMsg);

@@ -8,7 +8,12 @@ public class DistrictModel {
 		super();
 	}
 
-	public DistrictModel(String name, String zipcode) {
+//	public DistrictModel(String name, String zipcode) {
+//		super();
+//		this.name = name;
+//		this.zipcode = zipcode;
+//	}
+	public DistrictModel(String zipcode, String name) {
 		super();
 		this.name = name;
 		this.zipcode = zipcode;

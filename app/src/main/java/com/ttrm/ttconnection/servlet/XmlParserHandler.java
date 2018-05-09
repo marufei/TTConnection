@@ -48,6 +48,7 @@ public class XmlParserHandler extends DefaultHandler {
 		} else if (qName.equals("city")) {
 			cityModel = new CityModel();
 			cityModel.setName(attributes.getValue(0));
+			cityModel.setZipcode(attributes.getValue(1));
 			cityModel.setDistrictList(new ArrayList<DistrictModel>());
 		} else if (qName.equals("district")) {
 			districtModel = new DistrictModel();

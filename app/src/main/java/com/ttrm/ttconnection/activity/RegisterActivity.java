@@ -13,9 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.entity.LoginBean;
 import com.ttrm.ttconnection.http.HttpAddress;
@@ -241,7 +239,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             SaveUtils.setString(KeyUtils.user_UID, loginBean.getData().getUserInfo().getUID());
                             SaveUtils.setString(KeyUtils.user_time, loginBean.getData().getUserInfo().getRegtime());
                         }
-                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        startActivity(new Intent(RegisterActivity.this, Main2Activity.class));
                         LoginActivity.loginActivity.finish();
                         finish();
                     } else if (errorCode == 40001) {

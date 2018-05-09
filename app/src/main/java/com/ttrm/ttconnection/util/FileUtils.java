@@ -532,4 +532,13 @@ public class FileUtils {
         return mediaFile;
     }
 
+    /**
+     * 获取内置SD卡路径
+     *
+     * @return
+     */
+    public static String getInnerSDCardPath() {
+        return Environment.getExternalStorageDirectory().getPath() + "/TTConnection/";
+    }
+
 }

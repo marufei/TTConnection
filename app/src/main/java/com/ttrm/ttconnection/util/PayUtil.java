@@ -36,14 +36,6 @@ public class PayUtil {
     static String TAG = "TAG--PayUtil";
 
     public static void toPay(final Activity activity, final String payType, final String ruleId) {
-//        double opmoney;
-//        if (opType!=1&&payType==3){
-//            opmoney=pay_money*0.01;
-//            MyUtils.Loge(TAG,"opmoney="+opmoney);
-//        }else {
-//            opmoney=pay_money;
-//            MyUtils.Loge(TAG,"opmoney="+opmoney);
-//        }
         MyUtils.Loge(TAG,"topay()---1");
 
         if (ContextCompat.checkSelfPermission(activity,
@@ -64,11 +56,6 @@ public class PayUtil {
             return;
         }
         MyUtils.Loge(TAG,"topay()---3");
-
-//        MyUtils.Loge(TAG, "login_token=" + app.getUser().getLogin_token()
-//                + ",opmoney=" + opmoney + ",payType=" + payType + ",opType=" + opType + ",opNum=" + opNum);
-
-//        if(app!=null&&app.getUser()!=null&&!TextUtils.isEmpty(app.getUser().getLogin_token())) {
         if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_login_token))){
             String url= HttpAddress.BASE_URL+HttpAddress.ADD_PAY;
             StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -139,6 +126,113 @@ public class PayUtil {
                     map.put("payType",payType);
                     map.put("ruleId",ruleId);
                     map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                    return map;
+                }
+            };
+            VolleyUtils.setTimeOut(stringRequest);
+            VolleyUtils.getInstance(activity).addToRequestQueue(stringRequest);
+        }
+
+
+    }
+
+    public static void open2Pay(final Activity activity, final String payType, final String ruleId,final String type,final String num) {
+        MyUtils.Loge(TAG,"topay()---1");
+
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    0x1);
+            return;
+        }
+        MyUtils.Loge(TAG,"topay()---2");
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    0x2);
+            return;
+        }
+        MyUtils.Loge(TAG,"topay()---3");
+        if(!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_login_token))){
+            String url= HttpAddress.BASE_URL+HttpAddress.PAY_PAY;
+            StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    MyUtils.Loge(TAG,"response:"+response);
+                    try{
+                        JSONObject jsonObject=new JSONObject(response);
+                        int errorCode=jsonObject.getInt("errorCode");
+                        if(errorCode==1){
+                            Gson gson=new Gson();
+                            WXPayAllData wxPayAllData=gson.fromJson(response,WXPayAllData.class);
+                            if(wxPayAllData!=null) {
+                                if (payType.equals("1")) {
+                                    MyUtils.Loge(TAG, "调用微信支付");
+                                    WxPay wxPay = new WxPay(activity);
+                                    wxPay.pay(wxPayAllData.getData().getWxdata());
+                                }
+                                if(payType.equals("2")){
+                                    MyUtils.Loge(TAG,"调用支付宝支付");
+                                    //TODO 支付宝支付
+                                    AlipayUtil alipayUtil=new AlipayUtil(activity);
+                                    alipayUtil.pay(wxPayAllData.getData().getAlidata());
+                                    alipayUtil.setListener(new AlipayUtil.OnAlipayListener() {
+                                        @Override
+                                        public void onCancel(String resultStatus) {
+                                            MyUtils.Loge(TAG,"支付宝回调取消");
+                                            MyUtils.showToast(activity,"支付取消");
+                                        }
+
+                                        @Override
+                                        public void onWait(String resultStatus) {
+                                            MyUtils.Loge(TAG,"支付宝回调等待");
+                                            MyUtils.showToast(activity,"支付失败");
+                                        }
+
+                                        @Override
+                                        public void onSuccess(PayResult payResult) {
+                                            MyUtils.Loge(TAG,"支付宝回调成功");
+                                            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(activity, R.layout.dialog_bd_success);
+                                            myAdvertisementView.showDialog();
+                                            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                                                @Override
+                                                public void onEvent() {
+                                                    MyUtils.Loge(TAG,"支付宝回调成功，点击了按钮");
+                                                    activity.finish();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }catch (Exception e){
+                        MyUtils.Loge(TAG,"e:"+e.getMessage());
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    MyUtils.showToast(activity,"网络有问题");
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> map=new HashMap<>();
+                    map.put("payType",payType);
+                    map.put("ruleId",ruleId);
+                    map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                    map.put("type",type);
+                    if(type.equals("2")){
+                        map.put("num",num);
+                    }else {
+                        map.put("num","1");
+                    }
                     return map;
                 }
             };

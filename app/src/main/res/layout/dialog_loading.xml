@@ -37,9 +37,10 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/dialog_loading_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/50"
+            android:text="/"
             android:textColor="@color/gray_3"
             android:textSize="13sp" />
     </LinearLayout>

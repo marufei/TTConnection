@@ -24,9 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.entity.CanonBean;
@@ -88,6 +86,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
     private static int inputType = 0;
 
     private static int currentCount;
+    private static TextView dialog_loading_all;
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -126,6 +125,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                     dlg.show();
                     int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
+                    if (dataList != null)
+                        dialog_loading_all.setText("/"+dataList.size());
                     break;
             }
         }
@@ -168,6 +169,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
                     dlg.show();
                     int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
+                    if (dataList != null)
+                        dialog_loading_all.setText("/"+dataList.size());
                     break;
             }
         }
@@ -205,6 +208,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         LayoutInflater inflater = signActivity.getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_loading, null);
         dialog_loading_num = (TextView) layout.findViewById(R.id.dialog_loading_num);
+        dialog_loading_all=layout.findViewById(R.id.dialog_loading_all);
         builder.setView(layout);
         dlg = builder.create();
         dlg.setCanceledOnTouchOutside(false);

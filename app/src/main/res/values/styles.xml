@@ -43,6 +43,7 @@
         <item name="android:windowContentOverlay">@null</item><!-- 内部阴影 -->
         <item name="android:windowAnimationStyle">@style/dialog_animation</item>
     </style>
+
     <style name="dialog_animation" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
@@ -58,5 +59,4 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-
 </resources>

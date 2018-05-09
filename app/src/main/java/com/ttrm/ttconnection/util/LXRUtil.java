@@ -10,10 +10,9 @@ import android.os.Message;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.tencent.mm.opensdk.channel.MMessageActV2;
-import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.activity.LocationAddActivity;
 import com.ttrm.ttconnection.activity.SignActivity;
+import com.ttrm.ttconnection.fragment.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,12 +91,12 @@ public class LXRUtil {
                 Message message = Message.obtain();
                 message.what = KeyUtils.SAVE_CODE;
                 message.obj = index + 1;
-                MainActivity.handler.sendMessage(message);
+                HomeFragment.handler.sendMessage(message);
             }else {
                 Message message= Message.obtain();
                 message.what=KeyUtils.LOADING_CODE;
                 message.obj=index+1;
-                MainActivity.handler.sendMessage(message);
+                HomeFragment.handler.sendMessage(message);
             }
         }
         if(type==2){
@@ -184,6 +183,6 @@ public class LXRUtil {
         }
         Message message = Message.obtain();
         message.what = KeyUtils.DELETE_CODE;
-        MainActivity.handler.sendMessage(message);
+        HomeFragment.handler.sendMessage(message);
     }
 }

@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -30,6 +35,8 @@ import java.util.List;
 public class WebActivity extends BaseActivity {
     private WebView webView;
     private String urlShow;
+    private Toolbar toolbar;
+    private String TAG="WebActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +44,10 @@ public class WebActivity extends BaseActivity {
         setContentView(R.layout.activity_web);
         ActivityUtil.add(this);
         String title = getIntent().getStringExtra("title");
-        if (!TextUtils.isEmpty(title)) {
-            setToolBar(title);
-        }
         webView = (WebView) findViewById(R.id.webview);
+        if (!TextUtils.isEmpty(title)) {
+            setToolBar1(title);
+        }
         Intent intent = getIntent();
         urlShow = intent.getStringExtra("URL");
         MyUtils.Loge("aaa", "urlShow::" + urlShow);
@@ -49,6 +56,33 @@ public class WebActivity extends BaseActivity {
         }
         if (!TextUtils.isEmpty(urlShow)) {
             initData();
+        }
+    }
+
+    /**
+     * 设置toolbar标题
+     */
+    public void setToolBar1(String title){
+        toolbar= (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar==null){
+            return;
+        }else {
+            toolbar.setNavigationIcon(R.drawable.vector_drawable_base_arrow);
+            toolbar.setTitle(title);
+            toolbar.setTitleTextColor(Color.WHITE);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MyUtils.Loge(TAG,"点击");
+                    if (webView.canGoBack()) {
+                        MyUtils.Loge(TAG,"点击--if");
+                        webView.goBack();
+                    } else {
+                        MyUtils.Loge(TAG,"点击--else");
+                        finish();
+                    }
+                }
+            });
         }
     }
 
@@ -76,29 +110,17 @@ public class WebActivity extends BaseActivity {
         webView.setWebChromeClient(new WebChromeClient());
 //        加载需要显示的网页
         webView.loadUrl(urlShow);
-
-//        webView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                MyUtils.Loge("aaa", "webview:url:" + url);
-////                view.loadUrl(url);
-//                if (url.startsWith("http:") || url.startsWith("https:")) {
-//                    return false;
-//                }
-//                try {
-//                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                    startActivity(intent);
-//                } catch (Exception e) {
-//                }
-//                return true;
-//            }
-//        });
         if (MyUtils.isQQClientAvailable(this)) {
             //可以跳转QQ
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                view.loadUrl(url);
-                    return super.shouldOverrideUrlLoading(view, url);
+                    if (url.indexOf("ios:##") >= 0) {
+                        return true;
+                    }
+                    if (url.indexOf("task/taskCallback") == -1) {
+                        webView.loadUrl(url);
+                    }
+                    return true;
                 }
 
                 @Override
@@ -111,10 +133,79 @@ public class WebActivity extends BaseActivity {
                         return null;
                     }
                 }
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+//                    LogUtil.e(TAG, "onPageStarted url=" + url);
+//                    //悬赏任务完成 返回
+//                    if (url.contains("task/taskCallback")) {
+//                        Base_Dialog dialog = new Base_Dialog(Web_Activity.this);
+//                        dialog.setCancelable(false);
+//                        dialog.setMessage("感谢您进行该任务  点击确定返回萌豆任务中心");
+//                        dialog.setOk("确定", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                setResult(123, new Intent().putExtra("tasktype", true));
+//                                MDApp.finishActivity();
+//                            }
+//                        });
+//                    }
+//
+//                    //金豆定存 确认返回
+//                    String s = "https://www.mengdouwang.cn/dc/mengdouwang.com";
+//                    if (url.equals(s)) {
+//                        setResult(99, null);
+//                        MDApp.finishActivity();
+//                    }
+
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+//                    LogUtil.e(TAG, "onPageFinished url=" + url);
+//                    if (loadurl.equals(url)) {
+//                        mWebView.clearHistory();
+//                    }
+                    // addImageClickListner();
+
+//                Log.e(TAG, "onPageFinished WebView title=" + title);
+                }
+
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    MyUtils.showToast(WebActivity.this, "加载错误!");
+                }
+
+                @Override
+                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+//                super.onReceivedSslError(view, handler, error);
+                    handler.proceed();
+                }
             });
         } else {
             MyUtils.showToast(this, "请先安装QQ客户端");
         }
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+
+                setToolBar(title);
+
+                super.onReceivedTitle(view, title);
+
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+
+                super.onProgressChanged(view, newProgress);
+            }
+
+            @Override
+            public void onReceivedTouchIconUrl(WebView view, String url, boolean precomposed) {
+                super.onReceivedTouchIconUrl(view, url, precomposed);
+            }
+        });
     }
 
     @Override
@@ -136,6 +227,15 @@ public class WebActivity extends BaseActivity {
             startActivity(intent);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            finish();
+        }
     }
 
 

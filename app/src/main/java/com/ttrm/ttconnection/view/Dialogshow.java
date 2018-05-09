@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,40 +49,40 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
     public void setOnBtnlistenner(OnBtnlistenner onBtnlistenner) {
         this.onBtnlistenner = onBtnlistenner;
     }
-    //  地区数据
+    //  ????
     /**
-     * ����ʡ
+     * 省的集合
      */
     protected String[] mProvinceDatas;
     /**
-     * key - ʡ value - ��
+     * key - ? value - ??
      */
     protected Map<String, String[]> mCitisDatasMap = new HashMap<String, String[]>();
     /**
-     * key - �� values - ��
+     * key - ?? values - ??
      */
     protected Map<String, String[]> mDistrictDatasMap = new HashMap<String, String[]>();
 
     /**
-     * key - �� values - �ʱ�
+     * key - ?? values - ???
      */
     protected Map<String, String> mZipcodeDatasMap = new HashMap<String, String>();
 
     /**
-     * ��ǰʡ������
+     * 省
      */
     protected String mCurrentProviceName;
     /**
-     * ��ǰ�е�����
+     * 市
      */
     protected String mCurrentCityName;
     /**
-     * ��ǰ��������
+     * 区，县
      */
     protected String mCurrentDistrictName ="";
 
     /**
-     * ��ǰ������������
+     * 区县的编码
      */
     protected String mCurrentZipCode ="";
     private String TAG="Dialogshow";
@@ -97,12 +98,12 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_select_address);
-        MyUtils.Loge(TAG,"进入");
+        MyUtils.Loge(TAG,"??");
         setUpViews();
         setUpListener();
         setUpData();
         setViewLocation();
-        setCanceledOnTouchOutside(false);//外部点击取消
+        setCanceledOnTouchOutside(false);//??????
     }
 
     private void setUpViews() {
@@ -124,6 +125,10 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
                 break;
             case R.id.dialog_select_sure:
                 LocationAddActivity.location=mCurrentProviceName+"-"+mCurrentCityName+"-"+mCurrentDistrictName;
+                if(!TextUtils.isEmpty(mCurrentZipCode)) {
+                    LocationAddActivity.cityCode = mCurrentZipCode.substring(0, mCurrentZipCode.length() - 2) + "00";
+                }
+                MyUtils.Loge(TAG,"------location:"+LocationAddActivity.location+"------cityCode:"+LocationAddActivity.cityCode);
                 onBtnlistenner.onSure();
                 dismiss();
                 break;
@@ -131,18 +136,18 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
     }
 
     private void setUpListener() {
-        // ���change�¼�
+        // ???change???
         mViewProvince.addChangingListener(this);
-        // ���change�¼�
+        // ???change???
         mViewCity.addChangingListener(this);
-        // ���change�¼�
+        // ???change???
         mViewDistrict.addChangingListener(this);
     }
 
     private void setUpData() {
         initProvinceDatas();
         mViewProvince.setViewAdapter(new ArrayWheelAdapter<String>(activity, mProvinceDatas));
-        // ���ÿɼ���Ŀ����
+        // ?????????????
         mViewProvince.setVisibleItems(7);
         mViewCity.setVisibleItems(7);
         mViewDistrict.setVisibleItems(7);
@@ -158,11 +163,14 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
             updateAreas();
         } else if (wheel == mViewDistrict) {
             mCurrentDistrictName = mDistrictDatasMap.get(mCurrentCityName)[newValue];
+            MyUtils.Loge(TAG,"onChanged----mCurrentDistrictName:"+mCurrentDistrictName);
             mCurrentZipCode = mZipcodeDatasMap.get(mCurrentDistrictName);
         }
     }
     private void updateAreas() {
+        MyUtils.Loge(TAG,"进入--updateAreas方法--");
         int pCurrent = mViewCity.getCurrentItem();
+        MyUtils.Loge(TAG,"输出--------pCurrent:"+pCurrent);
         mCurrentCityName = mCitisDatasMap.get(mCurrentProviceName)[pCurrent];
         String[] areas = mDistrictDatasMap.get(mCurrentCityName);
 
@@ -171,21 +179,26 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
         }
         mViewDistrict.setViewAdapter(new ArrayWheelAdapter<String>(activity, areas));
         mViewDistrict.setCurrentItem(0);
+        mCurrentDistrictName = areas[0];
+        mCurrentZipCode = mZipcodeDatasMap.get(mCurrentDistrictName);
+
     }
     private void updateCities() {
         int pCurrent = mViewProvince.getCurrentItem();
         mCurrentProviceName = mProvinceDatas[pCurrent];
+        mCurrentZipCode = mZipcodeDatasMap.get(mCurrentDistrictName);
         String[] cities = mCitisDatasMap.get(mCurrentProviceName);
         if (cities == null) {
             cities = new String[]{""};
         }
         mViewCity.setViewAdapter(new ArrayWheelAdapter<String>(activity, cities));
         mViewCity.setCurrentItem(0);
+
         updateAreas();
     }
 
     /**
-     * 设置dialog位于屏幕底部
+     * ??dialog??????
      */
     private void setViewLocation(){
         DisplayMetrics dm = new DisplayMetrics();
@@ -198,7 +211,7 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
         lp.y = height;
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
         lp.height =ViewGroup.LayoutParams.WRAP_CONTENT;
-        // 设置显示位置
+        // ??????
         onWindowAttributesChanged(lp);
     }
     protected void initProvinceDatas() {
@@ -206,16 +219,16 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
         AssetManager asset = activity.getAssets();
         try {
             InputStream input = asset.open("province_data.xml");
-            // ����һ������xml�Ĺ�������
+            // ???????????xml?????????
             SAXParserFactory spf = SAXParserFactory.newInstance();
-            // ����xml
+            // ????xml
             SAXParser parser = spf.newSAXParser();
             XmlParserHandler handler = new XmlParserHandler();
             parser.parse(input, handler);
             input.close();
-            // ��ȡ��������������
+            // ?????????????????
             provinceList = handler.getDataList();
-            //*/ ��ʼ��Ĭ��ѡ�е�ʡ���С���
+            //*/ ????????????????????
             if (provinceList!= null && !provinceList.isEmpty()) {
                 mCurrentProviceName = provinceList.get(0).getName();
                 List<CityModel> cityList = provinceList.get(0).getCityList();
@@ -223,34 +236,40 @@ public  class Dialogshow extends Dialog implements View.OnClickListener,OnWheelC
                     mCurrentCityName = cityList.get(0).getName();
                     List<DistrictModel> districtList = cityList.get(0).getDistrictList();
                     mCurrentDistrictName = districtList.get(0).getName();
+                    MyUtils.Loge(TAG,"initProvinceDatas-------mCurrentDistrictName:"+mCurrentDistrictName);
                     mCurrentZipCode = districtList.get(0).getZipcode();
                 }
             }
             //*/
             mProvinceDatas = new String[provinceList.size()];
             for (int i=0; i< provinceList.size(); i++) {
-                // ��������ʡ������
+                // ???????????????
                 mProvinceDatas[i] = provinceList.get(i).getName();
                 List<CityModel> cityList = provinceList.get(i).getCityList();
                 String[] cityNames = new String[cityList.size()];
+                String [] cityCodes=new String [cityList.size()];
                 for (int j=0; j< cityList.size(); j++) {
-                    // ����ʡ����������е�����
+                    // ?????????????????????
                     cityNames[j] = cityList.get(j).getName();
+                    cityCodes[j] = cityList.get(j).getZipcode();
                     List<DistrictModel> districtList = cityList.get(j).getDistrictList();
                     String[] distrinctNameArray = new String[districtList.size()];
+                    String [] distrinctCodeArray=new String[districtList.size()];
                     DistrictModel[] distrinctArray = new DistrictModel[districtList.size()];
                     for (int k=0; k<districtList.size(); k++) {
-                        // ����������������/�ص�����
-                        DistrictModel districtModel = new DistrictModel(districtList.get(k).getName(), districtList.get(k).getZipcode());
-                        // ��/�ض��ڵ��ʱ࣬���浽mZipcodeDatasMap
+                        // ????????????????/???????
+                        DistrictModel districtModel = new DistrictModel(districtList.get(k).getZipcode(),districtList.get(k).getName());
+                        // ??/?????????????mZipcodeDatasMap
                         mZipcodeDatasMap.put(districtList.get(k).getName(), districtList.get(k).getZipcode());
+//                        mZipcodeDatasMap.put(districtList.get(k).getZipcode(),districtList.get(k).getName());
                         distrinctArray[k] = districtModel;
                         distrinctNameArray[k] = districtModel.getName();
+                        distrinctCodeArray[k] = districtModel.getZipcode();
                     }
-                    // ��-��/�ص����ݣ����浽mDistrictDatasMap
+                    // ??-??/????????????mDistrictDatasMap
                     mDistrictDatasMap.put(cityNames[j], distrinctNameArray);
                 }
-                // ʡ-�е����ݣ����浽mCitisDatasMap
+                // ?-????????????mCitisDatasMap
                 mCitisDatasMap.put(provinceList.get(i).getName(), cityNames);
             }
         } catch (Throwable e) {

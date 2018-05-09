@@ -1,10 +1,8 @@
 package com.ttrm.ttconnection;
 
-import android.app.Application;
+
 import android.content.Context;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.mob.MobApplication;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.ttrm.ttconnection.entity.NewApkData;
@@ -21,6 +19,7 @@ public class MyApplication extends MobApplication {
     public static Context mContext;
     public static String update_url;    //更新APP地址
     public static String update_content;    //更新APP内容
+    public static boolean isB_location=true;     //是否已经定位
 
     public NewApkData getmNewApkData() {
         return mNewApkData;
@@ -31,13 +30,15 @@ public class MyApplication extends MobApplication {
     }
 
     private NewApkData mNewApkData; //更新APP内容
+
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
         mContext = getApplicationContext();
-        CrashReport.initCrashReport(getApplicationContext(),"585ed57d98", false);
+        CrashReport.initCrashReport(getApplicationContext(), "585ed57d98", false);
     }
+
     public static MyApplication getInstance() {
         return mInstance;
     }

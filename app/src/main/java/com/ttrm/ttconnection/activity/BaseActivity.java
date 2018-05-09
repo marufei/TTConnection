@@ -25,14 +25,15 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_base);
     }
+
     /**
      * 设置toolbar标题
      */
-    public void setToolBar(String title){
-        toolbar= (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar==null){
+    public void setToolBar(String title) {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar == null) {
             return;
-        }else {
+        } else {
             toolbar.setNavigationIcon(R.drawable.vector_drawable_base_arrow);
             toolbar.setTitle(title);
             toolbar.setTitleTextColor(Color.WHITE);
@@ -44,17 +45,18 @@ public class BaseActivity extends AppCompatActivity {
             });
         }
     }
+
     /**
      * 设置toolbar 菜单按钮
      */
-    public void setMenuBtn(String title, final Context context, final Class activity2){
-        toolbar_btn=(TextView)findViewById(R.id.toolbar_btn);
+    public void setMenuBtn(String title, final Context context, final Class activity2) {
+        toolbar_btn = (TextView) findViewById(R.id.toolbar_btn);
         toolbar_btn.setVisibility(View.VISIBLE);
         toolbar_btn.setText(title);
         toolbar_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context,activity2));
+                startActivity(new Intent(context, activity2));
             }
         });
     }

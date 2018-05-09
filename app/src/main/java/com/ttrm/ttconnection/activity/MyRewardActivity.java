@@ -7,9 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,7 +24,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -42,11 +40,10 @@ import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.FileUtils;
 import com.ttrm.ttconnection.util.KeyUtils;
 import com.ttrm.ttconnection.util.MyUtils;
-import com.ttrm.ttconnection.util.SaveFileUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.util.VolleyUtils;
 
-import java.io.FileOutputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +87,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
     private int shareType;
     private Bitmap bitmap3;
     private Bitmap realBitmap;
-    private String picPath;
+    private static String picPath;
     private AlertDialog dlg1;
     private boolean isShare = true; //判断图片是否合成成功，如果合成失败false,如果合成成功true;
     private TextView reward_tv_js;
@@ -151,10 +148,11 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         reward_iv_select2.setOnClickListener(this);
         reward_iv_ewm = (ImageView) findViewById(R.id.reward_iv_ewm);
         setMenuBtn("邀请明细", this, InviteActivity.class);
-        reward_tv_js=(TextView)findViewById(R.id.reward_tv_js);
-        for(int i=0;i< Contant.rewardRuleBean.getData().getCataList().size();i++){
-            if(Contant.rewardRuleBean.getData().getCataList().get(i).getCataid().equals("11")){
-                reward_tv_js.setText("好友通过您的邀请码注册，您和好友各+"+Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount()+"颗钻石");
+        reward_tv_js = (TextView) findViewById(R.id.reward_tv_js);
+        for (int i = 0; i < Contant.rewardRuleBean.getData().getCataList().size(); i++) {
+            if (Contant.rewardRuleBean.getData().getCataList().get(i).getCataid().equals("11")) {
+//                reward_tv_js.setText("好友通过您的邀请码注册，您和好友各+"+Contant.rewardRuleBean.getData().getCataList().get(i).getDiacount()+"颗钻石");
+                reward_tv_js.setText("好友通过你的邀请码注册，您和好友各获得100钻石奖励，累计邀请50个好友，可获得12750颗钻石奖励，累计爆机（坐等被加）1912人。");
             }
         }
     }
@@ -305,6 +303,8 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                                     .error(R.mipmap.ic_icon)
                                     .into(reward_iv_pic);
                             MyUtils.Loge(TAG, "步骤3");
+
+
                             qrBitmap = generateBitmap(shareInfoBean.getData().getConfig().getUrl()
                                     + "?regCode="
                                     + SaveUtils.getString(KeyUtils.user_regcode), 200, 200);
@@ -318,14 +318,26 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                             MyUtils.Loge(TAG, "步骤6.1");
                             realBitmap = getRealBitmap();
                             MyUtils.Loge(TAG, "步骤7");
-//                            picPath=saveBitmapToSDCard(realBitmap, String.valueOf(System.currentTimeMillis()));
-                            picPath = getInnerSDCardPath() + "img-" + System.currentTimeMillis() + ".jpg";
-                            MyUtils.Loge(TAG, "步骤8");
-                            FileUtils.writeBitmapToSD(picPath, realBitmap, true);
-                            MyUtils.Loge(TAG, "picPath::" + picPath);
-//                            reward_iv_pic1.setImageBitmap(realBitmap);
-//                          String fileUrl=SaveFileUtil.saveBitmap(MyRewardActivity.this,realBitmap);
-//                            MyUtils.Loge(TAG,"步骤5--fileUrl"+fileUrl);
+                            if(realBitmap!=null) {
+                                if (!isHavePic(FileUtils.getInnerSDCardPath(), "img1-"+SaveUtils.getString(KeyUtils.user_id))) {
+                                    picPath = FileUtils.getInnerSDCardPath() + "img1-"+SaveUtils.getString(KeyUtils.user_id) + System.currentTimeMillis() + ".jpg";
+                                }else {
+//                                    MyUtils.l(MyRewardActivity.this,"已经有了路径--------");
+                                    MyUtils.Loge(TAG,"已经有了路径--------");
+                                    FileUtils.writeBitmapToSD(picPath, realBitmap, true);
+                                }
+                            }else{
+//                                MyUtils.showToast(MyRewardActivity.this,"realBitmap为空---------");
+                                MyUtils.Loge(TAG,"realBitmap为空---------");
+                                showAlertDialog2("温馨提示", "分享图片生成失败，请返回上一页进行刷新", "返回", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        finish();
+                                    }
+                                });
+                            }
+//                            MyUtils.Loge(TAG, "picPath::" + picPath);
                             isShare = true;
                         }
                         ActivityUtil.toLogin(MyRewardActivity.this, shareInfoBean.getErrorCode());
@@ -334,6 +346,14 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
                     MyUtils.Loge(TAG, "e:" + e.getMessage());
                     isShare = false;
                     dlg1.dismiss();
+                    MyUtils.Loge(TAG,"异常抛出");
+                    showAlertDialog2("温馨提示", "分享图片生成失败，请返回上一页进行刷新", "返回", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            finish();
+                        }
+                    });
                 }
 
             }
@@ -341,6 +361,7 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 dlg1.dismiss();
+                isShare = false;
                 MyUtils.showToast(MyRewardActivity.this, "网络有问题");
             }
         }) {
@@ -413,11 +434,15 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
      * 生成带二维码的图片bitmap
      */
     private Bitmap getRealBitmap() {
-        Bitmap bitmap1 = MyUtils.returnBitmap(shareInfoBean.getData().getConfig().getImgurl1());
-        MyUtils.Loge(TAG, "步骤 bitmap1:" + bitmap1);
-        bitmap3 = MyUtils.mergeBitmap(bitmap1, qrBitmap);
-        MyUtils.Loge(TAG, "步骤 bitmap3:" + bitmap3);
-        MyUtils.Loge(TAG, "步骤6");
+        try {
+            Bitmap bitmap1 = MyUtils.returnBitmap(shareInfoBean.getData().getConfig().getImgurl1());
+            MyUtils.Loge(TAG, "步骤 bitmap1:" + bitmap1);
+            bitmap3 = MyUtils.mergeBitmap(bitmap1, qrBitmap);
+            MyUtils.Loge(TAG, "步骤 bitmap3:" + bitmap3);
+            MyUtils.Loge(TAG, "步骤6");
+        } catch (Exception e) {
+            return null;
+        }
         return bitmap3;
 
     }
@@ -659,13 +684,27 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         dlg.setCanceledOnTouchOutside(false);
     }
 
+
+
     /**
-     * 获取内置SD卡路径
-     *
-     * @return
+     * 查询是否有存在分享的图片
      */
-    public static String getInnerSDCardPath() {
-        return Environment.getExternalStorageDirectory().getPath() + "/TTConnection/";
+    public static boolean isHavePic(String dirPath, String type) {
+        File f = new File(dirPath);
+        if (!f.exists()) {//判断路径是否存在
+            return false;
+        }
+        File[] files = f.listFiles();
+        if (files == null) {//判断权限
+            return false;
+        }
+        for (File _file : files) {//遍历目录
+            if (_file.isFile() && _file.getName().startsWith(type)) {
+                picPath = _file.getAbsolutePath();//获取文件路径
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -679,5 +718,6 @@ public class MyRewardActivity extends BaseActivity implements View.OnClickListen
         dlg1 = builder.create();
         dlg1.setCanceledOnTouchOutside(false);
     }
+
 
 }

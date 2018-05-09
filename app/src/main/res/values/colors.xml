@@ -3,6 +3,7 @@
     <color name="colorPrimary">#6E43DC</color>
     <color name="colorPrimaryDark">#6E43DC</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="background">#f6f6f6</color>
     <!-- 常用颜色 -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -39,4 +40,11 @@
     <color name="gray_f3">#f3f3f3</color>
     <!--城市选择-->
     <color name="line_dividler">#F0F0F0</color>
+
+    <color name="gray_line">#e6e6e6</color>
+    <color name="selecor_n">#696D7E</color>
+
+    <color name="status_dsh">#FEC85F</color>
+    <color name="status_btg">#FC7478</color>
+    <color name="status_tg">#35E323</color>
 </resources>

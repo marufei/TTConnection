@@ -88,7 +88,7 @@
             android:textColor="@color/gray_6"
             android:layout_marginTop="3dp"
             android:textSize="11sp"
-            android:text="2.每次为您精选50名优质人脉，点立即加粉，导入手机通讯录后即可添加微信好友。"/>
+            android:text="2.每次为您精选25名优质人脉，点立即加粉，导入手机通讯录后即可添加微信好友。"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

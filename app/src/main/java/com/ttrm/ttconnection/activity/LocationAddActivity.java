@@ -37,6 +37,7 @@ import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.Dialogshow;
+import com.ttrm.ttconnection.view.Dialogshow1;
 import com.ttrm.ttconnection.view.MyAdvertisementView;
 
 import org.json.JSONObject;
@@ -53,10 +54,12 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
     private static AlertDialog dlg;
     private static int num;
     private static AlertDialog dlg2;
+    private static TextView dialog_loading_all;
     private TextView location_tv_select;
-    private Button location_btn_sure;
+    private static Button location_btn_sure;
     public static String location;
-    private Dialogshow dialog;
+    public static String cityCode;      //  城市编码
+    private Dialogshow1 dialog;
     private static String TAG = "LocationAddActivity";
     private String type = "2";
     private static LocationAddActivity locatiionAddActivity;
@@ -74,6 +77,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
 //                    if (currentCount == dataList.size()) {
 //                        Toast.makeText(MyApplication.mContext, "添加成功", Toast.LENGTH_SHORT).show();
                     dlg.dismiss();
+                    location_btn_sure.setClickable(true);
                     MyAdvertisementView myAdvertisementView = new MyAdvertisementView(locatiionAddActivity, R.layout.dialog_location_success);
                     myAdvertisementView.showDialog();
                     myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
@@ -101,6 +105,8 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                     dlg.show();
                     int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
+                    if (dataList != null)
+                        dialog_loading_all.setText("/"+dataList.size());
                     break;
             }
         }
@@ -127,6 +133,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         LayoutInflater inflater = locatiionAddActivity.getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_loading, null);
         dialog_loading_num = (TextView) layout.findViewById(R.id.dialog_loading_num);
+        dialog_loading_all=layout.findViewById(R.id.dialog_loading_all);
         builder.setView(layout);
         dlg = builder.create();
         dlg.setCanceledOnTouchOutside(false);
@@ -138,12 +145,13 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
         location_btn_sure = (Button) findViewById(R.id.location_btn_sure);
         location_tv_select.setOnClickListener(this);
         location_btn_sure.setOnClickListener(this);
-        dialog = new Dialogshow(LocationAddActivity.this);
-        dialog.setOnBtnlistenner(new Dialogshow.OnBtnlistenner() {
+        dialog = new Dialogshow1(LocationAddActivity.this);
+        dialog.setOnBtnlistenner(new Dialogshow1.OnBtnlistenner() {
             @Override
             public void onSure() {
                 if (!TextUtils.isEmpty(location)) {
                     location_tv_select.setText(location);
+
                 }
             }
         });
@@ -158,8 +166,18 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
             case R.id.location_btn_sure:
 //                getCanon();
                 location_btn_sure.setClickable(false);
-                dlg2.show();
-                saveCanon();
+
+                if(!TextUtils.isEmpty(location_tv_select.getText().toString())){
+                    if(TextUtils.isEmpty(cityCode)) {
+                        cityCode="";
+                    }
+                    MyUtils.Loge(TAG,"-----------------------------------cityCode:"+cityCode);
+                    dlg2.show();
+                    saveCanon();
+                }else {
+                    MyUtils.showToast(this,"请先选择加粉地区");
+                }
+
                 break;
         }
     }
@@ -168,7 +186,7 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
      * 地区加粉
      */
     private void getCanon() {
-        String url = HttpAddress.BASE_URL + HttpAddress.GET_CANON;
+        String url = HttpAddress.BASE_URL + HttpAddress.LOCATION_CANON;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -208,7 +226,8 @@ public class LocationAddActivity extends BaseActivity implements View.OnClickLis
                 map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
                 map.put("timeStamp", MyUtils.getTimestamp());
                 map.put("sign", MyUtils.getSign());
-                map.put("type", type);
+                map.put("cityCode", cityCode);
+                MyUtils.Loge(TAG,"cityCode---------"+cityCode);
                 return map;
             }
         };

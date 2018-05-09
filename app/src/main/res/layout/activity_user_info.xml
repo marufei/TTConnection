@@ -225,6 +225,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/white_F0F0F0"/>
+            <ImageView
+                android:id="@+id/info_iv_vip"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"/>
             <LinearLayout
                 android:id="@+id/info_ll_sm"
                 android:layout_width="match_parent"

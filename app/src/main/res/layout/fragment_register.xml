@@ -243,7 +243,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
                         android:background="@null"
-                        android:hint="邀请码（选填）"
+                        android:hint="邀请码（没有邀请码可不填）"
                         android:lines="1"
                         android:textColorHint="@color/gray_9"
                         android:textSize="13sp" />

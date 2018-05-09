@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ProvinceModel {
 	private String name;
+	private String zipcode;
 	private List<CityModel> cityList;
 	
 	public ProvinceModel() {
@@ -14,6 +15,15 @@ public class ProvinceModel {
 		super();
 		this.name = name;
 		this.cityList = cityList;
+	}
+
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
 	}
 
 	public String getName() {

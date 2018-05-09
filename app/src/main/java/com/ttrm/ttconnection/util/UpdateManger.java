@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,6 +32,10 @@ import java.net.URL;
  * Created by Administrator on 2016/7/21.
  */
 public class UpdateManger {
+    /**
+     * 下载类型
+     */
+    private  int type=0;
     // 应用程序Context
     private Context mContext;
     // 提示消息
@@ -58,7 +63,9 @@ public class UpdateManger {
                 case DOWN_OVER:
 
                     progressBar.setVisibility(View.GONE);
-                    dialogsuccess.setVisibility(View.VISIBLE);
+                    dialogesc.setVisibility(View.GONE);
+                    downloadDialog.dismiss();
+//                    dialogsuccess.setVisibility(View.VISIBLE);
 
                     installApk();
                     break;
@@ -67,10 +74,18 @@ public class UpdateManger {
         }
     };
     private String TAG = "UpdateManger";
+    private String message;//更新内容
 
-    public UpdateManger(Context context, int version) {
-        saveFileName = savePath + "ttrm" + version + ".apk";
+    public UpdateManger(Context context, int version,int type) {
+        saveFileName = savePath+ version + ".apk";
         this.mContext = context;
+        this.type=type;
+
+    }
+    public UpdateManger(Context context, int version) {
+        saveFileName = savePath+ version + ".apk";
+        this.mContext = context;
+
     }
 
     // 显示更新程序对话框，供主程序调用
@@ -83,9 +98,19 @@ public class UpdateManger {
      * 提示更新了什么
      */
     private void showNoticeDialog() {
+        String title="发现新版本";
+        if(!TextUtils.isEmpty(MyApplication.update_content)){
+            message=MyApplication.update_content;
+        }else {
+            message="有新版本更新啦~~";
+        }
+        if(type==2){
+            title="下载";
+            message="是否下载微商工具箱";
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);// Builder，可以通过此builder设置改变AleartDialog的默认的主题样式及属性相关信息
-        builder.setTitle("发现新版本");
-        builder.setMessage("有新版本更新啦~~");
+        builder.setTitle(title);
+        builder.setMessage(message);
         builder.setPositiveButton("下载", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

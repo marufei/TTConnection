@@ -2,21 +2,17 @@ package com.ttrm.ttconnection.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -24,18 +20,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
-import com.ttrm.ttconnection.activity.ForgetPwdActivity;
+import com.ttrm.ttconnection.activity.Main2Activity;
 import com.ttrm.ttconnection.activity.RegisterActivity;
-import com.ttrm.ttconnection.activity.UserInfoActivity;
 import com.ttrm.ttconnection.entity.Contant;
 import com.ttrm.ttconnection.entity.LoginBean;
-import com.ttrm.ttconnection.entity.RegisterBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.CodeCountDownTimer;
@@ -46,10 +38,8 @@ import com.ttrm.ttconnection.util.VolleyUtils;
 
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by MaRufei
@@ -347,7 +337,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                             SaveUtils.setString(KeyUtils.user_UID, loginBean.getData().getUserInfo().getUID());
                             SaveUtils.setString(KeyUtils.user_time, loginBean.getData().getUserInfo().getRegtime());
                         }
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        startActivity(new Intent(getActivity(), Main2Activity.class));
                         getActivity().finish();
                     } else if (errorCode == 40001) {
                         ActivityUtil.toLogin(getActivity(), errorCode);

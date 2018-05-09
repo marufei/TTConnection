@@ -38,6 +38,7 @@ import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.BannerActivity;
 import com.ttrm.ttconnection.activity.BaoJiActivity;
 import com.ttrm.ttconnection.activity.BaseActivity;
+import com.ttrm.ttconnection.activity.CheckPermissionsActivity;
 import com.ttrm.ttconnection.activity.EditNameActivity;
 import com.ttrm.ttconnection.activity.LocationAddActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
@@ -74,7 +75,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends CheckPermissionsActivity implements View.OnClickListener {
     private static AlertDialog dlg2;
     private final int DOWN_ERROR = 0;
     private static TextView dialog_loading_num;
@@ -105,6 +106,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static int currentCount = 0;//已添加添加通讯录总条数
 
+    private static TextView dialog_loading_all;
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -144,6 +146,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     dlg.show();
                     int count = (int) msg.obj;
                     dialog_loading_num.setText(String.valueOf(count));
+                    if (dataList != null)
+                        dialog_loading_all.setText("/"+dataList.size());
                     break;
             }
         }
@@ -214,7 +218,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         showLoad();
         //获取奖励的文案
         getRewardRule();
+
     }
+
 
     /**
      * 获取奖励的文案
@@ -263,6 +269,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initWebview();
     }
 
+
+
     private void initWebview() {
         urlShow = HttpAddress.PHONE_H5;
         MyUtils.Loge("aaa", "改后----urlShow::" + urlShow);
@@ -295,6 +303,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         getAddStatus();
         getBjStatus();
         getVersion();
+        setPermission();
     }
 
     /**
@@ -413,6 +422,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         LayoutInflater inflater = ma.getLayoutInflater();
         final View layout = inflater.inflate(R.layout.dialog_loading, null);
         dialog_loading_num = (TextView) layout.findViewById(R.id.dialog_loading_num);
+        dialog_loading_all=layout.findViewById(R.id.dialog_loading_all);
+
         builder.setView(layout);
         dlg = builder.create();
         dlg.setCanceledOnTouchOutside(false);

@@ -1,32 +1,27 @@
 package com.ttrm.ttconnection.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
-import com.ttrm.ttconnection.MainActivity;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BDAddLvAdapter;
 import com.ttrm.ttconnection.entity.BDAddBean;
@@ -38,14 +33,12 @@ import com.ttrm.ttconnection.util.PayUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.util.VolleyUtils;
 import com.ttrm.ttconnection.view.ListViewForScrollview;
-import com.ttrm.ttconnection.view.MyAdvertisementView;
 import com.ttrm.ttconnection.wxapi.WXPayEntryActivity;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.Manifest;
 
 /**
  * TODO 被动加粉
@@ -140,6 +133,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (bdAddBean.getData().getRuleList().get(position).isSelect()) {
                     bdAddBean.getData().getRuleList().get(position).setSelect(false);
+                    pos=-1;
                 } else {
                     bdAddBean.getData().getRuleList().get(position).setSelect(true);
                     pos = position;

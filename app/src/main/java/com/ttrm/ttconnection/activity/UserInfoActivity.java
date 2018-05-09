@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,11 +19,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.ttrm.ttconnection.MainActivity;
+import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.entity.BaoJiStatusBean;
+import com.ttrm.ttconnection.entity.VipInfoBean;
 import com.ttrm.ttconnection.http.HttpAddress;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
@@ -61,6 +62,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private TextView activity_user_info_bj;
     private TextView activity_user_info_bd;
     private TextView info_tv_version;
+    private ImageView info_iv_vip;
+    /**
+     * 是否是VIP
+     */
+    private boolean isVIP=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void initData() {
         info_tv_phone.setText(MyUtils.Replace_phone_Str(SaveUtils.getString(KeyUtils.user_phone)));
+        Picasso.with(this).load(HttpAddress.INFO_PNG).into(info_iv_vip);
     }
 
     public static void startActivity(Context context) {
@@ -111,6 +118,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         activity_user_info_bd=(TextView)findViewById(R.id.activity_user_info_bd);
 
         info_tv_version=(TextView)findViewById(R.id.info_tv_version);
+
+        info_iv_vip=(ImageView)findViewById(R.id.info_iv_vip);
+        info_iv_vip.setOnClickListener(this);
     }
 
     @Override
@@ -160,7 +170,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 startActivity(new Intent(this, RedeemActivity.class));
                 break;
             case R.id.info_ll_sm:
-                Intent intent = new Intent(this, WebActivity.class);
+                Intent intent = new Intent(this, Web2Activity.class);
                 intent.putExtra("URL", HttpAddress.URL_H5_READ);
                 intent.putExtra("title", "新手教学");
                 startActivity(intent);
@@ -173,7 +183,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 MyUtils.showToast(this,"暂无新版本");
                 break;
             case R.id.info_ll_custom:       //联系客服
-                Intent intent1 = new Intent(this, WebActivity.class);
+                Intent intent1 = new Intent(this, Web2Activity.class);
                 intent1.putExtra("URL", HttpAddress.URL_H5_DELETE);
                 intent1.putExtra("title", "咨询客服");
                 startActivity(intent1);
@@ -193,6 +203,13 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     }
                 });
                 break;
+            case R.id.info_iv_vip:
+                if(isVIP){
+                    startActivity(new Intent(UserInfoActivity.this,RedeemCodeActivity.class));
+                }else {
+                    startActivity(new Intent(UserInfoActivity.this,OpenVipActivity.class));
+                }
+                break;
 
         }
     }
@@ -205,6 +222,53 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             info_tv_bmdl.setText(SaveUtils.getString(KeyUtils.user_name));
         }
         info_tv_version.setText("v"+MyUtils.getVersionName(UserInfoActivity.this));
+
+        getVipInfo();
+    }
+
+    /**
+     * 获取VIP信息
+     */
+    private void getVipInfo() {
+        String url=HttpAddress.BASE_URL+HttpAddress.INFO_VIP;
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                MyUtils.Loge(TAG,"VIP信息---:"+response);
+                try{
+                    JSONObject jsonObject=new JSONObject(response);
+                    int errorCode=jsonObject.getInt("errorCode");
+                    if(errorCode==1){
+                        Gson gson=new Gson();
+                        VipInfoBean vipInfoBean=gson.fromJson(response,VipInfoBean.class);
+                        //判断是VIP
+                        if(vipInfoBean!=null&&vipInfoBean.getData()!=null&&vipInfoBean.getData().getVipStatus()==1){
+                            isVIP=true;
+                        }
+                    }
+                    ActivityUtil.toLogin(UserInfoActivity.this, errorCode);
+                }catch (Exception e){
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MyUtils.showToast(UserInfoActivity.this,"网络有问题");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("timeStamp", MyUtils.getTimestamp());
+                map.put("sign", MyUtils.getSign());
+                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                return map;
+            }
+        };
+        VolleyUtils.setTimeOut(stringRequest);
+        VolleyUtils.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     /**

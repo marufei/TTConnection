@@ -3,6 +3,7 @@ package com.ttrm.ttconnection.util;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,6 +27,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.ttrm.ttconnection.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -42,6 +46,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -594,7 +599,7 @@ public class MyUtils {
         if (TextUtils.isEmpty(mobiles)) {
             return false;
         }
-        Pattern p = Pattern.compile("^1[34578]\\d(?!(\\d)\\\\1{7})\\d{8}?");
+        Pattern p = Pattern.compile("^1[345789]\\d(?!(\\d)\\\\1{7})\\d{8}?");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
@@ -905,8 +910,66 @@ public class MyUtils {
         Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth(), firstBitmap.getHeight(), firstBitmap.getConfig());
         Canvas canvas = new Canvas(bitmap);
         canvas.drawBitmap(firstBitmap, new Matrix(), null);
-        canvas.drawBitmap(secondBitmap, 25, 900, null);
+        canvas.drawBitmap(secondBitmap, (float) (firstBitmap.getWidth() * 0.05), (float) (firstBitmap.getHeight() * 0.8), null);
         return bitmap;
+    }
+
+    /**
+     * 将两张图片合成一张图片
+     *
+     * @param firstBitmap
+     * @param secondBitmap
+     * @return
+     */
+    public static Bitmap mergeBitmap2(Context context, String string, Bitmap firstBitmap, Bitmap secondBitmap) {
+        String str = "我的邀请码" + string;
+        Paint paint = new Paint();
+        Rect textInvent = new Rect();
+        paint.setColor(context.getResources().getColor(R.color.white));
+        paint.setTextSize(40);
+        paint.getTextBounds(str, 0, str.length(), textInvent);
+        Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth(), firstBitmap.getHeight(), firstBitmap.getConfig());
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(firstBitmap, 0, 0, null);
+        canvas.drawText("我的邀请码" + string, (float) (firstBitmap.getWidth() * 0.5) - textInvent.width() / 2, (float) (firstBitmap.getHeight() * 0.61 + setTextSize(context,textInvent.height())), paint);   //textInvent.height() * 1.5+6
+        canvas.drawBitmap(secondBitmap, (float) (firstBitmap.getWidth() * 0.05), (float) (firstBitmap.getHeight() * 0.8), null);
+        return bitmap;
+    }
+
+    /**
+     * 设置文本大小,防止步数特别大之后放不下，将字体大小动态设置
+     *
+     * @param num
+     */
+    public static int setTextSize(Context context,double num) {
+        String s=String.valueOf(num);
+        if(!TextUtils.isEmpty(s)) {
+            int length = s.length();
+            int numberTextSize = 0;
+            if (length <= 4) {
+                numberTextSize = dipToPx(context,50);
+            } else if (length > 4 && length <= 6) {
+                numberTextSize = dipToPx(context,40);
+            } else if (length > 6 && length <= 8) {
+                numberTextSize = dipToPx(context,30);
+            } else if (length > 8) {
+                numberTextSize = dipToPx(context,25);
+            }
+            return numberTextSize;
+        }
+        return 0;
+    }
+
+    /**
+     * dip 转换成px
+     *
+     * @param dip
+     * @return
+     */
+
+    private static int dipToPx(Context context,float dip) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return (int) (dip * density + 0.5f * (dip >= 0 ? 1 : -1));
     }
 
     /**
@@ -927,6 +990,55 @@ public class MyUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * view转换成bitmap
+     *
+     * @param view
+     * @return
+     */
+    public static Bitmap convertViewToBitmap(View view) {
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        return bitmap;
+    }
+
+    /**
+     * 判断某个APP是否存在
+     * @param context
+     * @param packageName
+     * @return
+     */
+
+    public static boolean checkApkExist(Context context, String packageName){
+        if (TextUtils.isEmpty(packageName))
+            return false;
+        try {
+            ApplicationInfo info = context.getPackageManager()
+                    .getApplicationInfo(packageName,
+                            PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    public static boolean checkFacebookExist(Context context,String facebookPkgName){
+        return checkApkExist(context, facebookPkgName);
+    }
+
+    //根据map的value获取map的key
+    public static String getKey(Map<String,String> map, String value){
+        String key="";
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if(value.equals(entry.getValue())){
+                key=entry.getKey();
+            }
+        }
+        return key;
     }
 
 }
