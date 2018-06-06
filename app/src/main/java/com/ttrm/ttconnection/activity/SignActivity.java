@@ -685,11 +685,13 @@ public class SignActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
             MyUtils.Loge(TAG, "分享失败--" + throwable.getMessage());
+            MyUtils.showToast(SignActivity.this,"分享失败");
         }
 
         @Override
         public void onCancel(Platform platform, int i) {
             MyUtils.Loge(TAG, "分享取消");
+            MyUtils.showToast(SignActivity.this,"分享取消");
         }
     }
 

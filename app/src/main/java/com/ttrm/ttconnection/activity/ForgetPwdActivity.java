@@ -83,10 +83,10 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                     MyUtils.showToast(ForgetPwdActivity.this, "请输入手机号");
                     return;
                 }
-                if (!MyUtils.isPhoneNumber(forget_phone.getText().toString().trim())) {
-                    MyUtils.showToast(ForgetPwdActivity.this, "请输入正确的手机号");
-                    return;
-                }
+//                if (!MyUtils.isPhoneNumber(forget_phone.getText().toString().trim())) {
+//                    MyUtils.showToast(ForgetPwdActivity.this, "请输入正确的手机号");
+//                    return;
+//                }
                 getSms();
                 break;
             case R.id.forget_sure:
@@ -102,10 +102,10 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                     MyUtils.showToast(ForgetPwdActivity.this, "请输入密码");
                     return;
                 }
-                if (!MyUtils.isPhoneNumber(forget_phone.getText().toString().trim())) {
-                    MyUtils.showToast(ForgetPwdActivity.this, "请输入正确的手机号");
-                    return;
-                }
+//                if (!MyUtils.isPhoneNumber(forget_phone.getText().toString().trim())) {
+//                    MyUtils.showToast(ForgetPwdActivity.this, "请输入正确的手机号");
+//                    return;
+//                }
                 if (!forget_pwd1.getText().toString().trim().equals(forget_pwd2.getText().toString().trim())) {
                     MyUtils.showToast(ForgetPwdActivity.this, "两次密码不一致");
                     return;

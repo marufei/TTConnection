@@ -1,7 +1,7 @@
 <root>
     <province name="全部" zipcode="000000">
         <city name="全部" zipcode="000000">
-            <district name="全部" zipcode="000000"/>
+            <district name="全部" zipcode="000000" />
         </city>
     </province>
     <province name="北京市" zipcode="110000">
@@ -1870,7 +1870,9 @@
             <district name="遂平县" zipcode="411728" />
             <district name="新蔡县" zipcode="411729" />
         </city>
-        <city name="济源市" zipcode="419001"></city>
+        <city name="济源市" zipcode="419001">
+            <district name="济源市" zipcode="419001" />
+        </city>
     </province>
     <province name="湖北省" zipcode="420000">
         <city name="武汉市" zipcode="420100">
@@ -1998,10 +2000,18 @@
             <district name="来凤县" zipcode="422827" />
             <district name="鹤峰县" zipcode="422828" />
         </city>
-        <city name="仙桃市" zipcode="429004"></city>
-        <city name="潜江市" zipcode="429005"></city>
-        <city name="天门市" zipcode="429006"></city>
-        <city name="神农架林区" zipcode="429021"></city>
+        <city name="仙桃市" zipcode="429004">
+            <district name="仙桃市" zipcode="429004" />
+        </city>
+        <city name="潜江市" zipcode="429005">
+            <district name="潜江市" zipcode="429005" />
+        </city>
+        <city name="天门市" zipcode="429006">
+            <district name="天门市" zipcode="429006" />
+        </city>
+        <city name="神农架林区" zipcode="429021">
+            <district name="神农架林区" zipcode="429021" />
+        </city>
     </province>
     <province name="湖南省" zipcode="430000">
         <city name="长沙市" zipcode="430100">
@@ -2480,52 +2490,52 @@
             <district name="中沙群岛的岛礁及其海域" zipcode="460323" />
         </city>
         <city name="儋州市" zipcode="460400">
-            <district name="儋州市" zipcode="460400"/>
+            <district name="儋州市" zipcode="460400" />
         </city>
         <city name="五指山市" zipcode="469001">
-            <district name="五指山市" zipcode="469001"/>
+            <district name="五指山市" zipcode="469001" />
         </city>
         <city name="琼海市" zipcode="469002">
-            <district name="琼海市" zipcode="469002"/>
+            <district name="琼海市" zipcode="469002" />
         </city>
         <city name="文昌市" zipcode="469005">
-            <district name="文昌市" zipcode="469005"/>
+            <district name="文昌市" zipcode="469005" />
         </city>
         <city name="万宁市" zipcode="469006">
-            <district name="万宁市" zipcode="469006"/>
+            <district name="万宁市" zipcode="469006" />
         </city>
         <city name="东方市" zipcode="469007">
-            <district name="东方市" zipcode="469007"/>
+            <district name="东方市" zipcode="469007" />
         </city>
         <city name="定安县" zipcode="469021">
-            <district name="定安县" zipcode="469021"/>
+            <district name="定安县" zipcode="469021" />
         </city>
         <city name="屯昌县" zipcode="469022">
-            <district name="屯昌县" zipcode="469022"/>
+            <district name="屯昌县" zipcode="469022" />
         </city>
         <city name="澄迈县" zipcode="469023">
-            <district name="澄迈县" zipcode="469023"/>
+            <district name="澄迈县" zipcode="469023" />
         </city>
         <city name="临高县" zipcode="469024">
-            <district name="临高县" zipcode="469024"/>
+            <district name="临高县" zipcode="469024" />
         </city>
         <city name="白沙黎族自治县" zipcode="469025">
-            <district name="白沙黎族自治县" zipcode="469025"/>
+            <district name="白沙黎族自治县" zipcode="469025" />
         </city>
         <city name="昌江黎族自治县" zipcode="469026">
-            <district name="昌江黎族自治县" zipcode="469026"/>
+            <district name="昌江黎族自治县" zipcode="469026" />
         </city>
         <city name="乐东黎族自治县" zipcode="469027">
-            <district name="乐东黎族自治县" zipcode="469027"/>
+            <district name="乐东黎族自治县" zipcode="469027" />
         </city>
         <city name="陵水黎族自治县" zipcode="469028">
-            <district name="陵水黎族自治县" zipcode="469028"/>
+            <district name="陵水黎族自治县" zipcode="469028" />
         </city>
         <city name="保亭黎族苗族自治县" zipcode="469029">
-            <district name="保亭黎族苗族自治县" zipcode="469029"/>
+            <district name="保亭黎族苗族自治县" zipcode="469029" />
         </city>
         <city name="琼中黎族苗族自治县" zipcode="469030">
-            <district name="琼中黎族苗族自治县" zipcode="469030"/>
+            <district name="琼中黎族苗族自治县" zipcode="469030" />
         </city>
     </province>
     <province name="重庆市" zipcode="500000">
@@ -3298,7 +3308,9 @@
             <district name="皋兰县" zipcode="620122" />
             <district name="榆中县" zipcode="620123" />
         </city>
-        <city name="嘉峪关市" zipcode="620200"></city>
+        <city name="嘉峪关市" zipcode="620200">
+            <district name="嘉峪关市" zipcode="620200" />
+        </city>
         <city name="金昌市" zipcode="620300">
             <district name="金川区" zipcode="620302" />
             <district name="永昌县" zipcode="620321" />

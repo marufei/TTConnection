@@ -202,7 +202,9 @@ public class Dialogshow1 extends Dialog implements View.OnClickListener, OnWheel
         }
         mViewDistrict.setViewAdapter(new ArrayWheelAdapter<String>(activity, areas));
         mViewDistrict.setCurrentItem(0);
-        mCurrentDistrictName = areas[0];
+        if(areas!=null&&areas.length>0) {
+            mCurrentDistrictName = areas[0];
+        }
 
         mCurrentCityCode=getKey(mCitisZipMap,mCurrentCityName);
 

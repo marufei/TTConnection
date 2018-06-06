@@ -80,7 +80,7 @@ public class HttpAddress {
     /**
      * 地区加粉
      */
-    public static final String LOCATION_CANON="/Jf/areajf";
+    public static final String LOCATION_CANON = "/Jf/areajf";
     /**
      * 提交提现申请
      */
@@ -156,10 +156,7 @@ public class HttpAddress {
      */
     public static final String H5_GONGJUXIANG = "http://www.tiantianrenmai.com/tt/index.php/Home/Index/gj.html";
 
-    /**
-     * 科大讯飞广告 id.
-     */
-    public static final String ADD_ID = "EC450F18F5329CEE6E721C584E1F0AE0";
+
     /**
      * web验证码
      */
@@ -187,55 +184,55 @@ public class HttpAddress {
     /**
      * 获取VIP信息
      */
-    public static final String INFO_VIP="/UserCenter/getVipInfo";
+    public static final String INFO_VIP = "/UserCenter/getVipInfo";
     /**
      * 获取开通VIP规则
      */
-    public static final String RULE_VIP="/Code/getVipRuleList";
+    public static final String RULE_VIP = "/Code/getVipRuleList";
     /**
      * 开通会员/购买兑换
      */
-    public static final String PAY_PAY="/VipPay/prepay";
+    public static final String PAY_PAY = "/VipPay/prepay";
     /**
      * 获取兑换码列表
      */
-    public static final String REDEEM_CODE_LIST="/Code/getVipCodeList";
+    public static final String REDEEM_CODE_LIST = "/Code/getVipCodeList";
     /**
      * 删除兑换码
      */
-    public static final String REDEEM_CODE_DELETE="/Code/delCode";
+    public static final String REDEEM_CODE_DELETE = "/Code/delCode";
     /**
      * 获取推荐配置
      */
-    public static final String INVENT_INFO="/Recom/getRecomConfig";
+    public static final String INVENT_INFO = "/Recom/getRecomConfig";
     /**
      * 推荐记录
      */
-    public static final String INVENT_RECORD="/Recom/recomLog";
+    public static final String INVENT_RECORD = "/Recom/recomLog";
     /**
      * 翻倍奖励记录
      */
-    public static final String DOUBLE_REWARD_RECORD="/Recom/getAddedRewardLog";
+    public static final String DOUBLE_REWARD_RECORD = "/Recom/getAddedRewardLog";
     /**
      * 更新用户所在城市
      */
-    public static final String UPDATE_CITY="/UserCenter/upArea";
+    public static final String UPDATE_CITY = "/UserCenter/upArea";
     /**
      * 邀请到50人干货
      */
-    public static final String H5_GANHUO="http://lh.lanhuwangluo.cn/ttrm/?regCode=";
+    public static final String H5_GANHUO = "http://lh.lanhuwangluo.cn/ttrm/?regCode=";
     /**
      * 视频简介
      * 搜索加粉：http://www.nullku.com/ttrm/ttrm_searchAdd.html
-     附近的人：http://www.nullku.com/ttrm/ttrm_nearbyAdd.html
-     通讯录加粉：http://www.nullku.com/ttrm/ttrm_contactAdd.html
-     扫码加粉：http://www.nullku.com/ttrm/ttrm_scanQrAdd.html
-     群聊加粉：http://www.nullku.com/ttrm/ttrm_qunAdd.html
+     * 附近的人：http://www.nullku.com/ttrm/ttrm_nearbyAdd.html
+     * 通讯录加粉：http://www.nullku.com/ttrm/ttrm_contactAdd.html
+     * 扫码加粉：http://www.nullku.com/ttrm/ttrm_scanQrAdd.html
+     * 群聊加粉：http://www.nullku.com/ttrm/ttrm_qunAdd.html
      */
-    public static final String H5_SSJF="http://www.nullku.com/ttrm/ttrm_searchAdd.html";
-    public static final String H5_FJDR="http://www.nullku.com/ttrm/ttrm_nearbyAdd.html";
-    public static final String H5_TTLJF="http://www.nullku.com/ttrm/ttrm_contactAdd.html";
-    public static final String H5_SMJF="http://www.nullku.com/ttrm/ttrm_scanQrAdd.html";
-    public static final String H5_QLJF="http://www.nullku.com/ttrm/ttrm_qunAdd.html";
+    public static final String H5_SSJF = "http://www.nullku.com/ttrm/ttrm_searchAdd.html";
+    public static final String H5_FJDR = "http://www.nullku.com/ttrm/ttrm_nearbyAdd.html";
+    public static final String H5_TTLJF = "http://www.nullku.com/ttrm/ttrm_contactAdd.html";
+    public static final String H5_SMJF = "http://www.nullku.com/ttrm/ttrm_scanQrAdd.html";
+    public static final String H5_QLJF = "http://www.nullku.com/ttrm/ttrm_qunAdd.html";
 
 }

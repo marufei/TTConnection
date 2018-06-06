@@ -172,10 +172,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     MyUtils.showToast(getActivity(), "请填写手机号");
                     return;
                 }
-                if (!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())) {
-                    MyUtils.showToast(getActivity(), "请填写正确的手机号");
-                    return;
-                }
+//                if (!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())) {
+//                    MyUtils.showToast(getActivity(), "请填写正确的手机号");
+//                    return;
+//                }
                 getSms();
                 break;
             case R.id.register_btn_register:
@@ -183,10 +183,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     MyUtils.showToast(getActivity(), "请填写手机号");
                     return;
                 }
-                if (!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())) {
-                    MyUtils.showToast(getActivity(), "请填写正确的手机号");
-                    return;
-                }
+//                if (!MyUtils.isPhoneNumber(register_phone.getText().toString().trim())) {
+//                    MyUtils.showToast(getActivity(), "请填写正确的手机号");
+//                    return;
+//                }
 
 //                if(!isTrueOfImageCode()){
 //                    return;

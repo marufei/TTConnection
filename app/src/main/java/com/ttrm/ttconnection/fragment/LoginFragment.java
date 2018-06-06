@@ -90,10 +90,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     MyUtils.showToast(getActivity(),"请填写密码");
                     return;
                 }
-                if(!MyUtils.isPhoneNumber(login_phone.getText().toString().trim())){
-                    MyUtils.showToast(getActivity(),"请填写正确的手机号");
-                    return;
-                }
+//                if(!MyUtils.isPhoneNumber(login_phone.getText().toString().trim())){
+//                    MyUtils.showToast(getActivity(),"请填写正确的手机号");
+//                    return;
+//                }
                 login();
                 break;
         }

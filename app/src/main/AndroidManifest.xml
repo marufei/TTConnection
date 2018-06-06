@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.ttrm.ttconnection">
 
     <!-- 用于访问网络，网络定位需要上网 -->
@@ -194,10 +193,6 @@
         <activity
             android:name=".activity.ProtocolActivity"
             android:screenOrientation="portrait" />
-        <!-- 讯飞广告 -->
-        <meta-data
-            android:name="IFLYTEK_APPKEY_AD"
-            android:value="EC450F18F5329CEE6E721C584E1F0AE0" />
 
         <activity
             android:name=".activity.OpenVipActivity"
