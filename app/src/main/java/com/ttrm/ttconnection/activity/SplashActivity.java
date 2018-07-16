@@ -1,14 +1,8 @@
 package com.ttrm.ttconnection.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Window;
 import android.widget.Button;
@@ -18,13 +12,7 @@ import android.widget.TextView;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.util.ActivityUtil;
 import com.ttrm.ttconnection.util.KeyUtils;
-import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.SaveUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.ttrm.ttconnection.MyApplication.mContext;
 
 
 /**
@@ -33,8 +21,6 @@ import static com.ttrm.ttconnection.MyApplication.mContext;
 public class SplashActivity extends BaseActivity {
     private String TAG = "SplashActivity";
     private static final int PERMISSION_REQUEST = 1;
-    //    private IFLYNativeAd nativeAd;
-//    private NativeADDataRef adItem;
     TimeCount timeCount;
     private Button adv_next;
     private ImageView img_poster;

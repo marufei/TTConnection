@@ -235,4 +235,19 @@ public class HttpAddress {
     public static final String H5_SMJF = "http://www.nullku.com/ttrm/ttrm_scanQrAdd.html";
     public static final String H5_QLJF = "http://www.nullku.com/ttrm/ttrm_qunAdd.html";
 
+    /**
+     * 获取邀请码列表
+     */
+    public static final String INVENT_CODE="/Order/getOrderList";
+
+    /**
+     * 兑换码说明文档
+     */
+    public static final String CODE_DOC="/Order/getCodeDoc";
+
+    /**
+     * 钻石列表
+     */
+    public static final String CODE_LIST="/Order/codeList";
+
 }

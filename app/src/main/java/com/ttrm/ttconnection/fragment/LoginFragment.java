@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private EditText login_pwd;
     private Button login_btn;
     private String TAG="LoginFragment";
+    private AlertDialog dlg;
 
     @Nullable
     @Override
@@ -54,6 +56,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         view=inflater.inflate(R.layout.fragment_login,null);
         initViews();
         initData();
+        showLoad();
         return view;
     }
 
@@ -95,6 +98,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 //                    return;
 //                }
                 login();
+                dlg.show();
                 break;
         }
     }
@@ -109,12 +113,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onResponse(String response) {
                 MyUtils.Loge(TAG,"response:"+response);
-//                MyUtils.showToast(getContext(),"返回JSON数据：--"+ response);
                 try{
                     JSONObject jsonObject=new JSONObject(response);
                     int errorCode=jsonObject.getInt("errorCode");
                     String errorMsg=jsonObject.getString("errorMsg");
                     if(errorCode==1){
+                        dlg.dismiss();
                         Gson gson=new Gson();
                         LoginBean loginBean=gson.fromJson(response,LoginBean.class);
                         if(loginBean!=null){
@@ -128,10 +132,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         }
                         startActivity(new Intent(getActivity(), Main2Activity.class));
                         getActivity().finish();
+
                     }else {
+                        dlg.dismiss();
                         MyUtils.showToast(getActivity(),errorMsg);
                     }
                 }catch (Exception e){
+                    dlg.dismiss();
                     MyUtils.Loge(TAG,"e:"+e.getMessage());
                 }
 
@@ -139,6 +146,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                dlg.dismiss();
                 MyUtils.showToast(getActivity(),"网络有问题");
             }
         }){
@@ -154,5 +162,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         };
         VolleyUtils.setTimeOut(stringRequest);
         VolleyUtils.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
+
+    /**
+     * 加载动画
+     */
+    private  void showLoad() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        final View layout = inflater.inflate(R.layout.dialog_show, null);
+        builder.setView(layout);
+        dlg = builder.create();
+        dlg.setCanceledOnTouchOutside(false);
     }
 }

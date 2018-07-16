@@ -53,7 +53,6 @@ import java.util.regex.Pattern;
 
 public class MyUtils {
     private static String TAG = "TAG--MyUtils";
-
     public static Toast mToast;
     private static Pattern mPattern;
     private static Matcher mMatcher;
@@ -926,7 +925,7 @@ public class MyUtils {
         Paint paint = new Paint();
         Rect textInvent = new Rect();
         paint.setColor(context.getResources().getColor(R.color.white));
-        paint.setTextSize(40);
+        paint.setTextSize(px2sp(context,getScreenWidth(context)/16));
         paint.getTextBounds(str, 0, str.length(), textInvent);
         Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth(), firstBitmap.getHeight(), firstBitmap.getConfig());
         Canvas canvas = new Canvas(bitmap);
@@ -1039,6 +1038,88 @@ public class MyUtils {
             }
         }
         return key;
+    }
+
+    /**
+     * 获取屏幕宽度(px)
+     */
+    public static int getScreenWidth(Context context) {
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     *
+     */
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    /**
+     * convert px to its equivalent sp
+     *
+     * 将px转换为sp
+     */
+    public static int px2sp(Context context, float pxValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
+    }
+
+    /**
+     * 将时间戳转为代表"距现在多久之前"的字符串
+     * @param timeStr   时间戳
+     * @return
+     */
+    public static String getStandardDate(String timeStr) {
+
+        StringBuffer sb = new StringBuffer();
+
+        long t = Long.parseLong(timeStr);
+        long time = System.currentTimeMillis() - (t*1000);
+        long mill = (long) Math.ceil(time /1000);//秒前
+
+        long minute = (long) Math.ceil(time/60/1000.0f);// 分钟前
+
+        long hour = (long) Math.ceil(time/60/60/1000.0f);// 小时
+
+        long day = (long) Math.ceil(time/24/60/60/1000.0f);// 天前
+
+        if (day - 1 > 0) {
+            sb.append(day + "天");
+        } else if (hour - 1 > 0) {
+            if (hour >= 24) {
+                sb.append("1天");
+            } else {
+                sb.append(hour + "小时");
+            }
+        } else if (minute - 1 > 0) {
+            if (minute == 60) {
+                sb.append("1小时");
+            } else {
+                sb.append(minute + "分钟");
+            }
+        } else if (mill - 1 > 0) {
+            if (mill == 60) {
+                sb.append("1分钟");
+            } else {
+                sb.append(mill + "秒");
+            }
+        } else {
+            sb.append("刚刚");
+        }
+        if (!sb.toString().equals("刚刚")) {
+            sb.append("前");
+        }
+        return sb.toString();
     }
 
 }

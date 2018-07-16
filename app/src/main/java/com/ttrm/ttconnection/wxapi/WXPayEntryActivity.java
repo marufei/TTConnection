@@ -26,7 +26,7 @@ import com.ttrm.ttconnection.view.MyAdvertisementView;
  */
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
-    String TAG="TAG--WXPayEntryActivity";
+    String TAG = "TAG--WXPayEntryActivity";
     private IWXAPI api;
     MyApplication app;
     private OnSuccessListenner onSuccessListenner;
@@ -38,7 +38,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app= (MyApplication) getApplicationContext();
+        app = (MyApplication) getApplicationContext();
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
         api.handleIntent(getIntent(), this);
     }
@@ -50,31 +50,24 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        if(baseResp.getType()== ConstantsAPI.COMMAND_PAY_BY_WX){
-            MyUtils.Loge(TAG,"onPayFinish,errCode="+baseResp.errCode);
-            AlertDialog.Builder builder=new AlertDialog.Builder(this);
-            builder.setTitle("提示");
-            MyUtils.Loge(TAG,"errCode:"+baseResp.errCode);
-            switch (baseResp.errCode){
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            MyUtils.Loge(TAG, "onPayFinish,errCode=" + baseResp.errCode);
+            MyUtils.Loge(TAG, "errCode:" + baseResp.errCode);
+            switch (baseResp.errCode) {
                 case 0://成功
-                    MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this,R.layout.dialog_bd_success);
-                    myAdvertisementView.showDialog();
-                    myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-                        @Override
-                        public void onEvent() {
-//                            onSuccessListenner.OnSuccess();
-                            finish();
-                        }
-                    });
-                break;
+                    Intent intent = new Intent(WXPayEntryActivity.this, BDAddActivity.class);
+                    intent.putExtra("code", "0");
+                    startActivity(intent);
+                    finish();
+                    break;
                 case -1://失败
-                    MyUtils.Loge(TAG,"支付失败");
+                    MyUtils.Loge(TAG, "支付失败");
                     Toast.makeText(WXPayEntryActivity.this, "支付失败", Toast.LENGTH_SHORT);
                     MyUtils.showToast(WXPayEntryActivity.this, "支付失败");
                     finish();
                     break;
                 case -2://取消
-                    MyUtils.Loge(TAG,"支付取消");
+                    MyUtils.Loge(TAG, "支付取消");
                     MyUtils.showToast(WXPayEntryActivity.this, "支付取消");
 //                    Toast.makeText(WXPayEntryActivity.this, "支付失败", Toast.LENGTH_SHORT);
                     finish();
@@ -82,7 +75,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             }
         }
     }
-    public interface OnSuccessListenner{
+
+    public interface OnSuccessListenner {
         void OnSuccess();
     }
 }

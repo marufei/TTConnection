@@ -2,11 +2,13 @@ package com.ttrm.ttconnection.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,6 +16,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BaojiLvAdapter;
 import com.ttrm.ttconnection.entity.BaojiRuleBean;
@@ -39,6 +43,7 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
     private String TAG = "BaoJiActivity";
     private String ruleId;
     private Button baoji_btn;
+    private ImageView baoji_reward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,10 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
         baoji_lv = (ListViewForScrollview) findViewById(R.id.baoji_lv);
         baoji_btn = (Button) findViewById(R.id.baoji_btn);
         baoji_btn.setOnClickListener(this);
+
+        baoji_reward = findViewById(R.id.baoji_reward);
+        baoji_reward.setOnClickListener(this);
+        Picasso.with(this).load(HttpAddress.MAIN_PNG).memoryPolicy(MemoryPolicy.NO_CACHE).into(baoji_reward);
 
     }
 
@@ -193,26 +202,33 @@ public class BaoJiActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        if (TextUtils.isEmpty(ruleId)) {
-            MyUtils.showToast(BaoJiActivity.this, "请选择爆机人数");
-            return;
-        }
-        if (TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
-            showAlertDialog("提示", "请完善一下您的昵称再继续吧~", "确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    startActivity(new Intent(BaoJiActivity.this, EditNameActivity.class));
-                    dialogInterface.dismiss();
+        switch (view.getId()) {
+            case R.id.baoji_reward:
+                startActivity(new Intent(BaoJiActivity.this, MyRewardActivity.class));
+                break;
+            case R.id.baoji_btn:
+                if (TextUtils.isEmpty(ruleId)) {
+                    MyUtils.showToast(BaoJiActivity.this, "请选择爆机人数");
+                    return;
                 }
-            }, "取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
+                if (TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                    showAlertDialog("提示", "请完善一下您的昵称再继续吧~", "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(BaoJiActivity.this, EditNameActivity.class));
+                            dialogInterface.dismiss();
+                        }
+                    }, "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                } else {
+                    baoji_btn.setClickable(false);
+                    baoJi();
                 }
-            });
-        } else {
-            baoji_btn.setClickable(false);
-            baoJi();
+                break;
         }
     }
 

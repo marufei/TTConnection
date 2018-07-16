@@ -136,39 +136,12 @@ public class WebActivity extends BaseActivity {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
-//                    LogUtil.e(TAG, "onPageStarted url=" + url);
-//                    //悬赏任务完成 返回
-//                    if (url.contains("task/taskCallback")) {
-//                        Base_Dialog dialog = new Base_Dialog(Web_Activity.this);
-//                        dialog.setCancelable(false);
-//                        dialog.setMessage("感谢您进行该任务  点击确定返回萌豆任务中心");
-//                        dialog.setOk("确定", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                setResult(123, new Intent().putExtra("tasktype", true));
-//                                MDApp.finishActivity();
-//                            }
-//                        });
-//                    }
-//
-//                    //金豆定存 确认返回
-//                    String s = "https://www.mengdouwang.cn/dc/mengdouwang.com";
-//                    if (url.equals(s)) {
-//                        setResult(99, null);
-//                        MDApp.finishActivity();
-//                    }
 
                 }
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
-//                    LogUtil.e(TAG, "onPageFinished url=" + url);
-//                    if (loadurl.equals(url)) {
-//                        mWebView.clearHistory();
-//                    }
-                    // addImageClickListner();
 
-//                Log.e(TAG, "onPageFinished WebView title=" + title);
                 }
 
                 @Override

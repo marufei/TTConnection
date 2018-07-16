@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.adapter.BDAddLvAdapter;
 import com.ttrm.ttconnection.entity.BDAddBean;
@@ -32,7 +34,9 @@ import com.ttrm.ttconnection.util.MyUtils;
 import com.ttrm.ttconnection.util.PayUtil;
 import com.ttrm.ttconnection.util.SaveUtils;
 import com.ttrm.ttconnection.util.VolleyUtils;
+import com.ttrm.ttconnection.view.DialogPaySuccess;
 import com.ttrm.ttconnection.view.ListViewForScrollview;
+import com.ttrm.ttconnection.view.MyAdvertisementView;
 import com.ttrm.ttconnection.wxapi.WXPayEntryActivity;
 
 import org.json.JSONObject;
@@ -53,10 +57,14 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     private ImageView bdadd_alipay;
     private ImageView bdadd_wx;
     private String payType;
-    private int pos = 0;
+
     private LinearLayout bdadd_ll_alipay;
     private LinearLayout bdadd_ll_wx;
     private ImageView bdadd_png;
+    /**
+     * 微信支付是否成功
+     */
+    private boolean isPaySuccess=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +84,9 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
      * 获取加粉规则
      */
     private void initData() {
+        if(!TextUtils.isEmpty(getIntent().getStringExtra("code"))&&getIntent().getStringExtra("code").equals("0")){
+           isPaySuccess=true;
+        }
         String url = HttpAddress.BASE_URL + HttpAddress.GET_BA_RULE;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -89,6 +100,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
                         bdAddBean = gson.fromJson(response, BDAddBean.class);
                         if (bdAddBean != null) {
                             setViews();
+
                         }
                     }
                     ActivityUtil.toLogin(BDAddActivity.this, bdAddBean.getErrorCode());
@@ -120,8 +132,8 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
      */
     private void openAdd() {
         MyUtils.Loge(TAG, "点击开通");
-        MyUtils.Loge(TAG, "ruleId" + bdAddBean.getData().getRuleList().get(pos).getId());
-        PayUtil.toPay(BDAddActivity.this, payType, bdAddBean.getData().getRuleList().get(pos).getId());
+        MyUtils.Loge(TAG, "ruleId" + bdAddBean.getData().getRuleList().get(MyApplication.pos).getId());
+        PayUtil.toPay(BDAddActivity.this, payType, bdAddBean.getData().getRuleList().get(MyApplication.pos).getId());
     }
 
     private void setViews() {
@@ -133,10 +145,10 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (bdAddBean.getData().getRuleList().get(position).isSelect()) {
                     bdAddBean.getData().getRuleList().get(position).setSelect(false);
-                    pos=-1;
+                    MyApplication.pos=-1;
                 } else {
                     bdAddBean.getData().getRuleList().get(position).setSelect(true);
-                    pos = position;
+                    MyApplication.pos = position;
                     for (int i = 0; i < bdAddBean.getData().getRuleList().size(); i++) {
                         if (i != position) {
                             bdAddBean.getData().getRuleList().get(i).setSelect(false);
@@ -146,6 +158,10 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
                 adapter.notifyDataSetChanged();
             }
         });
+        if(isPaySuccess){
+            OnSuccess();
+        }
+
     }
 
     private void initViews() {
@@ -170,7 +186,7 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bdadd_open:
-                if (pos < 0) {
+                if (MyApplication.pos < 0) {
                     MyUtils.showToast(BDAddActivity.this, "请选择加粉类型");
                     return;
                 }
@@ -263,19 +279,66 @@ public class BDAddActivity extends BaseActivity implements View.OnClickListener,
     /**
      * 微信支付成功回调
      */
-    @Override
     public void OnSuccess() {
-        MyUtils.Loge(TAG, "进入支付回调");
-//        MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this, R.layout.dialog_bd_success);
-//        myAdvertisementView.showDialog();
-//        myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
-//            @Override
-//            public void onEvent() {
-////                MyUtils.showToast(BDAddActivity.this,"点击了按钮");
-//                MyUtils.Loge(TAG, "微信回调成功，点击了按钮");
-//                finish();
-//            }
-//        });
-        finish();
+        MyUtils.Loge(TAG, "进入微信支付成功的回调");
+        if(bdAddBean!=null&&bdAddBean.getData()!=null&&bdAddBean.getData().getRuleList()!=null&&bdAddBean.getData().getRuleList().get(MyApplication.pos)!=null) {
+            DialogPaySuccess dialogPaySuccess = new DialogPaySuccess(this,bdAddBean.getData().getRuleList().get(MyApplication.pos).getImgurl(), bdAddBean.getData().getRuleList().get(MyApplication.pos).getCodegroup());
+            dialogPaySuccess.showDialog();
+            dialogPaySuccess.setOnEventClickListenner(new DialogPaySuccess.OnEventClickListenner() {
+                @Override
+                public void onEvent() {
+                    startActivity(new Intent(BDAddActivity.this, InventCodeActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onCancel() {
+                    finish();
+                }
+            });
+        }else {
+            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this, R.layout.dialog_bd_success);
+            myAdvertisementView.showDialog();
+            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                @Override
+                public void onEvent() {
+                    MyUtils.Loge(TAG, "微信回调成功，点击了按钮");
+                    finish();
+                }
+            });
+        }
+    }
+
+    /**
+     * 支付宝支付成功回调
+     */
+    public void AliPayCallback(){
+        MyUtils.Loge(TAG,"进入支付宝支出成功的回调AliPayCallback（）");
+        if(bdAddBean!=null&&bdAddBean.getData()!=null&&bdAddBean.getData().getRuleList()!=null&&bdAddBean.getData().getRuleList().get(MyApplication.pos)!=null) {
+            DialogPaySuccess dialogPaySuccess = new DialogPaySuccess(this,bdAddBean.getData().getRuleList().get(MyApplication.pos).getImgurl(), bdAddBean.getData().getRuleList().get(MyApplication.pos).getCodegroup());
+            dialogPaySuccess.showDialog();
+            dialogPaySuccess.setOnEventClickListenner(new DialogPaySuccess.OnEventClickListenner() {
+                @Override
+                public void onEvent() {
+                    startActivity(new Intent(BDAddActivity.this, InventCodeActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onCancel() {
+                    finish();
+                }
+            });
+        }else {
+            MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this, R.layout.dialog_bd_success);
+            myAdvertisementView.showDialog();
+            myAdvertisementView.setOnEventClickListenner(new MyAdvertisementView.OnEventClickListenner() {
+                @Override
+                public void onEvent() {
+                    MyUtils.Loge(TAG, "支付宝回调成功，点击了按钮");
+                    finish();
+                }
+            });
+        }
     }
 }

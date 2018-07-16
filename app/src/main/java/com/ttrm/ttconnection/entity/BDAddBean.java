@@ -12,7 +12,7 @@ public class BDAddBean implements Serializable {
     /**
      * errorCode : 1
      * errorMsg : 获取被动加粉规则列表成功!
-     * data : {"ruleList":[{"id":"4","diamondcount":"0.10","addcount":"2000"},{"id":"5","diamondcount":"0.11","addcount":"1000"},{"id":"6","diamondcount":"0.12","addcount":"60"}]}
+     * data : {"ruleList":[{"id":"4","diamondcount":"9.90","addcount":"65","codegroup":"3","remark":"被加40-60人左右（体验）","imgurl":"http://www.tiantianrenmai.com/tt/Public/Upload/img/990.png"},{"id":"9","diamondcount":"19.90","addcount":"150","codegroup":"6","remark":"被加120-140人","imgurl":"http://www.tiantianrenmai.com/tt/Public/Upload/img/1990.png"},{"id":"13","diamondcount":"39.90","addcount":"320","codegroup":"12","remark":"被加280-310人","imgurl":"http://www.tiantianrenmai.com/tt/Public/Upload/img/3990.png"},{"id":"5","diamondcount":"99.00","addcount":"1000","codegroup":"16","remark":"保底被加1000人","imgurl":"http://www.tiantianrenmai.com/tt/Public/Upload/img/9900.png"},{"id":"6","diamondcount":"198.00","addcount":"2000","codegroup":"32","remark":"保底被加2000人（赠送1680钻）","imgurl":"http://www.tiantianrenmai.com/tt/Public/Upload/img/19800.png"}]}
      */
 
     private int errorCode;
@@ -57,15 +57,20 @@ public class BDAddBean implements Serializable {
         public static class RuleListBean {
             /**
              * id : 4
-             * diamondcount : 0.10
-             * addcount : 2000
+             * diamondcount : 9.90
+             * addcount : 65
+             * codegroup : 3
+             * remark : 被加40-60人左右（体验）
+             * imgurl : http://www.tiantianrenmai.com/tt/Public/Upload/img/990.png
              */
 
             private String id;
             private String diamondcount;
             private String addcount;
+            private String codegroup;
             private String remark;
-            private boolean select = false;
+            private String imgurl;
+            private boolean select;
 
             public boolean isSelect() {
                 return select;
@@ -73,14 +78,6 @@ public class BDAddBean implements Serializable {
 
             public void setSelect(boolean select) {
                 this.select = select;
-            }
-
-            public String getRemark() {
-                return remark;
-            }
-
-            public void setRemark(String remark) {
-                this.remark = remark;
             }
 
             public String getId() {
@@ -105,6 +102,30 @@ public class BDAddBean implements Serializable {
 
             public void setAddcount(String addcount) {
                 this.addcount = addcount;
+            }
+
+            public String getCodegroup() {
+                return codegroup;
+            }
+
+            public void setCodegroup(String codegroup) {
+                this.codegroup = codegroup;
+            }
+
+            public String getRemark() {
+                return remark;
+            }
+
+            public void setRemark(String remark) {
+                this.remark = remark;
+            }
+
+            public String getImgurl() {
+                return imgurl;
+            }
+
+            public void setImgurl(String imgurl) {
+                this.imgurl = imgurl;
             }
         }
     }

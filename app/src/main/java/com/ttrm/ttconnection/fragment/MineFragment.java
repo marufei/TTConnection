@@ -22,11 +22,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.meiqia.core.MQManager;
+import com.meiqia.core.bean.MQMessage;
+import com.meiqia.core.callback.OnGetMessageListCallback;
+import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.squareup.picasso.Picasso;
+import com.ttrm.ttconnection.MyApplication;
 import com.ttrm.ttconnection.R;
 import com.ttrm.ttconnection.activity.BDAddActivity;
 import com.ttrm.ttconnection.activity.BaoJiActivity;
 import com.ttrm.ttconnection.activity.EditNameActivity;
+import com.ttrm.ttconnection.activity.InventCodeActivity;
 import com.ttrm.ttconnection.activity.LoginActivity;
 import com.ttrm.ttconnection.activity.OpenVipActivity;
 import com.ttrm.ttconnection.activity.RedeemActivity;
@@ -48,7 +54,10 @@ import com.ttrm.ttconnection.view.MyAdvertisementView;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.ttrm.ttconnection.fragment.HomeFragment.context;
 
 /**
  * Created by MaRufei
@@ -84,8 +93,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     /**
      * 是否是VIP
      */
-    private boolean isVIP=false;
-    
+    private boolean isVIP = false;
+    private TextView mine_news;
+    private LinearLayout info_ll_code;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return View.inflate(getContext(), R.layout.fragment_mine, null);
@@ -101,7 +112,26 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void lazyLoad() {
+        //客服未读消息监听
+        MQManager.getInstance(getActivity()).getUnreadMessages(new OnGetMessageListCallback() {
+            @Override
+            public void onFailure(int i, String s) {
+                if (mine_news != null) {
+                    mine_news.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onSuccess(List<MQMessage> list) {
+                MyUtils.Loge(TAG, "获取未读消息条数：" + list.size());
+                if (mine_news != null && list.size() > 0) {
+                    mine_news.setVisibility(View.VISIBLE);
+                    mine_news.setText(String.valueOf(list.size()));
+                }else {
+                    mine_news.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -115,6 +145,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initViews() {
+        mine_news = getActivity().findViewById(R.id.mine_news);
+        mine_news.setVisibility(View.GONE);
         info_tv_diamond = (TextView) getActivity().findViewById(R.id.info_tv_diamond);
         info_tv_phone = (TextView) getActivity().findViewById(R.id.info_tv_phone);
         info_tv_content = (TextView) getActivity().findViewById(R.id.info_tv_content);
@@ -138,13 +170,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         info_btn_loginout.setOnClickListener(this);
 
         info_tv_bmdl = (TextView) getActivity().findViewById(R.id.info_tv_bmdl);
-        activity_user_info_bj=(TextView)getActivity().findViewById(R.id.activity_user_info_bj);
-        activity_user_info_bd=(TextView)getActivity().findViewById(R.id.activity_user_info_bd);
+        activity_user_info_bj = (TextView) getActivity().findViewById(R.id.activity_user_info_bj);
+        activity_user_info_bd = (TextView) getActivity().findViewById(R.id.activity_user_info_bd);
 
-        info_tv_version=(TextView)getActivity().findViewById(R.id.info_tv_version);
+        info_tv_version = (TextView) getActivity().findViewById(R.id.info_tv_version);
 
-        info_iv_vip=(ImageView)getActivity().findViewById(R.id.info_iv_vip);
+        info_iv_vip = (ImageView) getActivity().findViewById(R.id.info_iv_vip);
         info_iv_vip.setOnClickListener(this);
+
+        info_ll_code=getActivity().findViewById(R.id.info_ll_code);
+        info_ll_code.setOnClickListener(this);
     }
 
     @Override
@@ -204,12 +239,27 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), EditNameActivity.class));
                 break;
             case R.id.info_ll_version: //版本更新
-                MyUtils.showToast(getActivity(),"暂无新版本");
+                MyUtils.showToast(getActivity(), "暂无新版本");
                 break;
             case R.id.info_ll_custom:       //联系客服
-                Intent intent1 = new Intent(getActivity(), WebActivity.class);
-                intent1.putExtra("URL", HttpAddress.URL_H5_DELETE);
-                intent1.putExtra("title", "咨询客服");
+//                Intent intent1 = new Intent(getActivity(), WebActivity.class);
+//                intent1.putExtra("URL", HttpAddress.URL_H5_DELETE);
+//                intent1.putExtra("title", "咨询客服");
+//                startActivity(intent1);
+
+                HashMap<String, String> clientInfo = new HashMap<>();
+                if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
+                    clientInfo.put("name", SaveUtils.getString(KeyUtils.user_name));
+                } else {
+                    if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_phone))) {
+                        clientInfo.put("name", SaveUtils.getString(KeyUtils.user_phone));
+                    }
+                }
+                if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_phone))) {
+                    clientInfo.put("tel", SaveUtils.getString(KeyUtils.user_phone));
+                }
+
+                Intent intent1 = new MQIntentBuilder(getActivity()).setClientInfo(clientInfo).build();
                 startActivity(intent1);
 
                 break;
@@ -228,11 +278,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 });
                 break;
             case R.id.info_iv_vip:
-                if(isVIP){
-                    startActivity(new Intent(getActivity(),RedeemCodeActivity.class));
-                }else {
-                    startActivity(new Intent(getActivity(),OpenVipActivity.class));
+                if (isVIP) {
+                    startActivity(new Intent(getActivity(), RedeemCodeActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), OpenVipActivity.class));
                 }
+                break;
+            case R.id.info_ll_code:
+                startActivity(new Intent(getActivity(), InventCodeActivity.class));
                 break;
 
         }
@@ -241,37 +294,60 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+
+
         getDiamondCount();
         if (!TextUtils.isEmpty(SaveUtils.getString(KeyUtils.user_name))) {
             info_tv_bmdl.setText(SaveUtils.getString(KeyUtils.user_name));
         }
-        info_tv_version.setText("v"+MyUtils.getVersionName(getActivity()));
+        info_tv_version.setText("v" + MyUtils.getVersionName(getActivity()));
 
         getVipInfo();
+
+        //客服未读消息监听
+        MQManager.getInstance(getActivity()).getUnreadMessages(new OnGetMessageListCallback() {
+            @Override
+            public void onFailure(int i, String s) {
+                if (mine_news != null) {
+                    mine_news.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onSuccess(List<MQMessage> list) {
+                MyUtils.Loge(TAG, "获取未读消息条数：" + list.size());
+                if (mine_news != null && list.size() > 0) {
+                    mine_news.setVisibility(View.VISIBLE);
+                    mine_news.setText(String.valueOf(list.size()));
+                }else {
+                    mine_news.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     /**
      * 获取VIP信息
      */
     private void getVipInfo() {
-        String url=HttpAddress.BASE_URL+HttpAddress.INFO_VIP;
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        String url = HttpAddress.BASE_URL + HttpAddress.INFO_VIP;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                MyUtils.Loge(TAG,"VIP信息---:"+response);
-                try{
-                    JSONObject jsonObject=new JSONObject(response);
-                    int errorCode=jsonObject.getInt("errorCode");
-                    if(errorCode==1){
-                        Gson gson=new Gson();
-                        VipInfoBean vipInfoBean=gson.fromJson(response,VipInfoBean.class);
+                MyUtils.Loge(TAG, "VIP信息---:" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int errorCode = jsonObject.getInt("errorCode");
+                    if (errorCode == 1) {
+                        Gson gson = new Gson();
+                        VipInfoBean vipInfoBean = gson.fromJson(response, VipInfoBean.class);
                         //判断是VIP
-                        if(vipInfoBean!=null&&vipInfoBean.getData()!=null&&vipInfoBean.getData().getVipStatus()==1){
-                            isVIP=true;
+                        if (vipInfoBean != null && vipInfoBean.getData() != null && vipInfoBean.getData().getVipStatus() == 1) {
+                            isVIP = true;
                         }
                     }
                     ActivityUtil.toLogin(getActivity(), errorCode);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -279,15 +355,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MyUtils.showToast(getActivity(),"网络有问题");
+                MyUtils.showToast(getActivity(), "网络有问题");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("timeStamp", MyUtils.getTimestamp());
                 map.put("sign", MyUtils.getSign());
-                map.put("login_token",SaveUtils.getString(KeyUtils.user_login_token));
+                map.put("login_token", SaveUtils.getString(KeyUtils.user_login_token));
                 return map;
             }
         };
@@ -352,6 +428,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         VolleyUtils.setTimeOut(stringRequest);
         VolleyUtils.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
+
     /**
      * 初始化爆机状态
      */
@@ -400,6 +477,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         VolleyUtils.setTimeOut(stringRequest);
         VolleyUtils.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
+
     /**
      * 获取被加状态
      */
@@ -526,6 +604,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         VolleyUtils.setTimeOut(stringRequest);
         VolleyUtils.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
+
     /**
      * 被动加粉开关
      */

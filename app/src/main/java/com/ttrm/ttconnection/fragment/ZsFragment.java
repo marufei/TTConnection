@@ -370,6 +370,7 @@ public class ZsFragment extends BaseFragment implements View.OnClickListener {
                     }
                 }
             }
+//            MyUtils.Loge(TAG,"二维码宽:"+Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.RGB_565).getWidth()+"屏幕宽："+MyUtils.getScreenWidth(getActivity()));
             return Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.RGB_565);
         } catch (WriterException e) {
             e.printStackTrace();
@@ -392,9 +393,15 @@ public class ZsFragment extends BaseFragment implements View.OnClickListener {
                     shareInfoBean = gson.fromJson(response, ShareInfoBean.class);
                     if (shareInfoBean != null) {
                         if (shareInfoBean.getErrorCode() == 1) {
+                            MyUtils.Loge(TAG,MyUtils.getScreenWidth(getActivity())+"");
+                            int wigth=MyUtils.getScreenWidth(getActivity());
                             qrBitmap = generateBitmap(shareInfoBean.getData().getConfig().getUrl()
                                     + "?regCode="
-                                    + SaveUtils.getString(KeyUtils.user_regcode), 220, 220);
+                                    + SaveUtils.getString(KeyUtils.user_regcode), wigth/5, wigth/5);//220
+
+
+
+
                             dlg1.dismiss();
                             realBitmap = getRealBitmap();
                             if(realBitmap!=null) {

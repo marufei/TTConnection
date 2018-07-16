@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.ttrm.ttconnection.activity.InventCodeActivity">
+    <include layout="@layout/toolbar_layout" />
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/invent_code_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/invent_code_kong"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="您还没有激活码记录，快去获取吧~"/>
+</LinearLayout>
